@@ -103,8 +103,8 @@ body{
     background: url("../images/blueToken.svg") no-repeat;
     height: 12px;
     width: 12px;
-    top: 175px;
-    left: 55px;
+    top: 0px;
+    left: 0px;
     z-index: 1;
     position: absolute;
 }
