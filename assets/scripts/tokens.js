@@ -1,15 +1,17 @@
 //----------------------------------------------Number of Players selection------------------------------------
 
 $("#numPlayersTwo").click(function(){
-    var number = localStorage.setItem("numplayer", 2);
-    document.getElementById("numplayers").innerHTML = localStorage.getItem("numplayer");
+    localStorage.setItem("numplayer", 2);
 });
 
 $("#numPlayersFour").click(function(){
-    var numplayers = 4;
-    $("#numplayers").html(numplayers);
+    localStorage.setItem("numplayer", 4);
 });
 
+$("#firstdice").click(function(){
+    document.getElementById("numplayers").innerHTML = localStorage.getItem("numplayer");
+    $(this).css("z-index","-1");
+});
 
 var blueonepos = 0;
 $("#blueTokenTwo").click(function(){

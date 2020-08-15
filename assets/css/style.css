@@ -3,7 +3,6 @@ body{
 }
 
 
-
 .board{
     border-right: solid black 1px;
     padding: 0px;
@@ -129,5 +128,22 @@ body{
     top: 180px;
     left: 80px;
     z-index: 1;
+    position: absolute;
+}
+
+#firstdice{
+    border: solid black 1px;
+    background-color: pink;
+    height: 50px;
+    width: 100px;
+    position: absolute;
+    z-index: 1;
+}
+
+#bluedice{
+    border: solid black 1px;
+    background-color: blue;
+    height: 50px;
+    width: 100px;
     position: absolute;
 }
