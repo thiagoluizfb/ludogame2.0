@@ -142,8 +142,17 @@ body{
 
 #bluedice{
     border: solid black 1px;
-    background-color: blue;
+    background-color: white;
     height: 50px;
     width: 100px;
     position: absolute;
+}
+
+#bluediceone, #bluedicetwo{
+    border: solid black 1px;
+    margin: 0px;
+    padding: 0px;
+    height: 25px;
+    width: 25px;
+    display: inline-block;
 }
