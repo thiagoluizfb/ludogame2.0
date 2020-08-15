@@ -1,3 +1,16 @@
+//----------------------------------------------Number of Players selection------------------------------------
+
+$("#numPlayersTwo").click(function(){
+    var number = localStorage.setItem("numplayer", 2);
+    document.getElementById("numplayers").innerHTML = localStorage.getItem("numplayer");
+});
+
+$("#numPlayersFour").click(function(){
+    var numplayers = 4;
+    $("#numplayers").html(numplayers);
+});
+
+
 var blueonepos = 0;
 $("#blueTokenTwo").click(function(){
 
