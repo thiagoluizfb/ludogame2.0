@@ -113,8 +113,8 @@ body{
 
 #blueTokenTwo{
     background: url("../images/blueToken.svg") no-repeat;
-    height: 12px;
-    width: 12px;
+    height: 37px;
+    width: 37px;
     top: 185px;
     left: 55px;
     z-index: 1;
@@ -155,4 +155,14 @@ body{
     height: 25px;
     width: 25px;
     display: inline-block;
+}
+
+#dicewrapper{
+    margin: 0px;
+    padding: 0px;
+    top: 180px;
+    left: 80px;
+    font-size: 7px;
+    position: absolute;
+    z-index: 1;
 }

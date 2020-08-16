@@ -21,10 +21,16 @@ $("#firstdice").click(function (){
 });
 
 $("#bluedice").click(function (){
+    var ref = $("#blueTokenTwo").position();
+    
     var bluediceone = Math.floor(Math.random()*6+1);
     var bluedicetwo = Math.floor(Math.random()*6+1);
     $("#bluediceone").html(bluediceone);
     $("#bluedicetwo").html(bluedicetwo);
+    $("#dicewrapper").css({"left": ref.left+25+"px","position": "absolute"});
+    $("#dicewrapper").css({"top": ref.top-12.5+"px","position": "absolute"});
+    $("#blueTokenTwoDieOne").html(bluediceone);
+    $("#blueTokenTwoDieTwo").html(bluedicetwo);
     window.resultblue = bluediceone + bluedicetwo;
 });
 
@@ -36,7 +42,6 @@ let blueleft = [55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,20
 let bluetop = [180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,155,155,155,155,155];
 
 var myVar = setInterval(myTimer, 500);
-
 let i  = window.resultblue;
 let j = 0;
 newpos = blueonepos+i;
