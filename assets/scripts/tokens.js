@@ -8,26 +8,24 @@ $("#numPlayersFour").click(function(){
     localStorage.setItem("numplayer", 4);
 });
 
-
+resultblue = 0;
 
 $("#firstdice").click(function (){
-    document.getElementById("numplayers").innerHTML = localStorage.getItem("numplayer");
     $(this).css("z-index","-1");
     var bluediceone = Math.floor(Math.random()*6+1);
     var bluedicetwo = Math.floor(Math.random()*6+1);
     $("#bluediceone").html(bluediceone);
     $("#bluedicetwo").html(bluedicetwo);
-    localStorage.setItem("resultblue", bluediceone+bluedicetwo);
+    window.resultblue = bluediceone + bluedicetwo;
+    //localStorage.setItem("resultblue", bluediceone+bluedicetwo);
 });
 
 $("#bluedice").click(function (){
-    var resultblue = 0;
-    document.getElementById("numplayers").innerHTML = localStorage.getItem("numplayer");
     var bluediceone = Math.floor(Math.random()*6+1);
     var bluedicetwo = Math.floor(Math.random()*6+1);
     $("#bluediceone").html(bluediceone);
     $("#bluedicetwo").html(bluedicetwo);
-    localStorage.setItem("resultblue", bluediceone+bluedicetwo);
+    window.resultblue = bluediceone + bluedicetwo;
 });
 
 var blueonepos = 0;
@@ -39,7 +37,7 @@ let bluetop = [180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,1
 
 var myVar = setInterval(myTimer, 500);
 
-let i  = localStorage.getItem("resultblue");
+let i  = window.resultblue;
 let j = 0;
 newpos = blueonepos+i;
 
