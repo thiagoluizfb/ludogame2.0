@@ -9,8 +9,9 @@ $("#numPlayersFour").click(function(){
 });
 
 results = [0,0,0,0];
-
+numberofplayers = 0;
 players = ["blue","yellow","red","green"];
+
 
 function offdice(i){
     $("#"+players[i]+"dice").off("click");
