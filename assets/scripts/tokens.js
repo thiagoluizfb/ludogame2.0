@@ -8,31 +8,38 @@ $("#numPlayersFour").click(function(){
     localStorage.setItem("numplayer", 4);
 });
 
-resultblue = 0;
+results = [0,0,0,0];
 
-$("#firstdice").click(function (){
-    $(this).css("z-index","-1");
-    var bluediceone = Math.floor(Math.random()*6+1);
-    var bluedicetwo = Math.floor(Math.random()*6+1);
-    $("#bluediceone").html(bluediceone);
-    $("#bluedicetwo").html(bluedicetwo);
-    window.resultblue = bluediceone + bluedicetwo;
-    //localStorage.setItem("resultblue", bluediceone+bluedicetwo);
+players = ["blue","yellow","red","green"];
+
+function offdice(i){
+    $("#"+players[i]+"dice").off("click");
+    if(i<4){
+        rollthedice(i+1);
+    }
+    if (i==3){
+        setTimeout(function(){alert (players[results.indexOf(Math.max(...results))] + "  starts!")},1000);
+    }
+}
+
+function rollthedice(i){
+    //$("#"+players[i]+"dice").click(function (){
+        var dieone = Math.floor(Math.random()*6+1);
+        var dietwo = Math.floor(Math.random()*6+1);
+        $("#"+players[i]+"diceone").html(dieone);
+        $("#"+players[i]+"dicetwo").html(dietwo);
+        window.results[i] = dieone + dietwo;
+        setTimeout(function(){
+            offdice(i);
+        },1000);
+//});
+}
+
+$("#blueTokenOne").click(function(){
+    let i = 0;
+    rollthedice(i);
 });
 
-$("#bluedice").click(function (){
-    var ref = $("#blueTokenTwo").position();
-    
-    var bluediceone = Math.floor(Math.random()*6+1);
-    var bluedicetwo = Math.floor(Math.random()*6+1);
-    $("#bluediceone").html(bluediceone);
-    $("#bluedicetwo").html(bluedicetwo);
-    $("#dicewrapper").css({"left": ref.left+25+"px","position": "absolute"});
-    $("#dicewrapper").css({"top": ref.top-12.5+"px","position": "absolute"});
-    $("#blueTokenTwoDieOne").html(bluediceone);
-    $("#blueTokenTwoDieTwo").html(bluedicetwo);
-    window.resultblue = bluediceone + bluedicetwo;
-});
 
 var blueonepos = 0;
 

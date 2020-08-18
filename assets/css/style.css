@@ -131,14 +131,6 @@ body{
     position: absolute;
 }
 
-#firstdice{
-    border: solid black 1px;
-    background-color: pink;
-    height: 50px;
-    width: 100px;
-    position: absolute;
-    z-index: 1;
-}
 
 #bluedice{
     border: solid black 1px;
@@ -149,6 +141,62 @@ body{
 }
 
 #bluediceone, #bluedicetwo{
+    border: solid black 1px;
+    margin: 0px;
+    padding: 0px;
+    height: 25px;
+    width: 25px;
+    display: inline-block;
+}
+
+#yellowdice{
+    border: solid black 1px;
+    background-color: white;
+    height: 50px;
+    width: 100px;
+    position: absolute;
+    right: 0px;
+}
+
+#yellowdiceone, #yellowdicetwo{
+    border: solid black 1px;
+    margin: 0px;
+    padding: 0px;
+    height: 25px;
+    width: 25px;
+    display: inline-block;
+}
+
+#reddice{
+    border: solid black 1px;
+    background-color: white;
+    height: 50px;
+    width: 100px;
+    position: absolute;
+    top: -50px;
+    right: 0px;
+}
+
+#reddiceone, #reddicetwo{
+    border: solid black 1px;
+    margin: 0px;
+    padding: 0px;
+    height: 25px;
+    width: 25px;
+    display: inline-block;
+}
+
+#greendice{
+    border: solid black 1px;
+    background-color: white;
+    height: 50px;
+    width: 100px;
+    position: absolute;
+    top: -50px;
+    left: 0px;
+}
+
+#greendiceone, #greendicetwo{
     border: solid black 1px;
     margin: 0px;
     padding: 0px;
