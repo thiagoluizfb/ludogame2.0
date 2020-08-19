@@ -113,6 +113,20 @@ body{
     border-radius: 100%;
 }
 
+#Token{
+    background-color: blueviolet;
+    margin: 0px;
+    padding: 0px;
+    border: solid 1px;
+    height: 12px;
+    width: 12px;
+    font-size: 8px;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+    position: absolute;
+}
+
 #blueTokenOne{
     background: url("../images/blueToken.svg") no-repeat;
     height: 12px;

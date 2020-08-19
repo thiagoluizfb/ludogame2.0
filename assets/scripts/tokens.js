@@ -27,20 +27,19 @@ function whostarts(i){
             }
             if (i==3){
                 setTimeout(function(){
-                    alert(results);
                     results.pop();
-                    winner = results;
-                    winner.sort();
-                if (winner[0]==winner[1]){
+                    winner = Array.from(results);
+                    winner.sort(function(a, b){return b-a});
+                if (winner[0]===winner[1]){
                     alert ("two winners " + winner +"results:"+ results);
-                    $("#start").css("z-index","1");
-                    
+                    let i = 0;
+                    whostarts(i);                    
                 }else{
                 $("#"+players[results.indexOf(Math.max(...results))]+"dice").on("click",function(){rollthedice(results.indexOf(Math.max(...results)))});
-                setTimeout(function(){alert (players[results.indexOf(Math.max(...results))] + "  starts! " + results)},1000);
-                }},1000);
+                setTimeout(function(){alert (players[results.indexOf(Math.max(...results))] + "  starts! " + results)},100);
+                }},100);
             };
-        },1000);
+        },100);
 }
 
 function rollthedice(i){
