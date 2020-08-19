@@ -2,6 +2,17 @@ body{
     background-image: radial-gradient(circle, #aa0000, #420000);
 }
 
+#layer{
+    border: solid black 1px;
+    padding: 0px;
+    margin: -50px 0px;
+    height: 425px;
+    width: 325px;
+    position: absolute;
+    z-index: 2;
+    text-align: center;
+}
+
 
 .board{
     border-right: solid black 1px;
@@ -21,8 +32,7 @@ body{
     height: 325px;
     width: 325px;
     position: absolute;
-    box-shadow: 5px 5px black;
-    z-index: 2;
+    z-index: 3;
     text-align: center;
 }
 

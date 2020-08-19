@@ -21,7 +21,7 @@ function whostarts(i){
         $("#"+players[i]+"dicetwo").html(dietwo);
         window.results[i] = dieone + dietwo;
         setTimeout(function(){
-            //$("#"+players[i]+"dice").off("click");
+            $("#"+players[i]+"dice").css("z-index","1");
             if(i<4){
                 whostarts(i+1);
             }
@@ -35,7 +35,7 @@ function whostarts(i){
                     let i = 0;
                     whostarts(i);                    
                 }else{
-                //$("#"+players[results.indexOf(winner[0])]+"dice").on("click",function(){rollthedice(results.indexOf(winner[0]))});
+                $("#"+players[results.indexOf(winner[0])]+"dice").css("z-index","3");;
                 setTimeout(function(){alert (players[results.indexOf(winner[0])] + "  starts! " + results)},100);
                 }},100);
             };
@@ -47,14 +47,6 @@ function rollthedice(i){
     var dietwo = Math.floor(Math.random()*6+1);
     $("#"+players[i]+"diceone").html(dieone);
     $("#"+players[i]+"dicetwo").html(dietwo);
-    if (dieone === 5 || dietwo ===5){
-        $("#blueTokenOne").animate({left: blueleft[0],top:bluetop[0]});
-        window.results[i] = 0;
-        //$("#"+players[i]+"dice").off("click");
-        $("#"+players[i+1]+"dice").on("click",function(){rollthedice(i+1)});
-    }else{
-        alert("no movement");
-    }
 };
 
 $("#start").click(function starts(){
@@ -63,6 +55,9 @@ $("#start").click(function starts(){
     whostarts(i);
 });
 
+$("#yellowdice").on("click",function(){rollthedice(1)});
+$("#reddice").on("click",function(){rollthedice(2)});
+$("#greendice").on("click",function(){rollthedice(3)});
 
 var blueonepos = 0;
 
