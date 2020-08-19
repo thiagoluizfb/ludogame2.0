@@ -21,7 +21,7 @@ function whostarts(i){
         $("#"+players[i]+"dicetwo").html(dietwo);
         window.results[i] = dieone + dietwo;
         setTimeout(function(){
-            $("#"+players[i]+"dice").off("click");
+            //$("#"+players[i]+"dice").off("click");
             if(i<4){
                 whostarts(i+1);
             }
@@ -35,7 +35,7 @@ function whostarts(i){
                     let i = 0;
                     whostarts(i);                    
                 }else{
-                $("#"+players[results.indexOf(winner[0])]+"dice").on("click",function(){rollthedice(results.indexOf(winner[0]))});
+                //$("#"+players[results.indexOf(winner[0])]+"dice").on("click",function(){rollthedice(results.indexOf(winner[0]))});
                 setTimeout(function(){alert (players[results.indexOf(winner[0])] + "  starts! " + results)},100);
                 }},100);
             };
@@ -43,13 +43,18 @@ function whostarts(i){
 }
 
 function rollthedice(i){
-        var dieone = Math.floor(Math.random()*6+1);
-        var dietwo = Math.floor(Math.random()*6+1);
-        $("#"+players[i]+"diceone").html(dieone);
-        $("#"+players[i]+"dicetwo").html(dietwo);
-        window.results[i] = dieone + dietwo;
-        if (i==0){bluedice()}
-        $("#"+players[i]+"dice").off("click");
+    var dieone = Math.floor(Math.random()*6+1);
+    var dietwo = Math.floor(Math.random()*6+1);
+    $("#"+players[i]+"diceone").html(dieone);
+    $("#"+players[i]+"dicetwo").html(dietwo);
+    if (dieone === 5 || dietwo ===5){
+        $("#blueTokenOne").animate({left: blueleft[0],top:bluetop[0]});
+        window.results[i] = 0;
+        //$("#"+players[i]+"dice").off("click");
+        $("#"+players[i+1]+"dice").on("click",function(){rollthedice(i+1)});
+    }else{
+        alert("no movement");
+    }
 };
 
 $("#start").click(function starts(){
@@ -60,6 +65,22 @@ $("#start").click(function starts(){
 
 
 var blueonepos = 0;
+
+$("#bluedice").on("click",function(){choosetoken()});
+$("#blueTokenOne").on("click",function(){
+    $(".tokenwrapper").css("height","12px");
+    $(".tokenwrapper").css("width","12px");
+    $(".tokenwrapper").css("margin-left",`+=50%`);
+    $(".tokenwrapper").css("margin-top",`+=50%`);
+    bluedice();
+});
+
+function choosetoken(){
+    $(".tokenwrapper").css("height","24px");
+    $(".tokenwrapper").css("width","24px");
+    $(".tokenwrapper").css("margin-left",`-=50%`);
+    $(".tokenwrapper").css("margin-top",`-=50%`);
+}
 
 function bluedice(){
 
@@ -80,7 +101,6 @@ function myTimer() {
   if (j==i){
   var clear = clearInterval(myVar);
   blueonepos += j;
-  $("#yellowdice").click(function(){rollthedice(1)});
 }
 }
 };
