@@ -13,6 +13,19 @@ body{
     box-shadow: 5px 5px black;
 }
 
+#start{
+    border-right: solid black 1px;
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+    height: 325px;
+    width: 325px;
+    position: absolute;
+    box-shadow: 5px 5px black;
+    z-index: 2;
+    text-align: center;
+}
+
 .hline{
     background-color: #fff;
     border-bottom: solid black 1px;
