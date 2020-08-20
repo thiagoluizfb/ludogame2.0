@@ -55,20 +55,21 @@ $("#start").click(function starts(){
     whostarts(i);
 });
 
+$("#bluedice").on("click",function(){rollthedice(0)});
 $("#yellowdice").on("click",function(){rollthedice(1)});
 $("#reddice").on("click",function(){rollthedice(2)});
 $("#greendice").on("click",function(){rollthedice(3)});
 
 var blueonepos = 0;
 
-$("#bluedice").on("click",function(){choosetoken()});
-$("#blueTokenOne").on("click",function(){
-    $(".tokenwrapper").css("height","12px");
-    $(".tokenwrapper").css("width","12px");
-    $(".tokenwrapper").css("margin-left",`+=50%`);
-    $(".tokenwrapper").css("margin-top",`+=50%`);
-    bluedice();
-});
+//$("#bluedice").on("click",function(){choosetoken()});
+//$("#blueTokenOne").on("click",function(){
+  //  $(".tokenwrapper").css("height","12px");
+   // $(".tokenwrapper").css("width","12px");
+   // $(".tokenwrapper").css("margin-left",`+=50%`);
+   // $(".tokenwrapper").css("margin-top",`+=50%`);
+    //bluedice();
+//});
 
 function choosetoken(){
     $(".tokenwrapper").css("height","24px");
