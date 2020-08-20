@@ -49,8 +49,10 @@ function rollthedice(i){
     $("#"+players[i]+"dicetwo").html(dietwo);
 };
 
-$("#start").click(function starts(){
-    $(this).css("z-index","-1");
+$("#play").click(function starts(){
+    $("#start").css("z-index","-1");
+    $("#layer").css("background-image","none");
+    
     let i = 0;
     whostarts(i);
 });
