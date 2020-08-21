@@ -9,17 +9,19 @@ $("#numPlayersFour").click(function(){
 });
 
 results = [0,0,0,0];
+token = ["One","Two","Three","Four"];
 numberofplayers = 0;
 players = ["blue","yellow","red","green"];
-
+var dieone = [0,0,0,0];
+var dietwo = [0,0,0,0];
 
 
 function whostarts(i){
-        var dieone = Math.floor(Math.random()*6+1);
-        var dietwo = Math.floor(Math.random()*6+1);
-        $("#"+players[i]+"diceone").html(dieone);
-        $("#"+players[i]+"dicetwo").html(dietwo);
-        window.results[i] = dieone + dietwo;
+        dieone[i] = Math.floor(Math.random()*6+1);
+        dietwo[i] = Math.floor(Math.random()*6+1);
+        $("#"+players[i]+"diceone").html(dieone[i]);
+        $("#"+players[i]+"dicetwo").html(dietwo[i]);
+        results[i] = dieone[i] + dietwo[i];
         setTimeout(function(){
             $("#"+players[i]+"dice").css("z-index","1");
             if(i<4){
@@ -43,16 +45,16 @@ function whostarts(i){
 }
 
 function rollthedice(i){
-    var dieone = Math.floor(Math.random()*6+1);
-    var dietwo = Math.floor(Math.random()*6+1);
-    $("#"+players[i]+"diceone").html(dieone);
-    $("#"+players[i]+"dicetwo").html(dietwo);
+    dieone[i] = Math.floor(Math.random()*6+1);
+    dietwo[i] = Math.floor(Math.random()*6+1);
+    $("#"+players[i]+"diceone").html(dieone[i]);
+    $("#"+players[i]+"dicetwo").html(dietwo[i]);
+    choosetoken(i);
 };
 
 $("#play").click(function starts(){
     $("#start").css("z-index","-1");
     $("#layer").css("background-image","none");
-    
     let i = 0;
     whostarts(i);
 });
@@ -64,21 +66,40 @@ $("#greendice").on("click",function(){rollthedice(3)});
 
 var blueonepos = 0;
 
-//$("#bluedice").on("click",function(){choosetoken()});
-//$("#blueTokenOne").on("click",function(){
-  //  $(".tokenwrapper").css("height","12px");
-   // $(".tokenwrapper").css("width","12px");
-   // $(".tokenwrapper").css("margin-left",`+=50%`);
-   // $(".tokenwrapper").css("margin-top",`+=50%`);
-    //bluedice();
-//});
-
-function choosetoken(){
-    $(".tokenwrapper").css("height","24px");
-    $(".tokenwrapper").css("width","24px");
-    $(".tokenwrapper").css("margin-left",`-=50%`);
-    $(".tokenwrapper").css("margin-top",`-=50%`);
+function choosetoken(i){
+    $("#layer").off("click");
+    $("#dicewrapper").empty();
+    $("#"+players[i]+"dice").css("z-index","1");
+    $(".tokenwrapper"+players[i]).css("height","24px");
+    $(".tokenwrapper"+players[i]).css("width","24px");
+    $(".tokenwrapper"+players[i]).css("margin-left","-6px");
+    $(".tokenwrapper"+players[i]).css("margin-top","-6px");
+    options(i);
 }
+
+function options(i){
+    $(".token"+players[i]).html(dieone[i]+","+dietwo[i]);
+    $(".tokenwrapper"+players[i]).css("z-index","3");
+    $("#"+players[i]+"TokenOne").css("z-index","3");
+    tokenchose(i);
+}
+
+function tokenchose(i){
+    $("#"+players[i]+"TokenOne").on("click",function(){
+        $(".token"+players[i]).empty();
+        $(".tokenwrapper"+players[i]).css("z-index","3");
+        $(".tokenwrapper"+players[i]).css("height","12px");
+        $(".tokenwrapper"+players[i]).css("width","12px");
+        $(".tokenwrapper"+players[i]).css("margin",`0px`);
+        $(".tokenwrapper"+players[i]).css("margin-top",`0px`);
+        tokenposition = $("#"+players[i]+"TokenOne").position();
+        $("#dicewrapper").css("left",tokenposition.left-8);
+        $("#dicewrapper").css("top",tokenposition.top-20);
+        $("#dicewrapper").html(dieone[i]+" , "+dietwo[i]);
+        $("#layer").on("click",function(){choosetoken(i)});
+    });
+}
+
 
 function bluedice(){
 
