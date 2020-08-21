@@ -14,6 +14,7 @@ numberofplayers = 0;
 players = ["blue","yellow","red","green"];
 var dieone = [0,0,0,0];
 var dietwo = [0,0,0,0];
+var position = [0,0,0,0]
 
 
 function whostarts(i){
@@ -64,8 +65,6 @@ $("#yellowdice").on("click",function(){rollthedice(1)});
 $("#reddice").on("click",function(){rollthedice(2)});
 $("#greendice").on("click",function(){rollthedice(3)});
 
-var blueonepos = 0;
-
 function choosetoken(i){
     $("#layer").off("click");
     $("#dicewrapper").css("z-index","-1");
@@ -92,6 +91,8 @@ function tokenchose(i){
         $(".token"+players[i]).empty();
         $(".tokenwrapper"+players[i]).css("z-index","-1");
         $("#dicewrapper").css("z-index","3");
+        $("#dicemoveone").css("z-index","3");
+        $("#dicemovetwo").css("z-index","3");
         $("#dicemoveone").html(dieone[i]);
         $("#dicemovetwo").html(dietwo[i]);
         $(".tokenwrapper"+players[i]).css("height","12px");
@@ -101,29 +102,34 @@ function tokenchose(i){
         $("#dicewrapper").css("left",tokenposition.left-20);
         $("#dicewrapper").css("top",tokenposition.top-35);
         $("#layer").on("click",function(){choosetoken(i)});
+        $("#dicemoveone").on("click",function(){bluedice(i)})
     });
 }
 
 
-function bluedice(){
+function bluedice(i){
+    let redleft = [255,	230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
+    let redtop = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,130,130,130,130,130,130];
+    let blueleft = [55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,30,55,80,105,130];
+    let bluetop = [180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,155,155,155,155,155];
 
-let blueleft = [55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,30,55,80,105,130];
-let bluetop = [180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,155,155,155,155,155];
-
-var myVar = setInterval(myTimer, 500);
-let i  = window.results[0];
-let j = 0;
-newpos = blueonepos+i;
-
-function myTimer() {
-    $("#blueTokenOne").css("top","0px");
-    $("#blueTokenOne").css("left","0px");
-    $("#blueTokenOne").css({"margin-left": blueleft[newpos-i+j]+"px","position": "absolute"});
-    $("#blueTokenOne").css({"margin-top": bluetop[newpos-i+j]+"px","position": "absolute"});
-  j++;
-  if (j==i){
-  var clear = clearInterval(myVar);
-  blueonepos += j;
-}
-}
+    let k  = dieone[i]+dietwo[i];
+    let j = 0;
+    newpos = position[i]+k;
+    
+    var myVar = setInterval(myTimer, 500);
+    
+    function myTimer(){
+        $("#redTokenOne").css("top","0px");
+        $("#redTokenOne").html(position[i]);
+        $("#redTokenOne").css("left","0px");
+        $("#redTokenOne").css({"margin-left": redleft[newpos-k+j]+"px","position": "absolute"});
+        $("#redTokenOne").css({"margin-top": redtop[newpos-k+j]+"px","position": "absolute"});
+        j++;
+        if (j==k){
+            var clear = clearInterval(myVar);
+            position[i] += j;
+            rollthedice(i);
+        }
+    }
 };
