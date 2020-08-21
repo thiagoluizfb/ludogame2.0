@@ -470,11 +470,40 @@ body{
 }
 
 #dicewrapper{
+    border: solid black 1px;
     margin: 0px;
     padding: 0px;
+    width: 54.5px;
+    height: 27px;
     top: 180px;
     left: 80px;
-    font-size: 12px;
     position: absolute;
-    z-index: 1;
+    z-index: -1;
+}
+
+#dicemoveone{
+    margin: 1px 0.5px;
+    padding: 0px;
+    height: 23px;
+    width: 23px;
+    position: relative;
+    border: solid black 1px;
+    display: inline-block;
+}
+
+#dicemovetwo{
+    margin: 1px 0.5px;
+    padding: 0px;
+    height: 23px;
+    width: 23px;
+    position: relative;
+    border: solid black 1px;
+    display: inline-block;
+}
+
+#dicewrapper p{
+    padding: 0px;
+    margin: 0px;
+    font-size: 8px;
+    line-height: center;
 }
