@@ -7,7 +7,7 @@ $("#numPlayersTwo").click(function(){
 $("#numPlayersFour").click(function(){
     localStorage.setItem("numplayer", 4);
 });
-
+m =0;
 results = [0,0,0,0];
 token = ["One","Two","Three","Four"];
 numberofplayers = 0;
@@ -20,6 +20,7 @@ $("#play").click(function starts(){
     $("#start").css("z-index","-1");
     $("#layer").css("background-image","none");
     let i = 0;
+    let m = i;
     whostarts(i);
 });
 
@@ -81,12 +82,13 @@ function choosetoken(i){
 function options(i){
     alert("options"+players[i]);
     $(".token"+players[i]).html(dieone[i]+","+dietwo[i]);
-    $(".tokenwrapper"+players[i]).css("z-index","3");
+    //$(".tokenwrapper"+players[i]).css("z-index","3");
     $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").css("z-index","3");
-    $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").on("click",function(){
+    $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").one("click",function(){
         tokenposition = $(this).position();
         movetoken = token.indexOf($(this).attr('id').slice($(this).attr('id').indexOf("Token")+5));
         alert("this is the token "+movetoken);
+        $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").off("click");
         tokenchose(i);
     });
 }
@@ -106,9 +108,11 @@ function tokenchose(i){
     $(".tokenwrapper"+players[i]).css("margin-top",`0px`);
     $("#dicewrapper").css("left",tokenposition.left-20);
     $("#dicewrapper").css("top",tokenposition.top-35);
-    $("#layer").on("click",function(){choosetoken(i)});
-    $("#dicemoveone").on("click",function(){move(i)});
+    $("#layer").one("click",function(){choosetoken(i)});
+    $("#dicemoveone").one("click",function(){move(i)});
 }
+
+
 
 
 function move(i){
@@ -134,8 +138,9 @@ function move(i){
         l++;
         if (l==k){
             var clear = clearInterval(myVar);
-            alert(position[i]);
             position[i][j] += l;
+            alert(position[i]);
+            return;
         }
     }
 }
