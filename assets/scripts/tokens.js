@@ -124,7 +124,7 @@ function tokenchose(i){
 
 function move(i){
     //alert(players[i]+"Token"+token[Number(movetoken)]+" will move");
-    $("#"+players[i]+"Token"+token[movetoken]).css("z-index","2");
+    $("#layer").off("click");
     $("#dicewrapper").css("z-index","-1");
     let redleft = [255,	230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
     let redtop = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,130,130,130,130,130,130];
@@ -171,7 +171,6 @@ function move(i){
         $("#"+players[i]+"Token"+token[movetoken]).css({"top": y[newpos-k+l]+"px","position": "absolute"});
         l++;
         if (l==k){
-            $("#"+players[i]+"Token"+token[movetoken]).css("z-index","1")
             var clear = clearInterval(myVar);
             position[i][j] += l;
            // alert(position[i]);
