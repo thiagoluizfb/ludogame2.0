@@ -41,7 +41,7 @@ function whostarts(i){
                 winner = Array.from(results);
                 winner.sort(function(a, b){return b-a});
             if (winner[0]===winner[1]){
-                alert ("two winners " + winner +"results:"+ results);
+                //alert ("two winners " + winner +"results:"+ results);
                 let i = 0;
                 whostarts(i);                    
             }else{
@@ -49,35 +49,41 @@ function whostarts(i){
             $("#"+players[results.indexOf(winner[0])]+"dice").css("z-index","3");;
             setTimeout(function(){alert (players[i] + "  starts! " + results)},100);
             };
-            $("#"+players[i]+"dice").one("click",function() {game(i)});
+            game(i);
         },100);
     }
     },100);
 }
 
 function game(i){
-    rollthedice(i);
+    $("#layer").off("click");
+    $("#"+players[i]+"dice").css("z-index","3");
+    $("#"+players[i]+"dice").on("click",function() {
+        rollthedice(i);
+        choosetoken(i);
+    });
     $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").on("click",function(){
         $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").css("z-index","1");
         tokenposition = $(this).position();
         movetoken = token.indexOf($(this).attr('id').slice($(this).attr('id').indexOf("Token")+5));
-        alert("this is the token "+movetoken);
+        //alert("this is the token "+movetoken);
         tokenchose(i);
     });
-    $("#dicemoveone").one("click",function(){move(i)});
+    $("#dicemoveone").one("click", function(){move(i)});
 }
 
 function rollthedice(i){
-        alert("rollthedice"+players[i]);
+       // alert("rollthedice"+players[i]);
+        $("#"+players[i]+"dice").css("z-index","1");
         dieone[i] = Math.floor(Math.random()*6+1);
         dietwo[i] = Math.floor(Math.random()*6+1);
         $("#"+players[i]+"diceone").html(dieone[i]);
         $("#"+players[i]+"dicetwo").html(dietwo[i]);
-        choosetoken(i);
+        return;
 }
 
 function choosetoken(i){
-    alert("choosetoken"+players[i]);
+   // alert("choosetoken"+players[i]);
     $("#layer").off("click");
     $("#dicewrapper").css("z-index","-1");
     $("#dicewrapper").css("top","200px");
@@ -95,9 +101,9 @@ function choosetoken(i){
 
 
 function tokenchose(i){
-    alert("tokenchose"+players[i]);
+  //  alert("tokenchose"+players[i]);
     $(".token"+players[i]).empty();
-    $(".tokenwrapper"+players[i]).css("z-index","-1");
+    $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").css("z-index","1");
     $("#dicewrapper").css("z-index","3");
     $("#dicemoveone").css("z-index","3");
     $("#dicemovetwo").css("z-index","3");
@@ -109,7 +115,7 @@ function tokenchose(i){
     $(".tokenwrapper"+players[i]).css("margin-top",`0px`);
     $("#dicewrapper").css("left",tokenposition.left-20);
     $("#dicewrapper").css("top",tokenposition.top-35);
-    $("#layer").on("click",function(){choosetoken(i)});
+    $("#layer").one("click",function(){choosetoken(i)})
     return;
 }
 
@@ -117,7 +123,8 @@ function tokenchose(i){
 
 
 function move(i){
-    alert(players[i]+"Token"+token[Number(movetoken)]+" will move");
+    //alert(players[i]+"Token"+token[Number(movetoken)]+" will move");
+    $("#"+players[i]+"Token"+token[movetoken]).css("z-index","2");
     $("#dicewrapper").css("z-index","-1");
     let redleft = [255,	230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
     let redtop = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,130,130,130,130,130,130];
@@ -153,19 +160,21 @@ function move(i){
     let l = 0;
     let j = movetoken;
     newpos = Number(position[i][j])+k;
-    alert(newpos);
+    
+    //alert(newpos);
 
     var myVar = setInterval(myTimer, 500);
     
     function myTimer(){
-
+        
         $("#"+players[i]+"Token"+token[movetoken]).css({"left": x[newpos-k+l]+"px","position": "absolute"});
         $("#"+players[i]+"Token"+token[movetoken]).css({"top": y[newpos-k+l]+"px","position": "absolute"});
         l++;
         if (l==k){
+            $("#"+players[i]+"Token"+token[movetoken]).css("z-index","1")
             var clear = clearInterval(myVar);
             position[i][j] += l;
-            alert(position[i]);
+           // alert(position[i]);
             if(i==3){
                 let i = 0;
                 game(i);
