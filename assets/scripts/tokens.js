@@ -49,10 +49,22 @@ function whostarts(i){
             $("#"+players[results.indexOf(winner[0])]+"dice").css("z-index","3");;
             setTimeout(function(){alert (players[i] + "  starts! " + results)},100);
             };
-            $("#"+players[i]+"dice").on("click",function (){rollthedice(i)});
+            $("#"+players[i]+"dice").one("click",function() {game(i)});
         },100);
     }
     },100);
+}
+
+function game(i){
+    rollthedice(i);
+    $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").on("click",function(){
+        $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").css("z-index","1");
+        tokenposition = $(this).position();
+        movetoken = token.indexOf($(this).attr('id').slice($(this).attr('id').indexOf("Token")+5));
+        alert("this is the token "+movetoken);
+        tokenchose(i);
+    });
+    $("#dicemoveone").one("click",function(){move(i)});
 }
 
 function rollthedice(i){
@@ -76,22 +88,11 @@ function choosetoken(i){
     $(".tokenwrapper"+players[i]).css("width","24px");
     $(".tokenwrapper"+players[i]).css("margin-left","-6px");
     $(".tokenwrapper"+players[i]).css("margin-top","-6px");
-    options(i);
+    $(".token"+players[i]).html(dieone[i]+","+dietwo[i]);
+    $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").css("z-index","3");
+    return;
 }
 
-function options(i){
-    alert("options"+players[i]);
-    $(".token"+players[i]).html(dieone[i]+","+dietwo[i]);
-    //$(".tokenwrapper"+players[i]).css("z-index","3");
-    $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").css("z-index","3");
-    $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").one("click",function(){
-        tokenposition = $(this).position();
-        movetoken = token.indexOf($(this).attr('id').slice($(this).attr('id').indexOf("Token")+5));
-        alert("this is the token "+movetoken);
-        $("#"+players[i]+"TokenOne, #"+players[i]+"TokenTwo, #"+players[i]+"TokenThree, #"+players[i]+"TokenFour").off("click");
-        tokenchose(i);
-    });
-}
 
 function tokenchose(i){
     alert("tokenchose"+players[i]);
@@ -108,8 +109,8 @@ function tokenchose(i){
     $(".tokenwrapper"+players[i]).css("margin-top",`0px`);
     $("#dicewrapper").css("left",tokenposition.left-20);
     $("#dicewrapper").css("top",tokenposition.top-35);
-    $("#layer").one("click",function(){choosetoken(i)});
-    $("#dicemoveone").one("click",function(){move(i)});
+    $("#layer").on("click",function(){choosetoken(i)});
+    return;
 }
 
 
@@ -140,7 +141,13 @@ function move(i){
             var clear = clearInterval(myVar);
             position[i][j] += l;
             alert(position[i]);
-            return;
+            if(i==3){
+                let i = 0;
+                game(i);
+            }else{
+                i++;
+                game(i);
+            }
         }
     }
 }
