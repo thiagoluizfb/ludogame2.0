@@ -7,7 +7,7 @@ $("#numPlayersTwo").click(function(){
 $("#numPlayersFour").click(function(){
     localStorage.setItem("numplayer", 4);
 });
-m =0;
+
 results = [0,0,0,0];
 token = ["One","Two","Three","Four"];
 numberofplayers = 0;
@@ -56,7 +56,7 @@ function whostarts(i){
 }
 
 function game(i){
-    i=3;
+    //i=3;
 
     let redleft = [255,	230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
     let redtop = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,130,130,130,130,130,130];
@@ -104,24 +104,32 @@ function game(i){
 function rollthedice(i){
        // alert("rollthedice"+players[i]);
         $("#"+players[i]+"dice").css("z-index","1");
-        var o = Math.floor(Math.random()*6+1);
-        dieone[i] = o;
-        var t = Math.floor(Math.random()*6+1);
-        dietwo[i] =t;
+        dieone[i] = Math.floor(Math.random()*6+1);
+        dietwo[i] = Math.floor(Math.random()*6+1);
         $("#"+players[i]+"diceone").html(dieone[i]);
         $("#"+players[i]+"dicetwo").html(dietwo[i]);
-        if (o >= 5){
+        if (dieone[i] == 5){
+            dieone[i] = 0;
             as(i);
             choosetoken(i);
-        }else{choosetoken(i);}
+        }else{
+            if (dietwo[i] == 5){
+            dietwo[i] = 0;
+            as(i);
+            choosetoken(i);
+            }else{            
+            choosetoken(i);
+            }
+        }
         return;
 }
 
-function as(i) {  
+function leavehome(i) {  
     $("#"+players[i]+"Token"+token[position[i].indexOf(0)]).css({"left": x[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[position[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
     $("#dicemovetwo").hide();
-    dieone[i]=0;
+    initpos = 0;
+    position[i][position[i].indexOf(0)]=initpos;
     return;
     };
 
@@ -172,7 +180,7 @@ function move(i){
     let k  = dieone[i]+dietwo[i];
     let l = 0;
     let j = movetoken;
-    newpos = Number(position[i][j])+k;
+    newpos = Number(position[i][j])+k+1;
     
     //alert(newpos);
 
