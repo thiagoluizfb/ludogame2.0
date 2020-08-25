@@ -115,7 +115,7 @@ function rollthedice(i){
         }else{
             if (dietwo[i] == 5){
             dietwo[i] = 0;
-            as(i);
+            leavehome(i);
             choosetoken(i);
             }else{            
             choosetoken(i);
