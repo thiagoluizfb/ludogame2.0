@@ -14,6 +14,9 @@ let yellowtop = [255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130
 var tomove = [];
 var thistoken = 0;
 var remainToMove = 2;
+var m = 0;
+var o = 0;
+var whoishere = false;
 var dieone = [0,0,0,0];
 var dietwo = [0,0,0,0];
 var results = [0,0,0,0];
@@ -234,10 +237,12 @@ function move(i){
     function myTimer(){ 
         $("#"+players[i]+"Token"+token[thistoken]).css({"left": x[newpos-k+l]+"px","position": "absolute"});
         $("#"+players[i]+"Token"+token[thistoken]).css({"top": y[newpos-k+l]+"px","position": "absolute"});
+        givemesomespace(i);
         l++;
         if (l==k){
             clear = clearInterval(myVar);
             position[i][j] += l;
+            //return;
            // alert(position[i]);
            if(i==3){
                let i = 0;
@@ -249,4 +254,44 @@ function move(i){
     return;
     };
     return;   
+}
+
+function hibye(i){
+
+}
+
+function givemesomespace(i){
+    //alert("Givesomespace");
+    let o=0;
+    let m=0;
+    
+    var hi = setInterval(iampassing,10);
+    
+    function iampassing(){ 
+        myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
+        xposition[i][thistoken] = myposition.left;
+        yposition[i][thistoken] = myposition.top;
+        //alert(xposition[i]);
+        //alert(xposition[m]);
+        var whoishere = xposition[i][thistoken] == xposition[m][o] && yposition[i][thistoken] == yposition[m][o];
+        if(whoishere == true){
+            var itsme = m==i && o==thistoken;
+            if(itsme == false){
+                alert("Hi");
+                //clear_this = clearInterval(hi);
+            //}else{
+           //     o++;
+            };
+        };
+        o++;
+        if(o==4){
+            o=0;
+            m++;
+            if(m==4){
+                //alert("everyone checked");
+                clear_this = clearInterval(hi);
+                //return;
+            };
+        };
+    };
 }
