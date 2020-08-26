@@ -1,13 +1,3 @@
-//----------------------------------------------Number of Players selection------------------------------------
-
-$("#numPlayersTwo").click(function(){
-    localStorage.setItem("numplayer", 2);
-});
-
-$("#numPlayersFour").click(function(){
-    localStorage.setItem("numplayer", 4);
-});
-
 let numberofplayers = 0;
 let players = ["blue","yellow","red","green"];
 let token = ["One","Two","Three","Four"];
