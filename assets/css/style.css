@@ -155,41 +155,45 @@ body{
 #blueTokenOne{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 226px;
     left: 25px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #blueTokenTwo{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 226px;
     left: 86.8px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #blueTokenThree{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 290px;
     left: 25px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #blueTokenFour{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 290px;
     left: 86.8px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 .tokenwrapperblue{
@@ -216,41 +220,45 @@ body{
 #yellowTokenOne{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 226px;
     left: 225px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #yellowTokenTwo{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 226px;
     left: 286.8px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #yellowTokenThree{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 290px;
     left: 225px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #yellowTokenFour{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 290px;
     left: 286.8px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 .tokenwrapperyellow{
@@ -277,41 +285,45 @@ body{
 #redTokenOne{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 26px;
     left: 225px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #redTokenTwo{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 26px;
     left: 286.8px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #redTokenThree{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 90px;
     left: 225px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #redTokenFour{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 90px;
     left: 286.8px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 .tokenwrapperred{
@@ -338,41 +350,65 @@ body{
 #greenTokenOne{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 26px;
     left: 25px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
+
 }
 
 #greenTokenTwo{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 26px;
     left: 86.8px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #greenTokenThree{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 90px;
     left: 25px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
 }
 
 #greenTokenFour{
     height: 12px;
     width: 12px;
-    font-size: 8px;
     top: 90px;
     left: 86.8px;
     position: absolute;
     z-index: 1;
+    font-size: 4px;
+    text-align: center;
+}
+
+.chooseme{
+    height: inherit;
+    width: inherit;
+    border-radius: 100%;
+    margin-top: inherit;
+    margin-left: inherit;
+    position: absolute;
+    animation: zoom 1s;
+    animation-iteration-count: infinite;
+    border: solid 1px;
+    z-index: -1;
+    background-color: inherit;
+}
+
+@keyframes zoom {
+  from {width: 100%;height: 100%;margin-top:-100%;margin-left:inherit;}
+  to {width: 400%;height: 400%;margin-top:-250%;margin-left:-150%;}
 }
 
 .tokenwrappergreen{

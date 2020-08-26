@@ -23,6 +23,7 @@ let yellowtop = [255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130
 
 var tomove = [];
 var thistoken = 0;
+var remainToMove = 2;
 var dieone = [0,0,0,0];
 var dietwo = [0,0,0,0];
 var results = [0,0,0,0];
@@ -73,23 +74,23 @@ function whostarts(i){
 }
 
 function game(i){
-    i=3;
+    remainToMove = 2;
     $("#dicemoveone").show();
     $("#dicemovetwo").show();
-   
-    if(i===0){
+    //i=3; 
+    if(i==0){
         x = blueleft;
         y = bluetop;
     }else{
-        if(i===1){
+        if(i==1){
             x = yellowleft;
             y = yellowtop;
         }else{
-            if(i===2){
+            if(i==2){
                 x = redleft;
                 y = redtop;
             }else{
-                if(i===3){
+                if(i==3){
                     x = greenleft;
                     y = greentop;
                 };
@@ -99,9 +100,8 @@ function game(i){
 
     $("#layer").off("click");
     $("#"+players[i]+"dice").css("z-index","3");
-    $("#"+players[i]+"dice").one("click",function() {rollthedice(i);});    
-    $("#dicemoveone").one("click", function(){move(i)});
-    $("#dicemovetwo").one("click", function(){move(i)});
+    $("#"+players[i]+"dice").one("click",function() {rollthedice(i);});
+    return;
 }
 
 
@@ -119,12 +119,12 @@ function checkFive(i){
         var hiFive = dieone[i] == 5 || dietwo[i] == 5;
         if (hiFive==true){
         //alert("Hi five");
-        if(out[i].includes(0)){
             if (dieone[i] === 5){
                 //alert("Die one is 5");
                 dieone[i] = 0;
                 $("#dicemoveone").hide();
                 leavehome(i);
+                remainToMove -=1;
             };
             if(dietwo[i] === 5){
                // alert("Die two is 5");
@@ -132,17 +132,25 @@ function checkFive(i){
                 dietwo[i] = 0;
                 $("#dicemovetwo").hide();
                 leavehome(i);
+                remainToMove -=1;
             };
-            var remainToMove = dieone[i]+dietwo[i];
-            if (remainToMove>0){options(i)};
-        };
+        }
+        if(remainToMove == 1){
+            alert("remaintomove");
+            options(i);
         }else{
-            rollthedice(i);
-        };
+            if(i==3){
+               let i = 0;
+               game(i);
+            }else{
+                game(i+1);
+            };
+        }
     }else{
         alert("No token inside home, calling options");
         options(i);
-    };    
+    };
+    return;    
 }
 
 function leavehome(i) {
@@ -156,61 +164,67 @@ function leavehome(i) {
     };
 
 function options(i){
-    var remainToMove = dieone[i]+dietwo[i];
     //alert("I am in options remain to move: "+remainToMove);
     $("#layer").off("click");
-    $("#dicewrapper").css("z-index","-1");
-    $("#dicewrapper").css("top","200px");
-    $("#dicewrapper").css("left","200px");
+    $("#dicemoveone").off("click");
+    $("#dicemovetwo").off("click");
+    $("#dicewrapper").hide();
     $("#"+players[i]+"dice").css("z-index","1");
     
-    let n =0
-    for(n=0;n<4;n++){
-        if(out[i][n]>0){
-            //alert("#"+players[i]+"Token"+token[n]);
-           $("#"+players[i]+"Token"+token[n]).children().css("z-index","1");
-           $("#"+players[i]+"Token"+token[n]).children().css("height","24px");
-           $("#"+players[i]+"Token"+token[n]).children().css("width","24px");
-           $("#"+players[i]+"Token"+token[n]).children().css("margin-left","-6px");
-           $("#"+players[i]+"Token"+token[n]).children().css("margin-top","-6px");
-           $("#"+players[i]+"Token"+token[n]).css("z-index","3");
-           $("#"+players[i]+"Token"+token[n]).children().css("z-index","3");
-           $("#"+players[i]+"Token"+token[n]).children().children().css("z-index","3");
-           $("#"+players[i]+"Token"+token[n]).children().children().html(remainToMove);
-           myposition = $("#"+players[i]+"Token"+token[n]).position();
-           xposition[i][n] = myposition.left;
-           yposition[i][n] = myposition.top;
-           //alert("#"+players[i]+"Token"+token[n]);
-        };
-    };
+    highlight(i);
 
-    $(".tokenwrapper"+players[i]).on("click",function(){
+    $(".tokenwrapper"+players[i]).one("click",function(){
         $(this).parent().css("z-index","1");
-        $(this).parent().css("z-index","1");
-        $(this).children().empty();
+        dehighlight(i);
+        $("#dicewrapper").show();
         thistoken = token.indexOf($(this).parent().attr('id').slice($(this).parent().attr('id').indexOf("Token")+5));
         $("#dicewrapper").css("z-index","3");
         $("#dicemoveone").css("z-index","3");
         $("#dicemovetwo").css("z-index","3");
         $("#dicemoveone").html(dieone[i]);
         $("#dicemovetwo").html(dietwo[i]);
-        $(".tokenwrapper"+players[i]).css("height","12px");
-        $(".tokenwrapper"+players[i]).css("width","12px");
-        $(".tokenwrapper"+players[i]).css("margin","0px");
-        $(".tokenwrapper"+players[i]).css("margin-top","0px");
         $("#dicewrapper").css("left", xposition[[i]][thistoken]-20);
         $("#dicewrapper").css("top", yposition[[i]][thistoken]-35);
-        $("#layer").one("click",function(){options(i)});
+        $("#layer").on("click",function(){options(i)});       
+        return;
         //alert("this is the token "+ thistoken);
         //alert("my position is: left "+xposition[[i]][thistoken]+" and top "+yposition[[i]][thistoken]);
         //alert("My position is left: "+xposition[i][token.indexOf(players[i]))
     });
+    $("#dicemovetwo").one("click", function(){move(i)});
+    $("#dicemoveone").one("click", function(){move(i)});
+    return;
+}
+
+function highlight(i){
+    let n =0
+    for(n=0;n<4;n++){
+        if(out[i][n]>0){
+            $("#"+players[i]+"Token"+token[n]).css("z-index","3");
+            $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]+dietwo[i]}<div class="chooseme"></div>`);
+            myposition = $("#"+players[i]+"Token"+token[n]).position();
+            xposition[i][n] = myposition.left;
+            yposition[i][n] = myposition.top;
+        };
+    };
+    return;
+}
+
+function dehighlight(i){
+    let n =0
+    for(n=0;n<4;n++){
+        if(out[i][n]>0){
+           $("#"+players[i]+"Token"+token[n]).children().children().empty();
+        };
+    };
     return;
 }
 
 function move(i){
     alert(players[i]+"Token"+token[thistoken]+" will move");
     $("#layer").off("click");
+    $("#dicemoveone").off("click");
+    $("#dicemovetwo").off("click");
     $("#dicewrapper").css("z-index","-1");
     let k  = dieone[i]+dietwo[i];
     let l = 0;
@@ -221,22 +235,22 @@ function move(i){
 
     var myVar = setInterval(myTimer, 500);
     
-    function myTimer(){
-        
+    function myTimer(){ 
         $("#"+players[i]+"Token"+token[thistoken]).css({"left": x[newpos-k+l]+"px","position": "absolute"});
         $("#"+players[i]+"Token"+token[thistoken]).css({"top": y[newpos-k+l]+"px","position": "absolute"});
         l++;
         if (l==k){
-            clearInterval(myVar);
+            clear = clearInterval(myVar);
             position[i][j] += l;
            // alert(position[i]);
-            if(i==3){
-                let i = 0;
-                game(i);
+           if(i==3){
+               let i = 0;
+               game(i);
             }else{
-                i++;
-                game(i);
+                game(i+1);
             };
         };
+    return;
     };
+    return;   
 }
