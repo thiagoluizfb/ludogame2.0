@@ -1,3 +1,5 @@
+$(".board").hide();
+
 let numberofplayers = 0;
 let players = ["blue","yellow","red","green"];
 let token = ["One","Two","Three","Four"];
@@ -14,8 +16,11 @@ let yellowtop = [255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130
 var tomove = [];
 var thistoken = 0;
 var remainToMove = 2;
+var tokensathome = [4,4,4,4];
 var m = 0;
 var o = 0;
+var d_one= 0;
+var d_two= 0;
 var whoishere = false;
 var dieone = [0,0,0,0];
 var dietwo = [0,0,0,0];
@@ -24,8 +29,6 @@ var position = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var out = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var xposition = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var yposition = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
-
-$(".board").hide();
 
 $("#play").click(function starts(){
     $(".board").show();
@@ -58,7 +61,7 @@ function whostarts(i){
             }else{
             i = results.indexOf(winner[0]);
             $("#"+players[results.indexOf(winner[0])]+"dice").css("z-index","3");;
-            setTimeout(function(){alert (players[i] + "  starts! " + results)},100);
+            setTimeout(function(){alert (players[i] + "  starts!")},100);
             };
             game(i);
         },100);
@@ -100,10 +103,12 @@ function game(i){
 
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
-    dieone[i] = Math.floor(Math.random()*6+1);
-    dietwo[i] = Math.floor(Math.random()*6+1);
+    dieone[i] = 5;//Math.floor(Math.random()*6+1);
+    dietwo[i] = 5;//Math.floor(Math.random()*6+1);
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
+    d_one=dieone[i];
+    d_two=dietwo[i];
     checkFive(i);
 }
 
@@ -111,21 +116,39 @@ function checkFive(i){
     if(out[i].includes(0)){
         var hiFive = dieone[i] == 5 || dietwo[i] == 5;
         if (hiFive==true){
-        //alert("Hi five");
-            if (dieone[i] === 5){
-                //alert("Die one is 5");
-                dieone[i] = 0;
-                $("#dicemoveone").hide();
-                leavehome(i);
-                remainToMove -=1;
+            //alert("Hi five");
+            //alert(out[i]);
+            if(d_one+d_two===10){
+                if(tokensathome[i]===1){
+                    //alert("you got me");
+                    dieone[i] = 0;
+                    $("#dicemoveone").hide();
+                    leavehome(i);
+                }else{
+                    if (dieone[i] === 5){
+                        //alert("Die one is 5");
+                        dieone[i] = 0;
+                        $("#dicemoveone").hide();
+                        leavehome(i);
+                    };
+                    if(dietwo[i] === 5){
+                        // alert("Die two is 5");
+                        dietwo[i] = 0;
+                        $("#dicemovetwo").hide();
+                        leavehome(i);
+                    };
+                    };
             };
-            if(dietwo[i] === 5){
-               // alert("Die two is 5");
-                //alert(out[i]);
-                dietwo[i] = 0;
-                $("#dicemovetwo").hide();
-                leavehome(i);
-                remainToMove -=1;
+            if(remainToMove === 1){
+                //alert("remaintomove");
+                options(i);
+            }else{
+                if(i === 3){
+                let i = 0;
+                game(i);
+                }else{
+                    game(i+1);
+                };
             };
         }else{
             if(out[i].includes(1)){
@@ -134,19 +157,8 @@ function checkFive(i){
                 return;
             };
         };
-        if(remainToMove === 1){
-            //alert("remaintomove");
-            options(i);
-        }else{
-            if(i === 3){
-               let i = 0;
-               game(i);
-            }else{
-                game(i+1);
-            };
-        }
     }else{
-        alert("No token inside home, calling options");
+        //alert("No token inside home, calling options");
         options(i);
     };
     return;    
@@ -158,7 +170,8 @@ function leavehome(i) {
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
     //alert("#"+players[i]+"Token"+token[out[i].indexOf(0)]);
     out[i][out[i].indexOf(0)] = 1;
-    //alert(out);
+    tokensathome[i]-=1;
+    remainToMove -=1;
     return;
     };
 
