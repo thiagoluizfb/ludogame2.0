@@ -124,12 +124,18 @@ function checkFive(i){
                 leavehome(i);
                 remainToMove -=1;
             };
-        }
-        if(remainToMove == 1){
-            alert("remaintomove");
+        }else{
+            if(out[i].includes(1)){
+                //alert("We want to move");
+                options(i);
+                return;
+            };
+        };
+        if(remainToMove === 1){
+            //alert("remaintomove");
             options(i);
         }else{
-            if(i==3){
+            if(i === 3){
                let i = 0;
                game(i);
             }else{
@@ -211,7 +217,7 @@ function dehighlight(i){
 }
 
 function move(i){
-    alert(players[i]+"Token"+token[thistoken]+" will move");
+    //alert(players[i]+"Token"+token[thistoken]+" will move");
     $("#layer").off("click");
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
