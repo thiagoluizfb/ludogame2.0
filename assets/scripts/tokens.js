@@ -17,8 +17,6 @@ var tomove = [];
 var thistoken = 0;
 var remainToMove = 2;
 var tokensathome = [4,4,4,4];
-var m = 0;
-var o = 0;
 var d_one= 0;
 var d_two= 0;
 var whoishere = false;
@@ -171,6 +169,8 @@ function leavehome(i) {
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
     //alert("#"+players[i]+"Token"+token[out[i].indexOf(0)]);
+    xposition[i][out[i].indexOf(0)] = x[0];
+    yposition[i][out[i].indexOf(0)] = y[0];
     out[i][out[i].indexOf(0)] = 1;
     tokensathome[i]-=1;
     remainToMove -=1;
@@ -248,11 +248,14 @@ function move(i){
     
     //alert(newpos);
 
-    var myVar = setInterval(myTimer, 500);
+    var myVar = setInterval(myTimer, 100);
     
     function myTimer(){ 
         $("#"+players[i]+"Token"+token[thistoken]).css({"left": x[newpos-k+l]+"px","position": "absolute"});
         $("#"+players[i]+"Token"+token[thistoken]).css({"top": y[newpos-k+l]+"px","position": "absolute"});
+        myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
+        xposition[i][thistoken] = Math.trunc(myposition.left);
+        yposition[i][thistoken] = Math.trunc(myposition.top);
         givemesomespace(i);
         l++;
         if (l==k){
@@ -280,33 +283,34 @@ function givemesomespace(i){
     //alert("Givesomespace");
     let o=0;
     let m=0;
+    let checked=0;
     
-    var hi = setInterval(iampassing,10);
+    var hi = setInterval(iampassing,1);
     
-    function iampassing(){ 
-        myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
-        xposition[i][thistoken] = myposition.left;
-        yposition[i][thistoken] = myposition.top;
-        //alert(xposition[i]);
-        //alert(xposition[m]);
+    function iampassing(){
+        //alert("My position is: "+ xposition[i][thistoken]+ "and "+yposition[i][thistoken]);
+        //alert(`M is: ${m} and o is ${o}`);
         var whoishere = xposition[i][thistoken] == xposition[m][o] && yposition[i][thistoken] == yposition[m][o];
+        var itsme = m==i && o==thistoken;
         if(whoishere == true){
-            var itsme = m==i && o==thistoken;
-            if(itsme == false){
-                alert("Hi");
-                //clear_this = clearInterval(hi);
-            //}else{
-           //     o++;
+            if(itsme == true){
+                o++;
+                checked++;
+            }else{
+            alert("Hi player "+players[m]+" token "+token[o]);
+            o++;
+            checked++;
             };
+        }else{
+            o++;
+            checked++;
         };
-        o++;
-        if(o==4){
-            o=0;
-            m++;
-            if(m==4){
-                //alert("everyone checked");
-                clear_this = clearInterval(hi);
-                //return;
+       if(checked == 16){
+           clear_this = clearInterval(hi);
+        }else{
+            if(o==4){
+                o=0;
+                m++;
             };
         };
     };
