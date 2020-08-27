@@ -217,8 +217,8 @@ function highlight(i){
             $("#"+players[i]+"Token"+token[n]).css("z-index","3");
             $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]+dietwo[i]}<div class="chooseme"></div>`);
             myposition = $("#"+players[i]+"Token"+token[n]).position();
-            xposition[i][n] = myposition.left;
-            yposition[i][n] = myposition.top;
+            xposition[i][n] = Math.trunc(myposition.left);
+            yposition[i][n] = Math.trunc(myposition.top);
         };
     };
     return;
@@ -248,7 +248,7 @@ function move(i){
     
     //alert(newpos);
 
-    var myVar = setInterval(myTimer, 100);
+    var myVar = setInterval(myTimer, 200);
     
     function myTimer(){ 
         $("#"+players[i]+"Token"+token[thistoken]).css({"left": x[newpos-k+l]+"px","position": "absolute"});
@@ -256,8 +256,9 @@ function move(i){
         myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
         xposition[i][thistoken] = Math.trunc(myposition.left);
         yposition[i][thistoken] = Math.trunc(myposition.top);
-        givemesomespace(i);
+        $(".mainlayer").html(`${xposition} </br> ${yposition}`);
         l++;
+        givemesomespace(i,l,k);
         if (l==k){
             clear = clearInterval(myVar);
             position[i][j] += l;
@@ -279,39 +280,38 @@ function hibye(i){
 
 }
 
-function givemesomespace(i){
+function givemesomespace(i,l,k){
     //alert("Givesomespace");
     let o=0;
     let m=0;
-    let checked=0;
-    
+
     var hi = setInterval(iampassing,1);
-    
+
     function iampassing(){
-        //alert("My position is: "+ xposition[i][thistoken]+ "and "+yposition[i][thistoken]);
-        //alert(`M is: ${m} and o is ${o}`);
-        var whoishere = xposition[i][thistoken] == xposition[m][o] && yposition[i][thistoken] == yposition[m][o];
-        var itsme = m==i && o==thistoken;
-        if(whoishere == true){
-            if(itsme == true){
-                o++;
-                checked++;
-            }else{
-            alert("Hi player "+players[m]+" token "+token[o]);
-            o++;
-            checked++;
-            };
-        }else{
-            o++;
-            checked++;
-        };
-       if(checked == 16){
-           clear_this = clearInterval(hi);
-        }else{
-            if(o==4){
-                o=0;
-                m++;
+        if(xposition[m][o] == xposition[i][thistoken]){
+            if(yposition[m][o] == yposition[i][thistoken]){
+                if(m !== i){
+                    alert(`Hi ${players[m]} Token ${token[o]}`);
+                }else{
+                    if(o !== thistoken){
+                        alert(`Hi brother ${players[m]} Token ${token[o]}`);
+                        if(l==k){
+                            alert("I need some space");
+                        };
+                    };
+                };
             };
         };
+        if(o == 4){
+            if(m == 3){
+                clearcheck = clearInterval(hi);
+                return;
+                }else{
+                    o = -1;
+                    m++;
+            };
+        };
+        o++;
     };
+    return;  
 }
