@@ -12,6 +12,8 @@ let greenleft = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130
 let greentop = [55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,30,55,80,105,130];        
 let yellowleft = [180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,155,155,155,155,155];
 let yellowtop = [255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
+let tokenshere = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
 
 var tomove = [];
 var thistoken = 0;
@@ -24,6 +26,8 @@ var dieone = [0,0,0,0];
 var dietwo = [0,0,0,0];
 var results = [0,0,0,0];
 var position = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+var initleft = [[25,86.8,25,86.8],[225,286.8,225,286.8],[225,286.8,225,286.8],[25,86.8,25,86.8]];
+var inittop = [[226,226,290,290],[226,226,290,290],[26,26,90,90],[26,26,90,90]];
 var out = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var xposition = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var yposition = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
@@ -71,6 +75,7 @@ function game(i){
     remainToMove = 2;
     $("#dicemoveone").show();
     $("#dicemovetwo").show();
+    $("#"+players[i]+"dice").css("background-color","rgba(150, 155, 80)");
     //i=3; 
     if(i==0){
         x = blueleft;
@@ -94,15 +99,18 @@ function game(i){
 
     $("#layer").off("click");
     $("#"+players[i]+"dice").css("z-index","3");
-    $("#"+players[i]+"dice").one("click",function() {rollthedice(i);});
+    $("#"+players[i]+"dice").one("click",function() {
+        $("#"+players[i]+"dice").css("background-color","white");
+        rollthedice(i);
+    });
     return;
 }
 
 
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
-    dieone[i] = 5;//Math.floor(Math.random()*6+1);
-    dietwo[i] = 5;//Math.floor(Math.random()*6+1);
+    dieone[i] = Math.floor(Math.random()*6+1);
+    dietwo[i] = Math.floor(Math.random()*6+1);
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
     d_one=dieone[i];
@@ -134,9 +142,23 @@ function checkFive(i){
                         dietwo[i] = 0;
                         $("#dicemovetwo").hide();
                         leavehome(i);
+                        givemesomespace(i,1,1);
                     };
                     };
-            };
+            }else{
+                if (dieone[i] === 5){
+                    //alert("Die one is 5");
+                    dieone[i] = 0;
+                    $("#dicemoveone").hide();
+                    leavehome(i);
+                };
+                if(dietwo[i] === 5){
+                    // alert("Die two is 5");
+                    dietwo[i] = 0;
+                    $("#dicemovetwo").hide();
+                    leavehome(i);
+                };
+            }
             if(remainToMove === 1){
                 //alert("remaintomove");
                 options(i);
@@ -154,8 +176,15 @@ function checkFive(i){
                 //alert("We want to move");
                 options(i);
                 return;
+            }else{
+                if(i === 3){
+                let i = 0;
+                game(i);
+                }else{
+                    game(i+1);
+                };
             };
-        };
+        };    
     }else{
         //alert("No token inside home, calling options");
         options(i);
@@ -165,6 +194,7 @@ function checkFive(i){
 }
 
 function leavehome(i) {
+    //alert("I want to leave");
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"left": x[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
@@ -226,6 +256,7 @@ function highlight(i){
 
 function dehighlight(i){
     let n =0
+    $("#dicewrapper").show();
     for(n=0;n<4;n++){
         if(out[i][n]>0){
            $("#"+players[i]+"Token"+token[n]).children().children().empty();
@@ -240,7 +271,7 @@ function move(i){
     $("#layer").off("click");
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
-    $("#dicewrapper").css("z-index","-1");
+    $("#dicewrapper").hide();
     let k  = dieone[i]+dietwo[i];
     let l = 0;
     let j = thistoken;
@@ -256,7 +287,7 @@ function move(i){
         myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
         xposition[i][thistoken] = Math.trunc(myposition.left);
         yposition[i][thistoken] = Math.trunc(myposition.top);
-        $(".mainlayer").html(`${xposition} </br> ${yposition}`);
+        //$(".mainlayer").html(`${xposition} </br> ${yposition}`);
         l++;
         givemesomespace(i,l,k);
         if (l==k){
@@ -292,11 +323,23 @@ function givemesomespace(i,l,k){
             if(yposition[m][o] == yposition[i][thistoken]){
                 if(m !== i){
                     alert(`Hi ${players[m]} Token ${token[o]}`);
+                    if(l==k){
+                        alert(`Hi ${players[m]} Token ${token[o]}. We cannot stay here together`);
+                        $("#"+players[m]+"Token"+token[o]).css({"left": initleft[m][o]+"px","position": "absolute"});
+                        $("#"+players[m]+"Token"+token[o]).css({"top": inittop[m][o]+"px","position": "absolute"});
+                        window.position[m][o]=0;
+                        //alert(`Situation of home ${token[o]}: ${out[m]}`);
+                        out[m][o]=0;
+                        //alert(`${players[m]} Token ${token[o]} was sent home`);
+                        //alert(`Situation of home ${token[o]} now: ${out[m]}`);
+                    }
                 }else{
                     if(o !== thistoken){
-                        alert(`Hi brother ${players[m]} Token ${token[o]}`);
+                       alert(`Hi brother ${players[m]} Token ${token[o]}`);
                         if(l==k){
-                            alert("I need some space");
+                            //alert("Activate shield");
+                            clearcheck = clearInterval(hi);
+                            return;
                         };
                     };
                 };

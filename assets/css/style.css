@@ -510,6 +510,7 @@ body{
 
 #dicewrapper{
     border: solid black 1px;
+    background-color: rgba(150, 155, 80);
     margin: 0px;
     padding: 2px;
     /*width: 54.5px;*/
