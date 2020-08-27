@@ -66,9 +66,10 @@ function whostarts(i){
             setTimeout(function(){alert (players[i] + "  starts!")},100);
             };
             game(i);
-        },100);
+            return;
+        },750);
     }
-    },100);
+    },750);
 }
 
 function game(i){
@@ -322,16 +323,16 @@ function givemesomespace(i,l,k){
         if(xposition[m][o] == xposition[i][thistoken]){
             if(yposition[m][o] == yposition[i][thistoken]){
                 if(m !== i){
-                    alert(`Hi ${players[m]} Token ${token[o]}`);
+                    //alert(`Hi ${players[m]} Token ${token[o]}`);
                     if(l==k){
                         alert(`Hi ${players[m]} Token ${token[o]}. We cannot stay here together`);
                         $("#"+players[m]+"Token"+token[o]).css({"left": initleft[m][o]+"px","position": "absolute"});
                         $("#"+players[m]+"Token"+token[o]).css({"top": inittop[m][o]+"px","position": "absolute"});
                         window.position[m][o]=0;
-                        //alert(`Situation of home ${token[o]}: ${out[m]}`);
+                        //alert(`Situation of ${players[o]} home: ${out[m]}`);
                         out[m][o]=0;
-                        //alert(`${players[m]} Token ${token[o]} was sent home`);
-                        //alert(`Situation of home ${token[o]} now: ${out[m]}`);
+                        alert(`${players[m]} Token ${token[o]} was sent home`);
+                        //alert(`Situation of ${players[o]} home now: ${out[m]}`);
                     }
                 }else{
                     if(o !== thistoken){
