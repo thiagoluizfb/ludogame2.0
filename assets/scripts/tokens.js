@@ -142,6 +142,7 @@ function checkFive(i){
             if(remainToMove === 1){
                 //alert("remaintomove");
                 options(i);
+                return;
             }else{
                 if(i === 3){
                 let i = 0;
@@ -160,6 +161,7 @@ function checkFive(i){
     }else{
         //alert("No token inside home, calling options");
         options(i);
+        return;
     };
     return;    
 }
@@ -227,6 +229,7 @@ function dehighlight(i){
     for(n=0;n<4;n++){
         if(out[i][n]>0){
            $("#"+players[i]+"Token"+token[n]).children().children().empty();
+           $("#"+players[i]+"Token"+token[n]).children().off("click");
         };
     };
     return;
