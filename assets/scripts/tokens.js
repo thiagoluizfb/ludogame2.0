@@ -48,8 +48,9 @@ function whostarts(i){
     results[i] = dieone[i] + dietwo[i];
     setTimeout(function(){
         $("#"+players[i]+"dice").css("z-index","1");
-        if(i<4){
+        if(i<3){
             whostarts(i+1);
+            return;
         }
         if (i==3){
             setTimeout(function(){
@@ -59,7 +60,8 @@ function whostarts(i){
             if (winner[0]===winner[1]){
                 //alert ("two winners " + winner +"results:"+ results);
                 let i = 0;
-                whostarts(i);                    
+                whostarts(i);
+                return;                    
             }else{
             i = results.indexOf(winner[0]);
             $("#"+players[results.indexOf(winner[0])]+"dice").css("z-index","3");;
@@ -67,9 +69,10 @@ function whostarts(i){
             };
             game(i);
             return;
-        },750);
+        },200);
     }
-    },750);
+    },200);
+    //return;
 }
 
 function game(i){
@@ -246,7 +249,7 @@ function highlight(i){
     for(n=0;n<4;n++){
         if(out[i][n]>0){
             $("#"+players[i]+"Token"+token[n]).css("z-index","3");
-            $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]+dietwo[i]}<div class="chooseme"></div>`);
+            $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]},${dietwo[i]}<div class="chooseme"></div>`);
             myposition = $("#"+players[i]+"Token"+token[n]).position();
             xposition[i][n] = Math.trunc(myposition.left);
             yposition[i][n] = Math.trunc(myposition.top);
