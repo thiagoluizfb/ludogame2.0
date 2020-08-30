@@ -14,8 +14,7 @@ let yellowleft = [180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,18
 let yellowtop = [255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
 let tokenshere = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
-
-var tomove = [];
+var moveleft =0;
 var thistoken = 0;
 var remainToMove = 2;
 var tokensathome = [4,4,4,4];
@@ -217,8 +216,8 @@ function options(i){
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
     $("#dicewrapper").hide();
-    $("#"+players[i]+"dice").css("z-index","1");
-    
+    $("#"+players[i]+"dice").css("z-index","1"); 
+
     highlight(i);
 
     $(".tokenwrapper"+players[i]).one("click",function(){
@@ -239,8 +238,20 @@ function options(i){
         //alert("my position is: left "+xposition[[i]][thistoken]+" and top "+yposition[[i]][thistoken]);
         //alert("My position is left: "+xposition[i][token.indexOf(players[i]))
     });
-    $("#dicemovetwo").one("click", function(){move(i)});
-    $("#dicemoveone").one("click", function(){move(i)});
+
+    
+    $("#dicemoveone").one("click", function(){
+        alert(remainToMove);
+        moveleft  = dieone[i];
+        dieone[i]=0;
+        $(this).hide();
+        move(i)});
+    $("#dicemovetwo").one("click",function(){
+        alert(remainToMove);
+        moveleft = dietwo[i];
+        dietwo[i]=0;
+        $(this).hide();
+        move(i)});
     return;
 }
 
@@ -249,7 +260,15 @@ function highlight(i){
     for(n=0;n<4;n++){
         if(out[i][n]>0){
             $("#"+players[i]+"Token"+token[n]).css("z-index","3");
-            $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]},${dietwo[i]}<div class="chooseme"></div>`);
+            if(dieone[i]==0){
+               $("#"+players[i]+"Token"+token[n]).children().children().html(`${dietwo[i]}<div class="chooseme"></div>`); 
+            }else{
+                if(dietwo[i]==0){
+                    $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]}<div class="chooseme"></div>`); 
+                }else{
+                    $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]},${dietwo[i]}<div class="chooseme"></div>`);
+                };
+            };
             myposition = $("#"+players[i]+"Token"+token[n]).position();
             xposition[i][n] = Math.trunc(myposition.left);
             yposition[i][n] = Math.trunc(myposition.top);
@@ -271,13 +290,13 @@ function dehighlight(i){
 }
 
 function move(i){
-    //alert(players[i]+"Token"+token[thistoken]+" will move");
+    alert(players[i]+"Token"+token[thistoken]+" will move");
     $("#layer").off("click");
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
     $("#dicewrapper").hide();
-    let k  = dieone[i]+dietwo[i];
     let l = 0;
+    let k = window.moveleft;
     let j = thistoken;
     newpos = Number(position[i][j])+k+1;
     
@@ -300,10 +319,22 @@ function move(i){
             //return;
            // alert(position[i]);
            if(i==3){
-               let i = 0;
-               game(i);
+               remainToMove--;
+               //alert(remainToMove);
+               if(remainToMove>0){
+                   options(i);
+               }else{
+                   let i = 0;
+                   game(i);
+               };
             }else{
+                remainToMove--;
+                //alert(remainToMove);
+                if(remainToMove>0){
+                   options(i);
+               }else{
                 game(i+1);
+               };
             };
         };
     return;
