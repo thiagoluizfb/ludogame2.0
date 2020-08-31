@@ -12,7 +12,8 @@ let greenleft = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130
 let greentop = [55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,30,55,80,105,130];        
 let yellowleft = [180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,155,155,155,155,155];
 let yellowtop = [255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
-let tokenshere = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let boardsquare = [[5,180],[30,18],[55,180],[80,180],[105,180],[130,180],[130,205],[130,230],[130,255],[130,280],[130,305],[155,305],[180,305],[180,280],[180,255],[180,230],[180,205],[180,180],[205,180],[230,180],[255,180],[280,180],[305,180],[305,155],[305,130],[280,130],[255,130],[230,130],[205,130],[180,130],[180,105],[180,80],[180,55],[180,30],[180,5],[155,5],[130,5],[130,30],[130,55],[130,80],[130,105],[130,130],[105,130],[80,130],[55,130],[30,130],[5,130],[5,155],[30,155],[55,155],[80,155],[105,155],[130,155]];
+
 
 var moveleft =0;
 var thistoken = 0;
@@ -24,7 +25,7 @@ var whoishere = false;
 var dieone = [0,0,0,0];
 var dietwo = [0,0,0,0];
 var results = [0,0,0,0];
-var position = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+var position = [[0,0,0,0] , [0,0,0,0] , [0,0,0,0] , [0,0,0,0]];
 var initleft = [[25,86.8,25,86.8],[225,286.8,225,286.8],[225,286.8,225,286.8],[25,86.8,25,86.8]];
 var inittop = [[226,226,290,290],[226,226,290,290],[26,26,90,90],[26,26,90,90]];
 var out = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
@@ -40,8 +41,8 @@ $("#play").click(function starts(){
 });
 
 function whostarts(i){
-    dieone[i] = Math.floor(Math.random()*6+1);
-    dietwo[i] = Math.floor(Math.random()*6+1);
+    dieone[i] = Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
     results[i] = dieone[i] + dietwo[i];
@@ -75,6 +76,8 @@ function whostarts(i){
 }
 
 function game(i){
+    $(".mainlayer").html(boardsquare[0][0]);
+    
     remainToMove = 2;
     $("#dicemoveone").show();
     $("#dicemovetwo").show();
@@ -112,8 +115,8 @@ function game(i){
 
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
-    dieone[i] = Math.floor(Math.random()*6+1);
-    dietwo[i] = Math.floor(Math.random()*6+1);
+    dieone[i] = Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
     d_one=dieone[i];
@@ -198,12 +201,14 @@ function checkFive(i){
 
 function leavehome(i) {
     //alert("I want to leave");
+    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).animate({left: `${x[0]}px`,top: `${y[0]}px`,position: "absolute"},200);
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"left": x[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
     //alert("#"+players[i]+"Token"+token[out[i].indexOf(0)]);
     xposition[i][out[i].indexOf(0)] = x[0];
     yposition[i][out[i].indexOf(0)] = y[0];
+    position[i][out[i].indexOf(0)] += 1;
     out[i][out[i].indexOf(0)] = 1;
     tokensathome[i]-=1;
     remainToMove -=1;
@@ -241,13 +246,13 @@ function options(i){
 
     
     $("#dicemoveone").one("click", function(){
-        alert(remainToMove);
+        //alert(remainToMove);
         moveleft  = dieone[i];
         dieone[i]=0;
         $(this).hide();
         move(i)});
     $("#dicemovetwo").one("click",function(){
-        alert(remainToMove);
+        //alert(remainToMove);
         moveleft = dietwo[i];
         dietwo[i]=0;
         $(this).hide();
@@ -290,23 +295,23 @@ function dehighlight(i){
 }
 
 function move(i){
-    alert(players[i]+"Token"+token[thistoken]+" will move");
+    //alert(players[i]+"Token"+token[thistoken]+" will move");
     $("#layer").off("click");
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
     $("#dicewrapper").hide();
     let l = 0;
-    let k = window.moveleft;
+    let k = Number(window.moveleft);
     let j = thistoken;
-    newpos = Number(position[i][j])+k+1;
-    
+    newpos = Number(position[i][j]+k);
+
     //alert(newpos);
 
     var myVar = setInterval(myTimer, 200);
     
     function myTimer(){ 
-        $("#"+players[i]+"Token"+token[thistoken]).css({"left": x[newpos-k+l]+"px","position": "absolute"});
-        $("#"+players[i]+"Token"+token[thistoken]).css({"top": y[newpos-k+l]+"px","position": "absolute"});
+        $("#"+players[i]+"Token"+token[thistoken]).animate({left: `${x[newpos-k+l]}px`,top: `${y[newpos-k+l]}px`,position: "absolute"},200);
+        $("#"+players[i]+"Token"+token[thistoken]).css({"left": x[newpos-k+l]+"px","top": y[newpos-k+l]+"px","position": "absolute"});
         myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
         xposition[i][thistoken] = Math.trunc(myposition.left);
         yposition[i][thistoken] = Math.trunc(myposition.top);
@@ -315,7 +320,7 @@ function move(i){
         givemesomespace(i,l,k);
         if (l==k){
             clear = clearInterval(myVar);
-            position[i][j] += l;
+            position[i][j] = Number(newpos);
             //return;
            // alert(position[i]);
            if(i==3){
@@ -360,17 +365,17 @@ function givemesomespace(i,l,k){
                     //alert(`Hi ${players[m]} Token ${token[o]}`);
                     if(l==k){
                         alert(`Hi ${players[m]} Token ${token[o]}. We cannot stay here together`);
-                        $("#"+players[m]+"Token"+token[o]).css({"left": initleft[m][o]+"px","position": "absolute"});
-                        $("#"+players[m]+"Token"+token[o]).css({"top": inittop[m][o]+"px","position": "absolute"});
+                        $("#"+players[m]+"Token"+token[o]).animate({left: `${initleft[m][o]}px`,top: `${inittop[m][o]}px`,position: "absolute"},200);
                         window.position[m][o]=0;
                         //alert(`Situation of ${players[o]} home: ${out[m]}`);
                         out[m][o]=0;
-                        alert(`${players[m]} Token ${token[o]} was sent home`);
+                        position[m][o]=0;
+                        //alert(`${players[m]} Token ${token[o]} was sent home`);
                         //alert(`Situation of ${players[o]} home now: ${out[m]}`);
                     }
                 }else{
                     if(o !== thistoken){
-                       alert(`Hi brother ${players[m]} Token ${token[o]}`);
+                       //alert(`Hi brother ${players[m]} Token ${token[o]}`);
                         if(l==k){
                             //alert("Activate shield");
                             clearcheck = clearInterval(hi);
