@@ -26,6 +26,8 @@ var dieone = [0,0,0,0];
 var dietwo = [0,0,0,0];
 var results = [0,0,0,0];
 var position = [[0,0,0,0] , [0,0,0,0] , [0,0,0,0] , [0,0,0,0]];
+var reposition = [[0,0,0,0] , [0,0,0,0] , [0,0,0,0] , [0,0,0,0]];
+var blockedposition = [];
 var initleft = [[25,86.8,25,86.8],[225,286.8,225,286.8],[225,286.8,225,286.8],[25,86.8,25,86.8]];
 var inittop = [[226,226,290,290],[226,226,290,290],[26,26,90,90],[26,26,90,90]];
 var out = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
@@ -76,8 +78,6 @@ function whostarts(i){
 }
 
 function game(i){
-    $(".mainlayer").html(boardsquare[0][0]);
-    
     remainToMove = 2;
     $("#dicemoveone").show();
     $("#dicemovetwo").show();
@@ -115,8 +115,8 @@ function game(i){
 
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
-    dieone[i] = Number(Math.floor(Math.random()*6+1));
-    dietwo[i] = Number(Math.floor(Math.random()*6+1));
+    dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
     d_one=dieone[i];
@@ -131,7 +131,7 @@ function checkFive(i){
             //alert("Hi five");
             //alert(out[i]);
             if(d_one+d_two===10){
-                if(tokensathome[i]===1){
+                if(tokensathome[i]<3){
                     //alert("you got me");
                     dieone[i] = 0;
                     $("#dicemoveone").hide();
@@ -165,7 +165,7 @@ function checkFive(i){
                     leavehome(i);
                 };
             }
-            if(remainToMove === 1){
+            if(remainToMove > 0){
                 //alert("remaintomove");
                 options(i);
                 return;
@@ -201,19 +201,33 @@ function checkFive(i){
 
 function leavehome(i) {
     //alert("I want to leave");
-    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).animate({left: `${x[0]}px`,top: `${y[0]}px`,position: "absolute"},200);
-    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"left": x[0]+"px","position": "absolute"});
-    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
-    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
-    //alert("#"+players[i]+"Token"+token[out[i].indexOf(0)]);
-    xposition[i][out[i].indexOf(0)] = x[0];
-    yposition[i][out[i].indexOf(0)] = y[0];
-    position[i][out[i].indexOf(0)] += 1;
-    out[i][out[i].indexOf(0)] = 1;
-    tokensathome[i]-=1;
-    remainToMove -=1;
-    return;
+    reposition[i][out[i].indexOf(0)] = 12*i;
+    if(blockedposition.includes(reposition[i][out[i].indexOf(0)]+1)){
+            dieone[i]=5;
+            dietwo[i]=5;
+            $("#dicemoveone").show();
+            $("#dicemovetwo").show();
+            alert(remainToMove);
+            return;
+    }else{
+        $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).animate({left: `${x[0]}px`,top: `${y[0]}px`,position: "absolute"},200);
+        $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"left": x[0]+"px","position": "absolute"});
+        $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
+        $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
+        //alert("#"+players[i]+"Token"+token[out[i].indexOf(0)]);
+        xposition[i][out[i].indexOf(0)] = x[0];
+        yposition[i][out[i].indexOf(0)] = y[0];
+
+        position[i][out[i].indexOf(0)] += 1;
+        reposition[i][out[i].indexOf(0)]+=1;
+        
+        out[i][out[i].indexOf(0)] = 1;
+        tokensathome[i]-=1;
+        remainToMove -=1;
+
+        return;
     };
+}
 
 function options(i){
     //alert("I am in options remain to move: "+remainToMove);
@@ -304,6 +318,10 @@ function move(i){
     let k = Number(window.moveleft);
     let j = thistoken;
     newpos = Number(position[i][j]+k);
+    newrepos = Number(reposition[i][j]+k);
+    if(blockedposition.includes(reposition[i][thistoken])){
+        blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]),1);
+    };
 
     //alert(newpos);
 
@@ -319,8 +337,9 @@ function move(i){
         l++;
         givemesomespace(i,l,k);
         if (l==k){
-            clear = clearInterval(myVar);
             position[i][j] = Number(newpos);
+            reposition[i][j]=Number(newrepos);
+            clear = clearInterval(myVar);
             //return;
            // alert(position[i]);
            if(i==3){
@@ -328,7 +347,9 @@ function move(i){
                //alert(remainToMove);
                if(remainToMove>0){
                    options(i);
+                   $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
                }else{
+                   $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
                    let i = 0;
                    game(i);
                };
@@ -337,18 +358,16 @@ function move(i){
                 //alert(remainToMove);
                 if(remainToMove>0){
                    options(i);
+                   $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
                }else{
-                game(i+1);
+                   $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
+                    game(i+1);
                };
             };
         };
     return;
     };
     return;   
-}
-
-function hibye(i){
-
 }
 
 function givemesomespace(i,l,k){
@@ -378,8 +397,12 @@ function givemesomespace(i,l,k){
                        //alert(`Hi brother ${players[m]} Token ${token[o]}`);
                         if(l==k){
                             //alert("Activate shield");
-                            clearcheck = clearInterval(hi);
-                            return;
+                            if(blockedposition.includes(reposition[i][thistoken])==false){
+                                blockedposition.push(reposition[i][thistoken]);
+                                $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
+                                clearcheck = clearInterval(hi);
+                                return;
+                            };
                         };
                     };
                 };
