@@ -136,12 +136,14 @@ function checkFive(i){
                     dieone[i] = 0;
                     $("#dicemoveone").hide();
                     leavehome(i);
+                    givemesomespace(i,1,1);
                 }else{
                     if (dieone[i] === 5){
                         //alert("Die one is 5");
                         dieone[i] = 0;
                         $("#dicemoveone").hide();
                         leavehome(i);
+                        givemesomespace(i,1,1);
                     };
                     if(dietwo[i] === 5){
                         // alert("Die two is 5");
@@ -157,12 +159,14 @@ function checkFive(i){
                     dieone[i] = 0;
                     $("#dicemoveone").hide();
                     leavehome(i);
+                    givemesomespace(i,1,1);
                 };
                 if(dietwo[i] === 5){
                     // alert("Die two is 5");
                     dietwo[i] = 0;
                     $("#dicemovetwo").hide();
                     leavehome(i);
+                    givemesomespace(i,1,1);
                 };
             }
             if(remainToMove > 0){
@@ -207,7 +211,7 @@ function leavehome(i) {
             dietwo[i]=5;
             $("#dicemoveone").show();
             $("#dicemovetwo").show();
-            alert(remainToMove);
+            //alert(remainToMove);
             return;
     }else{
         $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).animate({left: `${x[0]}px`,top: `${y[0]}px`,position: "absolute"},200);
@@ -320,6 +324,15 @@ function move(i){
     newpos = Number(position[i][j]+k);
     newrepos = Number(reposition[i][j]+k);
     if(blockedposition.includes(reposition[i][thistoken])){
+        for(n=0;n<4;n++){
+            //alert("Position this token "+reposition[i][n]);
+            if(out[i][n]==1){
+                if(position[i][n]==1){position[i][n]-=1;};
+                //$("#"+players[i]+"Token"+token[n]).animate({left: `${x[position[i][n]]}px`,top: `${y[position[i][n]]}px`,position: `absolute`},0.1);
+                $("#"+players[i]+"Token"+token[n]).css({"left": x[position[i][n]]+"px","top": y[position[i][n]]+"px","position": "absolute"});
+                if(position[i][n]==0){position[i][n]+=1;};
+            };
+        };
         blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]),1);
     };
 
@@ -399,6 +412,8 @@ function givemesomespace(i,l,k){
                             //alert("Activate shield");
                             if(blockedposition.includes(reposition[i][thistoken])==false){
                                 blockedposition.push(reposition[i][thistoken]);
+                                $("#"+players[m]+"Token"+token[o]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
+                                $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
                                 $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
                                 clearcheck = clearInterval(hi);
                                 return;
