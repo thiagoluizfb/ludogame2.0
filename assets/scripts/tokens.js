@@ -136,14 +136,12 @@ function checkFive(i){
                     dieone[i] = 0;
                     $("#dicemoveone").hide();
                     leavehome(i);
-                    givemesomespace(i,1,1);
                 }else{
                     if (dieone[i] === 5){
                         //alert("Die one is 5");
                         dieone[i] = 0;
                         $("#dicemoveone").hide();
                         leavehome(i);
-                        givemesomespace(i,1,1);
                     };
                     if(dietwo[i] === 5){
                         // alert("Die two is 5");
@@ -159,14 +157,12 @@ function checkFive(i){
                     dieone[i] = 0;
                     $("#dicemoveone").hide();
                     leavehome(i);
-                    givemesomespace(i,1,1);
                 };
                 if(dietwo[i] === 5){
                     // alert("Die two is 5");
                     dietwo[i] = 0;
                     $("#dicemovetwo").hide();
                     leavehome(i);
-                    givemesomespace(i,1,1);
                 };
             }
             if(remainToMove > 0){
@@ -328,7 +324,6 @@ function move(i){
             //alert("Position this token "+reposition[i][n]);
             if(out[i][n]==1){
                 if(position[i][n]==1){position[i][n]-=1;};
-                //$("#"+players[i]+"Token"+token[n]).animate({left: `${x[position[i][n]]}px`,top: `${y[position[i][n]]}px`,position: `absolute`},0.1);
                 $("#"+players[i]+"Token"+token[n]).css({"left": x[position[i][n]]+"px","top": y[position[i][n]]+"px","position": "absolute"});
                 if(position[i][n]==0){position[i][n]+=1;};
             };
