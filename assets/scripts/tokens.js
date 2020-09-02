@@ -59,7 +59,6 @@ $("#play").click(function starts(){
     $("#start").css("z-index","-1");
     $("#layer").css("background-image","none");
     let i = 0;
-    alert(players);
     whostarts(i);
 });
 
@@ -137,8 +136,8 @@ function game(i){
 
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
-    dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
-    dietwo[i] = Number(Math.floor(Math.random()*6+1));
+    dieone[i] = Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
     d_one=dieone[i];
@@ -147,116 +146,89 @@ function rollthedice(i){
 }
 
 function checkFive(i){
-    if(out[i].includes(0)){
-        var hiFive = dieone[i] == 5 || dietwo[i] == 5;
-        if (hiFive==true){
-            //alert("Hi five");
-            //alert(out[i]);
-            if(d_one+d_two===10){
-                if(tokensathome[i]<3){
-                    //alert("you got me");
-                    dieone[i] = 0;
-                    $("#dicemoveone").hide();
-                    leavehome(i);
-                    givemesomespace(i)
-                }else{
-                    if (dieone[i] === 5){
-                        //alert("Die one is 5");
-                        dieone[i] = 0;
-                        $("#dicemoveone").hide();
-                        leavehome(i);
-                        givemesomespace(i)
-                    };
-                    if(dietwo[i] === 5){
-                        // alert("Die two is 5");
-                        dietwo[i] = 0;
-                        $("#dicemovetwo").hide();
-                        leavehome(i);
-                        givemesomespace(i);
-                    };
-                    };
-            }else{
-                if (dieone[i] === 5){
-                    //alert("Die one is 5");
-                    dieone[i] = 0;
-                    $("#dicemoveone").hide();
-                    leavehome(i);
-                    givemesomespace(i)
-                };
-                if(dietwo[i] === 5){
-                    // alert("Die two is 5");
-                    dietwo[i] = 0;
-                    $("#dicemovetwo").hide();
-                    leavehome(i);
-                    givemesomespace(i)
-                };
-            }
-            if(remainToMove > 0){
-                //alert("remaintomove");
-                options(i);
-                return;
-            }else{
-                if(i == players.length-1){
-                let i = 0;
-                game(i);
-                }else{
-                    game(i+1);
-                };
+
+    if(dieone[i] == 5){
+        if(out[i].includes(0)){
+            thistoken = out[i].indexOf(0);
+            reposition[i][out[i].indexOf(0)] = 12*i;
+            if(blockedposition.includes(reposition[i][thistoken]+1) == false){
+                //alert("leaving die token" + thistoken);
+                leavehome(i);
+                dieone[i] = 0;
+                $("#dicemoveone").hide();
+                setTimeout(function(){givemesomespace(i)},500);
+                if(remainToMove == 0){
+                    nextplayer(i);
+                    return;
+                }
             };
-        }else{
-            if(out[i].includes(1)){
-                //alert("We want to move");
-                options(i);
-                return;
-            }else{
-                if(i == players.length-1){
-                let i = 0;
-                game(i);
-                }else{
-                    game(i+1);
-                };
+        };
+    };
+
+    if(dietwo[i] == 5){
+        if(out[i].includes(0)){
+            thistoken = out[i].indexOf(0);
+            reposition[i][out[i].indexOf(0)] = 12*i;
+            if(blockedposition.includes(reposition[i][thistoken]+1) == false){
+                //alert("leaving die token" + thistoken);
+                leavehome(i);
+                dietwo[i] = 0;
+                $("#dicemovetwo").hide();
+                setTimeout(function(){givemesomespace(i)},500);
+                if(remainToMove == 0){
+                    nextplayer(i);
+                    return;
+                }
             };
-        };    
-    }else{
-        //alert("No token inside home, calling options");
+        };
+    };
+    if(remainToMove > 0){
+       // alert("Remain to move");
         options(i);
         return;
+    }else{
+        nextplayer(i);
+        return;
+    }
+}
+
+function nextplayer(i){
+    if(i == players.length-1){
+        let i = 0;
+        game(i);
+    }else{
+        game(i+1);
     };
-    return;    
 }
 
 function leavehome(i) {
-    //alert("I want to leave");
+    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
     reposition[i][out[i].indexOf(0)] = 12*i;
-    if(blockedposition.includes(reposition[i][out[i].indexOf(0)]+1)){
-            dieone[i]=5;
-            dietwo[i]=5;
-            $("#dicemoveone").show();
-            $("#dicemovetwo").show();
-            //alert(remainToMove);
-            return;
-    }else{
-        $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).animate({left: `${x[0]}px`,top: `${y[0]}px`,position: "absolute"},200);
-        $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"left": x[0]+"px","position": "absolute"});
-        $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
-        $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
-        //alert("#"+players[i]+"Token"+token[out[i].indexOf(0)]);
-        xposition[i][out[i].indexOf(0)] = x[0];
-        yposition[i][out[i].indexOf(0)] = y[0];
+    $("#dicemoveone").off("click");
+    $("#dicemovetwo").off("click");
 
-        position[i][out[i].indexOf(0)] += 1;
-        reposition[i][out[i].indexOf(0)]+=1;
-        
-        out[i][out[i].indexOf(0)] = 1;
-        tokensathome[i]-=1;
-        remainToMove -=1;
+    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).animate({left: `${x[0]}px`,top: `${y[0]}px`,position: "absolute"},200);
+    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"left": x[0]+"px","position": "absolute"});
+    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
+    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
 
-        return;
-    };
+    //alert("#"+players[i]+"Token"+token[out[i].indexOf(0)]);
+    xposition[i][out[i].indexOf(0)] = x[0];
+    yposition[i][out[i].indexOf(0)] = y[0];
+
+    position[i][out[i].indexOf(0)] += 1;
+    reposition[i][out[i].indexOf(0)]+=1;
+    
+    out[i][out[i].indexOf(0)] = 1;
+    tokensathome[i]-=1;
+    remainToMove -= 1;
+    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
+    return;
 }
 
 function options(i){
     //alert("I am in options remain to move: "+remainToMove);
+    
     $("#layer").off("click");
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
@@ -286,13 +258,13 @@ function options(i){
 
     
     $("#dicemoveone").one("click", function(){
-        //alert(remainToMove);
+        //alert("Moving from dicemoveone");
         moveleft  = dieone[i];
         dieone[i]=0;
         $(this).hide();
         move(i)});
     $("#dicemovetwo").one("click",function(){
-        //alert(remainToMove);
+        //alert("Moving from dicemovetwo");
         moveleft = dietwo[i];
         dietwo[i]=0;
         $(this).hide();
@@ -335,6 +307,9 @@ function dehighlight(i){
 }
 
 function move(i){
+    if(remainToMove == 0){
+        nextplayer(i);
+    };
     //alert(players[i]+"Token"+token[thistoken]+" will move");
     $("#layer").off("click");
     $("#dicemoveone").off("click");
@@ -345,13 +320,12 @@ function move(i){
     let j = thistoken;
     newpos = Number(position[i][j]+k);
     newrepos = Number(reposition[i][j]+k);
+    
     if(blockedposition.includes(reposition[i][thistoken])){
         for(n=0;n<4;n++){
             //alert("Position this token "+reposition[i][n]);
             if(out[i][n]==1){
-                if(position[i][n]==1){position[i][n]-=1;};
-                $("#"+players[i]+"Token"+token[n]).css({"left": x[position[i][n]]+"px","top": y[position[i][n]]+"px","position": "absolute"});
-                if(position[i][n]==0){position[i][n]+=1;};
+                $("#"+players[i]+"Token"+token[n]).css({"left": x[position[i][n]-1]+"px","top": y[position[i][n]-1]+"px","position": "absolute"});
             };
         };
         blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]),1);
@@ -361,41 +335,45 @@ function move(i){
 
     var myVar = setInterval(myTimer, 200);
     
-    function myTimer(){ 
+    function myTimer(){
+        //alert("Ready to move");
         $("#"+players[i]+"Token"+token[thistoken]).animate({left: `${x[newpos-k+l]}px`,top: `${y[newpos-k+l]}px`,position: "absolute"},200);
         $("#"+players[i]+"Token"+token[thistoken]).css({"left": x[newpos-k+l]+"px","top": y[newpos-k+l]+"px","position": "absolute"});
-        myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
-        xposition[i][thistoken] = Math.trunc(myposition.left);
-        yposition[i][thistoken] = Math.trunc(myposition.top);
         //$(".mainlayer").html(`${xposition} </br> ${yposition}`);
         l++;
         if (l==k){
-            givemesomespace(i);
+            remainToMove -=1;
             position[i][j] = Number(newpos);
             reposition[i][j] = Number(newrepos);
-            clear = clearInterval(myVar);
+            givemesomespace(i);
+            
             //return;
            // alert(position[i]);
-           if(i==players.length-1){
-               remainToMove--;
+           if(i==players.length-1){     
                //alert(remainToMove);
                if(remainToMove>0){
-                   options(i);
                    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
+                   checkFive(i);
+                   clearInterval(myVar);
+                   return;
                }else{
                    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
-                   let i = 0;
-                   game(i);
+                   nextplayer(i);
+                   clearInterval(myVar);
+                   return;
                };
             }else{
-                remainToMove--;
                 //alert(remainToMove);
                 if(remainToMove>0){
-                   options(i);
                    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
+                   checkFive(i);
+                   clearInterval(myVar);
+                   return;
                }else{
                    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
-                    game(i+1);
+                    nextplayer(i);
+                    clearInterval(myVar);
+                    return;
                };
             };
         };
@@ -406,22 +384,68 @@ function move(i){
 
 function givemesomespace(i){
     //alert("Givesomespace");
-    let o=0;
-    let m=0;
+    //let o=0;
+    //let m=0;
+    myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
+    xposition[i][thistoken] = Math.trunc(myposition.left);
+    yposition[i][thistoken] = Math.trunc(myposition.top);
 
-    var hi = setInterval(iampassing,1);
+    //var hi = setInterval(iampassing,1);
 
-    function iampassing(){
-        if(xposition[m][o] == xposition[i][thistoken]){
-            if(yposition[m][o] == yposition[i][thistoken]){
-                if(m !== i){
+    //function iampassing(){
+
+    var shield = 0;
+    var b = 0;
+    for(r=0;r<reposition.length;r++){
+        if(r!=thistoken){
+            if(reposition[i][r] == reposition[i][thistoken]){
+                shield += 1;
+                b = r;
+            };
+        };
+    };
+
+
+   //alert("Tokenshere: "+ shield);
+
+    var hit = 0;
+    var m = 0;
+    var o = 0;
+    for(h=0;h<reposition.length;h++){
+        for(a=0;a<players.length;a++){
+            if(a!=i){
+                if(reposition[a][h] == reposition[i][thistoken]){
+                    hit = 1;
+                    m = a;
+                    o = h;
+                };
+            };
+        };
+    };
+
+   if(hit>1){alert("Number of hits: " + hit)};
+
+    if(shield>0){
+        alert("Activate Shield");
+        blockspace(i,b,thistoken);
+        return;
+    };
+
+    if(hit>0){
+         alert("Go home");
+        sendhome(m,o);
+        return;
+    };
+            /*    if(m !== i){
                     //alert(`Hi ${players[m]} Token ${token[o]}`);
                         sendhome(m,o);
                         clearcheck = clearInterval(hi);
                 }else{
+                    alert(`M ${m} and O ${o}`);
+                    alert(`I am ${i} and token ${thistoken}`);
                     if(o !== thistoken){
-                       //alert(`Hi brother ${players[m]} Token ${token[o]}`);
-                            //alert("Activate shield");
+                      // alert(`Hi brother ${players[m]} Token ${token[o]}`);
+                            alert("Activate shield");
                         blockspace(i,m,o);
                         clearcheck = clearInterval(hi);
                     };
@@ -439,13 +463,13 @@ function givemesomespace(i){
         };
         o++;
     };
-    return;  
+    return;  */
 }
 
 
 function sendhome(m,o){
-    alert(players[m]);
-    alert(colors.indexOf(players[m]));
+   // alert(players[m]);
+    //alert(colors.indexOf(players[m]));
     $("#"+players[m]+"Token"+token[o]).animate({left: `${initleft[colors.indexOf(players[m])][o]}px`,top: `${inittop[colors.indexOf(players[m])][o]}px`,position: "absolute"},200);
     position[m][o]=0;
     out[m][o]=0;
@@ -453,10 +477,10 @@ function sendhome(m,o){
     return;
 }
 
-function blockspace(i,m,o){
+function blockspace(i,b,thistoken){
     if(blockedposition.includes(reposition[i][thistoken])==false){
         blockedposition.push(reposition[i][thistoken]);
-        $("#"+players[m]+"Token"+token[o]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
+        $("#"+players[i]+"Token"+token[b]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
         $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
         $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
         return;

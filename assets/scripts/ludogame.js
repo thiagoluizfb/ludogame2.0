@@ -174,9 +174,7 @@ function checkFive(i){
             }
         };
     };
-    if(remainToMove == 0){
-        nextplayer(i);
-    }else{
+    if(remainToMove > 0){
         options(i);
     };
 }
@@ -201,6 +199,44 @@ function leavehome(i) {
     remainToMove -= 1;
 
     return;
+}
+
+function givemesomespace(i){
+    //alert("Givesomespace");
+    let o=0;
+    let m=0;
+
+    var hi = setInterval(iampassing,1);
+
+    function iampassing(){
+        if(xposition[m][o] == xposition[i][thistoken]){
+            if(yposition[m][o] == yposition[i][thistoken]){
+                if(m !== i){
+                    //alert(`Hi ${players[m]} Token ${token[o]}`);
+                        sendhome(m,o);
+                        clearcheck = clearInterval(hi);
+                }else{
+                    if(o !== thistoken){
+                       //alert(`Hi brother ${players[m]} Token ${token[o]}`);
+                            //alert("Activate shield");
+                        blockspace(i,m,o);
+                        clearcheck = clearInterval(hi);
+                    };
+                };
+            };
+        };
+        if(o == 4){
+            if(m == players.length-1){
+                clearcheck = clearInterval(hi);
+                return;
+                }else{
+                    o = -1;
+                    m++;
+            };
+        };
+        o++;
+    };
+    return;  
 }
 
 function sendhome(i,thistoken){
