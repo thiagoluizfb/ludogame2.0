@@ -137,11 +137,11 @@ function game(i){
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
     dieone[i] = Number(Math.floor(Math.random()*6+1));
-    dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
     d_one=dieone[i];
-    d_two=dietwo[i];
+    d_two=dietwo[i];    
     checkFive(i);
 }
 
@@ -230,6 +230,7 @@ function leavehome(i) {
     tokensathome[i]-=1;
     remainToMove -= 1;
     $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
+    givemesomespace(i);
     return;
 }
 
@@ -412,7 +413,7 @@ function givemesomespace(i){
     for(r=0;r<4;r++){
         if(r!=thistoken){
             if(reposition[i][r] == reposition[i][thistoken]){
-                alert("Shield");
+             //   alert("Shield");
                 shield = 1;
                 b = r;
             };
@@ -431,7 +432,7 @@ function givemesomespace(i){
             for(a=0;a<4;a++){
                // alert(a);
                 if(reposition[h][a] == reposition[i][thistoken]){
-                    alert("Hit");
+                  //  alert("Hit");
                     hit = 1;
                     m = h;
                     o = a;
@@ -444,13 +445,13 @@ function givemesomespace(i){
    // alert(m);
    // alert(o);
     if(shield>0){
-        alert("Activate Shield");
+       //alert("Activate Shield");
         blockspace(i,b,thistoken);
         return;
     };
 
     if(hit>0){
-        alert("Go home");
+      //  alert("Go home");
         sendhome(m,o);
         return;
     };
