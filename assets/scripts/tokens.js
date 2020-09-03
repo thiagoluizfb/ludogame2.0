@@ -31,7 +31,7 @@ var dietwo = [0,0,0,0];
 var results = [0,0,0,0];
 var position = [[0,0,0,0] , [0,0,0,0] , [0,0,0,0] , [0,0,0,0]];
 var reposition = [[0,0,0,0] , [0,0,0,0] , [0,0,0,0] , [0,0,0,0]];
-var blockedposition = [];
+var blockedposition = [0];
 var initleft = [[25,86.8,25,86.8],[225,286.8,225,286.8],[225,286.8,225,286.8],[25,86.8,25,86.8]];
 var inittop = [[226,226,290,290],[226,226,290,290],[26,26,90,90],[26,26,90,90]];
 var out = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
@@ -286,9 +286,13 @@ function options(i){
 }
 
 function highlight(i){
+   
     canImove(i);
+
+
+    
     //return;
-    let n = 0;
+   /* let n = 0;
     for(n=0;n<4;n++){
         if(out[i][n]>0){
             $("#"+players[i]+"Token"+token[n]).css("z-index","3");
@@ -305,7 +309,7 @@ function highlight(i){
             xposition[i][n] = Math.trunc(myposition.left);
             yposition[i][n] = Math.trunc(myposition.top);
         };
-    };
+    };*/
     return;
 }
 
@@ -313,27 +317,55 @@ function canImove(i){
     // I am the token X of the color i 
     let newrepos1 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
     let newrepos2 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
-
+    
     for(n=0;n<4;n++){
+        
+        one = 0;
+        two = 0;
+
         newrepos1[i][n] = reposition[i][n]+dieone[i];
-        for(b=0;b<blockedposition.length;b++){
-            if(reposition[i][n]<blockedposition[b]){
-                if(blockedposition[b]<=newrepos1[i][n]){
-                    alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die One`);
-                };
-            };
-        };
         newrepos2[i][n] = reposition[i][n]+dietwo[i];
-        for(b=0;b<blockedposition.length;b++){
-            if(reposition[i][n]<blockedposition[b]){
-                if(blockedposition[b]<=newrepos2[i][n]){
-                    alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die Two`);
+
+
+    
+        if(out[i][n]>0){
+            for(b=0;b<blockedposition.length;b++){
+                if(newrepos1[i][n]<blockedposition[b]){
+                    alert(`I am the token ${token[n]}, color ${players[i]} I can pass the blocked position ${blockedposition[b]} using the die One`);
+                    if(newrepos2[i][n]<blockedposition[b]){
+                        $("#"+players[i]+"Token"+token[n]).css("z-index","3");
+                        $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]},${dietwo[i]}<div class="chooseme"></div>`);
+                        myposition = $("#"+players[i]+"Token"+token[n]).position();
+                        xposition[i][n] = Math.trunc(myposition.left);
+                        yposition[i][n] = Math.trunc(myposition.top);
+                        return;
+                    }else{
+                        $("#"+players[i]+"Token"+token[n]).css("z-index","3");
+                        $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]}<div class="chooseme"></div>`); 
+                        myposition = $("#"+players[i]+"Token"+token[n]).position();
+                        xposition[i][n] = Math.trunc(myposition.left);
+                        yposition[i][n] = Math.trunc(myposition.top);
+                        return;
+                    };
+                }else{
+                    if(newrepos2[i][n]<blockedposition[b]  && dietwo[i]>0){
+                        //alert(`I am the token ${token[n]}, color ${players[i]} I can pass the blocked position ${blockedposition[b]} using the die Two`);
+                        $("#"+players[i]+"Token"+token[n]).css("z-index","3");
+                        $("#"+players[i]+"Token"+token[n]).children().children().html(`${dietwo[i]}<div class="chooseme"></div>`);
+                        myposition = $("#"+players[i]+"Token"+token[n]).position();
+                        xposition[i][n] = Math.trunc(myposition.left);
+                        yposition[i][n] = Math.trunc(myposition.top);
+                        return;
+                    };
                 };
             };
         };
     };
+
     return;
+
 }
+
 
 function dehighlight(i){
     let n = 0;
