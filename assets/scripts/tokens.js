@@ -150,7 +150,11 @@ function checkFive(i){
     if(dieone[i] == 5){
         if(out[i].includes(0)){
             thistoken = out[i].indexOf(0);
-            reposition[i][out[i].indexOf(0)] = 12*i;
+            if(players.length == 2){
+                reposition[i][out[i].indexOf(0)] = 24*i;
+            }else{
+                reposition[i][out[i].indexOf(0)] = 12*i;
+            };
             if(blockedposition.includes(reposition[i][thistoken]+1) == false){
                 //alert("leaving die token" + thistoken);
                 leavehome(i);
@@ -168,7 +172,11 @@ function checkFive(i){
     if(dietwo[i] == 5){
         if(out[i].includes(0)){
             thistoken = out[i].indexOf(0);
-            reposition[i][out[i].indexOf(0)] = 12*i;
+            if(players.length == 2){
+                reposition[i][out[i].indexOf(0)] = 24*i;
+            }else{
+                reposition[i][out[i].indexOf(0)] = 12*i;
+            };
             if(blockedposition.includes(reposition[i][thistoken]+1) == false){
                 //alert("leaving die token" + thistoken);
                 leavehome(i);
@@ -203,7 +211,6 @@ function nextplayer(i){
 
 function leavehome(i) {
     $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
-    reposition[i][out[i].indexOf(0)] = 12*i;
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
 
@@ -344,7 +351,13 @@ function move(i){
         if (l==k){
             remainToMove -=1;
             position[i][j] = Number(newpos);
-            reposition[i][j] = Number(newrepos);
+
+            if(newrepos>48){
+                reposition[i][j] = Number(newrepos)-48;
+            }else{
+                reposition[i][j] = Number(newrepos);
+            };
+
             givemesomespace(i);
             
             //return;
@@ -386,9 +399,9 @@ function givemesomespace(i){
     //alert("Givesomespace");
     //let o=0;
     //let m=0;
-    myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
+    /*myposition = $("#"+players[i]+"Token"+token[thistoken]).position();
     xposition[i][thistoken] = Math.trunc(myposition.left);
-    yposition[i][thistoken] = Math.trunc(myposition.top);
+    yposition[i][thistoken] = Math.trunc(myposition.top);*/
 
     //var hi = setInterval(iampassing,1);
 
@@ -396,10 +409,11 @@ function givemesomespace(i){
 
     var shield = 0;
     var b = 0;
-    for(r=0;r<reposition.length;r++){
+    for(r=0;r<4;r++){
         if(r!=thistoken){
             if(reposition[i][r] == reposition[i][thistoken]){
-                shield += 1;
+                alert("Shield");
+                shield = 1;
                 b = r;
             };
         };
@@ -411,20 +425,24 @@ function givemesomespace(i){
     var hit = 0;
     var m = 0;
     var o = 0;
-    for(h=0;h<reposition.length;h++){
-        for(a=0;a<players.length;a++){
-            if(a!=i){
-                if(reposition[a][h] == reposition[i][thistoken]){
+    for(h=0;h<players.length;h++){
+        //alert(h);
+        if(h != i){
+            for(a=0;a<4;a++){
+               // alert(a);
+                if(reposition[h][a] == reposition[i][thistoken]){
+                    alert("Hit");
                     hit = 1;
-                    m = a;
-                    o = h;
+                    m = h;
+                    o = a;
                 };
             };
         };
     };
 
-   if(hit>1){alert("Number of hits: " + hit)};
-
+   //if(hit==1){alert("Number of hits: " + hit)};
+   // alert(m);
+   // alert(o);
     if(shield>0){
         alert("Activate Shield");
         blockspace(i,b,thistoken);
@@ -432,7 +450,7 @@ function givemesomespace(i){
     };
 
     if(hit>0){
-         alert("Go home");
+        alert("Go home");
         sendhome(m,o);
         return;
     };
