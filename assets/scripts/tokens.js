@@ -136,7 +136,7 @@ function game(i){
 
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
-    dieone[i] = Number(Math.floor(Math.random()*6+1));
+    dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
     dietwo[i] = Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
@@ -190,14 +190,19 @@ function checkFive(i){
             };
         };
     };
-    if(remainToMove > 0){
-       // alert("Remain to move");
+    if(out[i].includes(1)){
+        if(remainToMove > 0){
+        //alert("Remain to move");
         options(i);
         return;
+        }else{
+            nextplayer(i);
+            return;
+        };
     }else{
         nextplayer(i);
         return;
-    }
+    };
 }
 
 function nextplayer(i){
@@ -281,6 +286,8 @@ function options(i){
 }
 
 function highlight(i){
+    canImove(i);
+    //return;
     let n = 0;
     for(n=0;n<4;n++){
         if(out[i][n]>0){
@@ -297,6 +304,32 @@ function highlight(i){
             myposition = $("#"+players[i]+"Token"+token[n]).position();
             xposition[i][n] = Math.trunc(myposition.left);
             yposition[i][n] = Math.trunc(myposition.top);
+        };
+    };
+    return;
+}
+
+function canImove(i){
+    // I am the token X of the color i 
+    let newrepos1 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+    let newrepos2 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+
+    for(n=0;n<4;n++){
+        newrepos1[i][n] = reposition[i][n]+dieone[i];
+        for(b=0;b<blockedposition.length;b++){
+            if(reposition[i][n]<blockedposition[b]){
+                if(blockedposition[b]<=newrepos1[i][n]){
+                    alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die One`);
+                };
+            };
+        };
+        newrepos2[i][n] = reposition[i][n]+dietwo[i];
+        for(b=0;b<blockedposition.length;b++){
+            if(reposition[i][n]<blockedposition[b]){
+                if(blockedposition[b]<=newrepos2[i][n]){
+                    alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die Two`);
+                };
+            };
         };
     };
     return;
