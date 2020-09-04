@@ -454,6 +454,9 @@ function move(i){
                 $("#"+players[i]+"Token"+token[n]).css({"left": x[position[i][n]-1]+"px","top": y[position[i][n]-1]+"px","position": "absolute"});
             };
             if(n==3){
+                if(reposition[i][thistoken] == 1){
+                   blockedposition.splice(blockedposition.indexOf(49),1); 
+                };
                 blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]),1);
             };
         };
@@ -616,11 +619,21 @@ function sendhome(m,o){
 }
 
 function blockspace(i,b,thistoken){
-    if(blockedposition.includes(reposition[i][thistoken])==false){
+    if(blockedposition.includes(reposition[i][thistoken]) == false){
         blockedposition.push(reposition[i][thistoken]);
         $("#"+players[i]+"Token"+token[b]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
         $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
+        
+    
+        if(blockedposition.includes(1)){
+            if(blockedposition.includes(49) == false){
+                blockedposition.push(49);
+            };
+        };
+
         $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
+
         return;
     };
+    
 }
