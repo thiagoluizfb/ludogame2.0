@@ -248,6 +248,7 @@ function options(i){
     $("#dicemovetwo").off("click");
     $("#dicewrapper").hide();
     $("#"+players[i]+"dice").css("z-index","1"); 
+    $(".tokenwrapper"+players[i]).off("click");
 
     highlight(i);
 
@@ -322,7 +323,8 @@ function canImove(i){
     // I am the token X of the color i 
     let newrepos1 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
     let newrepos2 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
-    
+    blockedoption = 0;
+
     for(n=0;n<4;n++){
         
         one = 0;
@@ -337,14 +339,14 @@ function canImove(i){
             for(b=0;b<blockedposition.length;b++){
                 if(reposition[i][n]<blockedposition[b]){
                     if(blockedposition[b]<=newrepos1[i][n]){
-                        alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die One`);
+                       // alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die One`);
                         one = 1;
                         tokenblocked[i][n][0] = 1;
                     };
                 };
                 if(reposition[i][n]<blockedposition[b]){
                     if(blockedposition[b]<=newrepos2[i][n]){
-                        alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die Two`);
+                        //alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die Two`);
                         two = 1;
                         tokenblocked[i][n][1] = 1;
                     };
@@ -383,6 +385,29 @@ function canImove(i){
             };
         };
     };
+
+    for(n=0;n<4;n++){
+        for(m=0;m<2;m++){
+            blockedoption += tokenblocked[i][n][m];
+        };
+    };
+    
+    if(remainToMove == 2){
+        if(blockedoption == 8){
+            alert(blockedoption);
+            alert("No moves left");
+            nextplayer(i);
+            return;
+        };
+    };
+    if(remainToMove == 1){
+        if(blockedoption == 4){
+            alert(blockedoption);
+            alert("No moves left");
+            nextplayer(i);
+            return;
+        };
+    };
     return;
 }
 
@@ -406,6 +431,8 @@ function move(i){
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
     $("#dicewrapper").hide();
+    $(".tokenwrapper"+players[i]).off("click");
+
     let l = 0;
     let k = Number(window.moveleft);
     let j = thistoken;
