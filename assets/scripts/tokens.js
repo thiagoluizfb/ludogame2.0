@@ -147,17 +147,19 @@ function rollthedice(i){
 }
 
 function checkFive(i){
+    z=0;
 
     if(dieone[i] == 5){
         if(out[i].includes(0)){
             thistoken = out[i].indexOf(0);
             if(players.length == 2){
-                reposition[i][out[i].indexOf(0)] = 24*i;
+                z = 24*i;
             }else{
-                reposition[i][out[i].indexOf(0)] = 12*i;
+                z = 12*i;
             };
-            if(blockedposition.includes(reposition[i][thistoken]+1) == false){
+            if(blockedposition.includes(z+1) == false){
                 //alert("leaving die token" + thistoken);
+                reposition[i][out[i].indexOf(0)] = z;
                 leavehome(i);
                 dieone[i] = 0;
                 $("#dicemoveone").hide();
@@ -169,17 +171,19 @@ function checkFive(i){
             };
         };
     };
+    z=0;
 
     if(dietwo[i] == 5){
         if(out[i].includes(0)){
             thistoken = out[i].indexOf(0);
             if(players.length == 2){
-                reposition[i][out[i].indexOf(0)] = 24*i;
+                z = 24*i;
             }else{
-                reposition[i][out[i].indexOf(0)] = 12*i;
+                z = 12*i;
             };
-            if(blockedposition.includes(reposition[i][thistoken]+1) == false){
+            if(blockedposition.includes(z+1) == false){
                 //alert("leaving die token" + thistoken);
+                reposition[i][out[i].indexOf(0)] = z;
                 leavehome(i);
                 dietwo[i] = 0;
                 $("#dicemovetwo").hide();
