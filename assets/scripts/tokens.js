@@ -32,6 +32,7 @@ var results = [0,0,0,0];
 var position = [[0,0,0,0] , [0,0,0,0] , [0,0,0,0] , [0,0,0,0]];
 var reposition = [[0,0,0,0] , [0,0,0,0] , [0,0,0,0] , [0,0,0,0]];
 var blockedposition = [0];
+var tokenblocked = [ [[0,0],[0,0],[0,0],[0,0]] , [[0,0],[0,0],[0,0],[0,0]], [[0,0],[0,0],[0,0],[0,0]], [[0,0],[0,0],[0,0],[0,0]] ];
 var initleft = [[25,86.8,25,86.8],[225,286.8,225,286.8],[225,286.8,225,286.8],[25,86.8,25,86.8]];
 var inittop = [[226,226,290,290],[226,226,290,290],[26,26,90,90],[26,26,90,90]];
 var out = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
@@ -250,11 +251,15 @@ function options(i){
 
     highlight(i);
 
-    $(".tokenwrapper"+players[i]).one("click",function(){
+   $(".tokenwrapper"+players[i]).one("click",function(){
         $(this).parent().css("z-index","1");
         dehighlight(i);
         $("#dicewrapper").show();
+        if(dieone[i]>0){$("#dicemoveone").show();};
+        if(dietwo[i]>0){$("#dicemovetwo").show();};
         thistoken = token.indexOf($(this).parent().attr('id').slice($(this).parent().attr('id').indexOf("Token")+5));
+        if(tokenblocked[i][thistoken][0] == 1){$("#dicemoveone").hide();}
+        if(tokenblocked[i][thistoken][1] == 1){$("#dicemovetwo").hide();}
         $("#dicewrapper").css("z-index","3");
         $("#dicemoveone").css("z-index","3");
         $("#dicemovetwo").css("z-index","3");
@@ -325,51 +330,64 @@ function canImove(i){
 
         newrepos1[i][n] = reposition[i][n]+dieone[i];
         newrepos2[i][n] = reposition[i][n]+dietwo[i];
-
-
     
         if(out[i][n]>0){
+            tokenblocked[i][n][0] = 0;
+            tokenblocked[i][n][1] = 0;
             for(b=0;b<blockedposition.length;b++){
-                if(newrepos1[i][n]<blockedposition[b]){
-                    alert(`I am the token ${token[n]}, color ${players[i]} I can pass the blocked position ${blockedposition[b]} using the die One`);
-                    if(newrepos2[i][n]<blockedposition[b]){
-                        $("#"+players[i]+"Token"+token[n]).css("z-index","3");
-                        $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]},${dietwo[i]}<div class="chooseme"></div>`);
-                        myposition = $("#"+players[i]+"Token"+token[n]).position();
-                        xposition[i][n] = Math.trunc(myposition.left);
-                        yposition[i][n] = Math.trunc(myposition.top);
-                        return;
-                    }else{
-                        $("#"+players[i]+"Token"+token[n]).css("z-index","3");
-                        $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]}<div class="chooseme"></div>`); 
-                        myposition = $("#"+players[i]+"Token"+token[n]).position();
-                        xposition[i][n] = Math.trunc(myposition.left);
-                        yposition[i][n] = Math.trunc(myposition.top);
-                        return;
+                if(reposition[i][n]<blockedposition[b]){
+                    if(blockedposition[b]<=newrepos1[i][n]){
+                        alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die One`);
+                        one = 1;
+                        tokenblocked[i][n][0] = 1;
                     };
+                };
+                if(reposition[i][n]<blockedposition[b]){
+                    if(blockedposition[b]<=newrepos2[i][n]){
+                        alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die Two`);
+                        two = 1;
+                        tokenblocked[i][n][1] = 1;
+                    };
+                };
+            };
+
+            if(dieone[i] == 0){one = 1};
+            if(dietwo[i] == 0){two = 1};
+
+            if(one+two == 0){
+                $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]},${dietwo[i]}<div class="chooseme"></div>`);
+                $("#"+players[i]+"Token"+token[n]).css("z-index","3");
+                myposition = $("#"+players[i]+"Token"+token[n]).position();
+                xposition[i][n] = Math.trunc(myposition.left);
+                yposition[i][n] = Math.trunc(myposition.top);
+
+            }else{
+                if(one == 0){
+                    $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]}<div class="chooseme"></div>`);
+                    //$("#dicemovetwo").hide();
+                    $("#"+players[i]+"Token"+token[n]).css("z-index","3"); 
+                    myposition = $("#"+players[i]+"Token"+token[n]).position();
+                    xposition[i][n] = Math.trunc(myposition.left);
+                    yposition[i][n] = Math.trunc(myposition.top);
+
                 }else{
-                    if(newrepos2[i][n]<blockedposition[b]  && dietwo[i]>0){
-                        //alert(`I am the token ${token[n]}, color ${players[i]} I can pass the blocked position ${blockedposition[b]} using the die Two`);
-                        $("#"+players[i]+"Token"+token[n]).css("z-index","3");
+                    if(two == 0){
                         $("#"+players[i]+"Token"+token[n]).children().children().html(`${dietwo[i]}<div class="chooseme"></div>`);
+                       // $("#dicemoveone").hide();
+                        $("#"+players[i]+"Token"+token[n]).css("z-index","3");
                         myposition = $("#"+players[i]+"Token"+token[n]).position();
                         xposition[i][n] = Math.trunc(myposition.left);
                         yposition[i][n] = Math.trunc(myposition.top);
-                        return;
                     };
                 };
             };
         };
     };
-
     return;
-
 }
 
 
 function dehighlight(i){
-    let n = 0;
-    $("#dicewrapper").show();
     for(n=0;n<4;n++){
         if(out[i][n]>0){
            $("#"+players[i]+"Token"+token[n]).children().children().empty();
