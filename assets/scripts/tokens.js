@@ -5,7 +5,7 @@ let colors = ["blue","yellow","red","green"];
 let token = ["One","Two","Three","Four"];
 
 let redleft = [255,	230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
-let redtop = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,180,180,180,180,180,180];
+let redtop = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,155,155,155,155,155];
 let blueleft = [55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,30,55,80,105,130];
 let bluetop = [180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,155,155,155,155,155];
 let greenleft = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,155,155,155,155,155];
@@ -138,7 +138,7 @@ function game(i){
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
     dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
-    dietwo[i] = Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = 5; //Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
     d_one=dieone[i];
@@ -285,13 +285,17 @@ function options(i){
         moveleft  = dieone[i];
         dieone[i]=0;
         $(this).hide();
-        move(i)});
+        move(i);
+    });
+
     $("#dicemovetwo").one("click",function(){
         //alert("Moving from dicemovetwo");
         moveleft = dietwo[i];
         dietwo[i]=0;
         $(this).hide();
-        move(i)});
+        move(i);
+    });
+
     return;
 }
 
@@ -443,16 +447,17 @@ function move(i){
     newpos = Number(position[i][j]+k);
     newrepos = Number(reposition[i][j]+k);
     
-    if(blockedposition.includes(reposition[i][thistoken])){
-        for(n=0;n<4;n++){
-            //alert("Position this token "+reposition[i][n]);
-            if(out[i][n]==1){
+    for(n=0;n<4;n++){
+    //alert("Position this token "+reposition[i][n]);
+        if(blockedposition.includes(reposition[i][thistoken])){
+            if(out[i][n]==1 && reposition[i][thistoken] == reposition[i][n]){
                 $("#"+players[i]+"Token"+token[n]).css({"left": x[position[i][n]-1]+"px","top": y[position[i][n]-1]+"px","position": "absolute"});
             };
+            if(n==3){
+                blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]),1);
+            };
         };
-        blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]),1);
     };
-
     //alert(newpos);
 
     var myVar = setInterval(myTimer, 200);
