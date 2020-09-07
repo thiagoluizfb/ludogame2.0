@@ -19,6 +19,7 @@ var moveleft =0;
 var d_one= 0;
 var d_two= 0;
 var tokensathome = [4,4,4,4];
+var tokensatend = [4,0,0,0];
 
 var thistoken = 0;
 var remainToMove = 2;
@@ -99,38 +100,44 @@ function whostarts(i){
 }
 
 function game(i){
-    remainToMove = 2;
-    $("#dicemoveone").show();
-    $("#dicemovetwo").show();
-    $("#"+players[i]+"dice").css("background-color","rgba(150, 155, 80)");
-    //i=3; 
+    if(tokensatend[i]<4){
+        remainToMove = 2;
+        $("#dicemoveone").show();
+        $("#dicemovetwo").show();
+        $("#"+players[i]+"dice").css("background-color","rgba(150, 155, 80)");
+        //i=3; 
 
-    if(players[i]=="blue"){
-        x = blueleft;
-        y = bluetop;
-    }else{
-        if(players[i]=="yellow"){
-            x = yellowleft;
-            y = yellowtop;
+        if(players[i]=="blue"){
+            x = blueleft;
+            y = bluetop;
         }else{
-            if(players[i]=="red"){
-                x = redleft;
-                y = redtop;
+            if(players[i]=="yellow"){
+                x = yellowleft;
+                y = yellowtop;
             }else{
-                if(players[i]=="green"){
-                    x = greenleft;
-                    y = greentop;
+                if(players[i]=="red"){
+                    x = redleft;
+                    y = redtop;
+                }else{
+                    if(players[i]=="green"){
+                        x = greenleft;
+                        y = greentop;
+                    };
                 };
             };
         };
-    };
 
-    $("#layer").off("click");
-    $("#"+players[i]+"dice").css("z-index","3");
-    $("#"+players[i]+"dice").one("click",function() {
-        $("#"+players[i]+"dice").css("background-color","white");
-        rollthedice(i);
-    });
+        $("#layer").off("click");
+        $("#"+players[i]+"dice").css("z-index","3");
+        $("#"+players[i]+"dice").one("click",function() {
+            $("#"+players[i]+"dice").css("background-color","white");
+            rollthedice(i);
+            return;
+        });
+    }else{
+        nextplayer(i);
+        return;
+    };
     return;
 }
 
@@ -142,8 +149,9 @@ function rollthedice(i){
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
     d_one=dieone[i];
-    d_two=dietwo[i];    
+    d_two=dietwo[i];
     checkFive(i);
+    return;
 }
 
 function checkFive(i){
@@ -344,20 +352,30 @@ function canImove(i){
         if(out[i][n]>0){
             tokenblocked[i][n][0] = 0;
             tokenblocked[i][n][1] = 0;
-            for(b=0;b<blockedposition.length;b++){
-                if(reposition[i][n]<blockedposition[b]){
-                    if(blockedposition[b]<=newrepos1[i][n]){
-                       // alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die One`);
-                        one = 1;
-                        tokenblocked[i][n][0] = 1;
+            
+            if(position[i][n]<46){
+                for(b=0;b<blockedposition.length;b++){
+                    if(reposition[i][n]<blockedposition[b]){
+                        if(blockedposition[b]<=newrepos1[i][n]){
+                        // alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die One`);
+                            one = 1;
+                            tokenblocked[i][n][0] = 1;
+                        };
+                    };
+                    if(reposition[i][n]<blockedposition[b]){
+                        if(blockedposition[b]<=newrepos2[i][n]){
+                            //alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die Two`);
+                            two = 1;
+                            tokenblocked[i][n][1] = 1;
+                        };
                     };
                 };
-                if(reposition[i][n]<blockedposition[b]){
-                    if(blockedposition[b]<=newrepos2[i][n]){
-                        //alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die Two`);
-                        two = 1;
-                        tokenblocked[i][n][1] = 1;
-                    };
+            }else{
+                if(position[i][n]+dieone[i]>51){
+                    one = 1;
+                };
+                if(position[i][n]+dietwo[i]>51){
+                    two = 1;
                 };
             };
 
@@ -448,14 +466,13 @@ function move(i){
     newrepos = Number(reposition[i][j]+k);
     
     for(n=0;n<4;n++){
-    //alert("Position this token "+reposition[i][n]);
         if(blockedposition.includes(reposition[i][thistoken])){
             if(out[i][n]==1 && reposition[i][thistoken] == reposition[i][n]){
                 $("#"+players[i]+"Token"+token[n]).css({"left": x[position[i][n]-1]+"px","top": y[position[i][n]-1]+"px","position": "absolute"});
             };
             if(n==3){
-                if(reposition[i][thistoken] == 1){
-                   blockedposition.splice(blockedposition.indexOf(49),1); 
+                if(reposition[i][thistoken] < 7){
+                   blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]+48),1); 
                 };
                 blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]),1);
             };
@@ -482,35 +499,21 @@ function move(i){
             };
 
             givemesomespace(i);
-            
-            //return;
-           // alert(position[i]);
-           if(i==players.length-1){     
-               //alert(remainToMove);
-               if(remainToMove>0){
-                   $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
-                   checkFive(i);
-                   clearInterval(myVar);
-                   return;
-               }else{
-                   $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
-                   nextplayer(i);
-                   clearInterval(myVar);
-                   return;
-               };
+          
+            if(remainToMove>0){
+                $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
+                checkFive(i);
+                if(position[i][thistoken] == 51){tokensatend[i] +=1;};
+                if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
+                clearInterval(myVar);
+                return;
             }else{
-                //alert(remainToMove);
-                if(remainToMove>0){
-                   $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
-                   checkFive(i);
-                   clearInterval(myVar);
-                   return;
-               }else{
-                   $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
-                    nextplayer(i);
-                    clearInterval(myVar);
-                    return;
-               };
+                $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
+                if(position[i][thistoken] == 51){tokensatend[i] +=1;};
+                if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
+                nextplayer(i);
+                clearInterval(myVar);
+                return;
             };
         };
     return;
@@ -620,14 +623,14 @@ function sendhome(m,o){
 
 function blockspace(i,b,thistoken){
     if(blockedposition.includes(reposition[i][thistoken]) == false){
-        blockedposition.push(reposition[i][thistoken]);
-        $("#"+players[i]+"Token"+token[b]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
-        $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
         
-    
-        if(blockedposition.includes(1)){
-            if(blockedposition.includes(49) == false){
-                blockedposition.push(49);
+        if(position[i][thistoken]<47){
+            $("#"+players[i]+"Token"+token[b]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
+            $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
+            blockedposition.push(reposition[i][thistoken]);
+            if(reposition[i][thistoken]<7){
+                blockedposition.push(reposition[i][thistoken]+48);
+
             };
         };
 
