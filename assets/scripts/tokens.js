@@ -91,6 +91,7 @@ function whostarts(i){
             $("#"+players[results.indexOf(winner[0])]+"dice").css("z-index","3");;
             setTimeout(function(){alert (players[i] + "  starts!")},100);
             };
+            doubledice = 0;
             game(i);
             return;
         },200);
@@ -100,6 +101,7 @@ function whostarts(i){
 }
 
 function game(i){
+
     if(tokensatend[i]<4){
         remainToMove = 2;
         $("#dicemoveone").show();
@@ -143,6 +145,7 @@ function game(i){
 
 
 function rollthedice(i){
+
     $("#"+players[i]+"dice").css("z-index","1");
     dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
     dietwo[i] = 5; //Number(Math.floor(Math.random()*6+1));
@@ -150,6 +153,19 @@ function rollthedice(i){
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
     d_one=dieone[i];
     d_two=dietwo[i];
+    if(dieone[i] == dietwo[i]){
+        doubledice += 1;
+    }
+
+    if(doubledice == 3){
+        alert(`The color ${players[i]} and the token ${thistoken}`);
+        unblockspace(i,thistoken);
+        sendhome(i,thistoken);
+        doubledice = 0;
+        nextplayer(i);
+        return;
+    };
+
     checkFive(i);
     return;
 }
@@ -176,7 +192,11 @@ function checkFive(i){
                 $("#dicemoveone").hide();
                 setTimeout(function(){givemesomespace(i)},500);
                 if(remainToMove == 0){
-                    nextplayer(i);
+                    if(doubledice >0){
+                        game(i);
+                    }else{
+                        nextplayer(i);
+                    };
                     return;
                 }
             };
@@ -203,7 +223,11 @@ function checkFive(i){
                 $("#dicemovetwo").hide();
                 setTimeout(function(){givemesomespace(i)},500);
                 if(remainToMove == 0){
-                    nextplayer(i);
+                    if(doubledice >0){
+                        game(i);
+                    }else{
+                        nextplayer(i);
+                    };
                     return;
                 }
             };
@@ -215,11 +239,19 @@ function checkFive(i){
         options(i);
         return;
         }else{
-            nextplayer(i);
+            if(doubledice >0){
+                game(i);
+            }else{
+                nextplayer(i);
+            };
             return;
         };
     }else{
-        nextplayer(i);
+        if(doubledice >0){
+            game(i);
+        }else{
+            nextplayer(i);
+        };
         return;
     };
 }
@@ -456,7 +488,11 @@ function canImove(i){
         if(blockedoption == 8){
             alert(blockedoption);
             alert("No moves left");
-            nextplayer(i);
+            if(doubledice >0){
+                game(i);
+            }else{
+                nextplayer(i);
+            };
             return;
         };
     };
@@ -464,7 +500,11 @@ function canImove(i){
         if(blockedoption == 4){
             alert(blockedoption);
             alert("No moves left");
-            nextplayer(i);
+            if(doubledice >0){
+                game(i);
+            }else{
+                nextplayer(i);
+            };
             return;
         };
     };
@@ -503,7 +543,11 @@ function unblockspace(i,thistoken){
 
 function move(i){
     if(remainToMove == 0){
-        nextplayer(i);
+        if(doubledice >0){
+            game(i);
+        }else{
+            nextplayer(i);
+        };
     };
     //alert(players[i]+"Token"+token[thistoken]+" will move");
     $("#layer").off("click");
@@ -559,7 +603,11 @@ function move(i){
                 $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
                 if(position[i][thistoken] == 51){tokensatend[i] +=1;};
                 if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
-                nextplayer(i);
+                if(doubledice >0){
+                    game(i);
+                }else{
+                    nextplayer(i);
+                };
                 clearInterval(myVar);
                 return;
             };
