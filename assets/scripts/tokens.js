@@ -158,7 +158,7 @@ function rollthedice(i){
     }
 
     if(doubledice == 3){
-        alert(`The color ${players[i]} and the token ${thistoken}`);
+        //alert(`The color ${players[i]} and the token ${thistoken}`);
         unblockspace(i,thistoken);
         sendhome(i,thistoken);
         doubledice = 0;
