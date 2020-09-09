@@ -144,7 +144,7 @@ function game(i){
 
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
-    dieone[i] = 6;//Number(Math.floor(Math.random()*6+1));
+    dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
     dietwo[i] = 5; //Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
@@ -227,7 +227,7 @@ function checkFive(i){
 function whoishere(i){
     
     senthome = 0;
-    
+
     for(m=0;m<players.length-1;m++){
         for(n=0;n<4;n++){
             if(z+1 == reposition[m][n]){
@@ -530,14 +530,21 @@ function move(i){
         //$(".mainlayer").html(`${xposition} </br> ${yposition}`);
         l++;
         if (l==k){
+            
             remainToMove -=1;
             position[i][j] = Number(newpos);
 
-            if(newrepos>48){
-                reposition[i][j] = Number(newrepos)-48;
+            if(position[i][thistoken] > 46){
+                reposition[i][thistoken] = 0;
             }else{
-                reposition[i][j] = Number(newrepos);
-            };
+                if(newrepos>48){
+                    reposition[i][j] = Number(newrepos)-48;
+                    }else{
+                    reposition[i][j] = Number(newrepos);
+                };
+            };       
+
+
 
             givemesomespace(i);
           
@@ -557,6 +564,7 @@ function move(i){
                 return;
             };
         };
+
     return;
     };
     return;   
