@@ -12,14 +12,14 @@ let greenleft = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130
 let greentop = [55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,30,55,80,105,130];        
 let yellowleft = [180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,155,155,155,155,155];
 let yellowtop = [255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
-
+let safespace = [1,7,10,13,19,22,25,31,34,37,43,46];
 
 
 var moveleft =0;
 var d_one= 0;
 var d_two= 0;
 var tokensathome = [4,4,4,4];
-var tokensatend = [4,0,0,0];
+var tokensatend = [4,0,0,4];
 
 var thistoken = 0;
 var remainToMove = 2;
@@ -144,7 +144,7 @@ function game(i){
 
 function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
-    dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
+    dieone[i] = 6;//Number(Math.floor(Math.random()*6+1));
     dietwo[i] = 5; //Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(dieone[i]);
     $("#"+players[i]+"dicetwo").html(dietwo[i]);
@@ -164,6 +164,9 @@ function checkFive(i){
                 z = 24*i;
             }else{
                 z = 12*i;
+            };
+            if(blockedposition.includes(z+1)){
+                whoishere(i);
             };
             if(blockedposition.includes(z+1) == false){
                 //alert("leaving die token" + thistoken);
@@ -189,8 +192,11 @@ function checkFive(i){
             }else{
                 z = 12*i;
             };
+            //alert("leaving die token" + thistoken);
+            if(blockedposition.includes(z+1)){
+                whoishere(i);
+            };
             if(blockedposition.includes(z+1) == false){
-                //alert("leaving die token" + thistoken);
                 reposition[i][out[i].indexOf(0)] = z;
                 leavehome(i);
                 dietwo[i] = 0;
@@ -216,6 +222,34 @@ function checkFive(i){
         nextplayer(i);
         return;
     };
+}
+
+function whoishere(i){
+    
+    senthome = 0;
+    
+    for(m=0;m<players.length-1;m++){
+        for(n=0;n<4;n++){
+            if(z+1 == reposition[m][n]){
+                if(i != m){
+                    sendhome(m,n);
+                    if(reposition[m][n] < 7){
+                        blockedposition.splice(blockedposition.indexOf(reposition[m][n]+48),1); 
+                    };
+                    blockedposition.splice(blockedposition.indexOf(reposition[m][n]),1);
+                    senthome = 1;
+                }else{
+                    o = n;
+                }
+            };
+        };
+    };
+
+    if(senthome == 1){
+        $("#"+players[i]+"Token"+token[o]).css({"left": x[position[i][o]-1]+"px","top": y[position[i][o]-1]+"px","position": "absolute"});
+    }
+
+    return;
 }
 
 function nextplayer(i){
@@ -448,6 +482,25 @@ function dehighlight(i){
     return;
 }
 
+function unblockspace(i,thistoken){
+    for(m=0;m<players.length-1;m++){
+        for(n=0;n<4;n++){
+            if(blockedposition.includes(reposition[i][thistoken])){
+                if(out[m][n]==1 && reposition[m][n] == reposition[i][thistoken]){
+                    $("#"+players[m]+"Token"+token[n]).css({"left": x[position[i][thistoken]-1]+"px","top": y[position[i][thistoken]-1]+"px","position": "absolute"});
+                };
+                if(n==3 && m == players.length-2){
+                    if(reposition[i][thistoken] < 7){
+                    blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]+48),1); 
+                    };
+                    blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]),1);
+                    return;
+                };
+            };
+        };
+    };
+}
+
 function move(i){
     if(remainToMove == 0){
         nextplayer(i);
@@ -465,19 +518,7 @@ function move(i){
     newpos = Number(position[i][j]+k);
     newrepos = Number(reposition[i][j]+k);
     
-    for(n=0;n<4;n++){
-        if(blockedposition.includes(reposition[i][thistoken])){
-            if(out[i][n]==1 && reposition[i][thistoken] == reposition[i][n]){
-                $("#"+players[i]+"Token"+token[n]).css({"left": x[position[i][n]-1]+"px","top": y[position[i][n]-1]+"px","position": "absolute"});
-            };
-            if(n==3){
-                if(reposition[i][thistoken] < 7){
-                   blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]+48),1); 
-                };
-                blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]),1);
-            };
-        };
-    };
+    unblockspace(i,thistoken);
     //alert(newpos);
 
     var myVar = setInterval(myTimer, 200);
@@ -571,13 +612,17 @@ function givemesomespace(i){
    // alert(o);
     if(shield>0){
        //alert("Activate Shield");
-        blockspace(i,b,thistoken);
+        blockspace(i,i,b,thistoken);
         return;
     };
 
     if(hit>0){
       //  alert("Go home");
-        sendhome(m,o);
+        if(safespace.includes(reposition[i][thistoken])){
+            blockspace(i,m,o,thistoken);
+        }else{
+            sendhome(m,o);
+        };
         return;
     };
             /*    if(m !== i){
@@ -621,11 +666,11 @@ function sendhome(m,o){
     return;
 }
 
-function blockspace(i,b,thistoken){
+function blockspace(i,m,b,thistoken){
     if(blockedposition.includes(reposition[i][thistoken]) == false){
         
         if(position[i][thistoken]<47){
-            $("#"+players[i]+"Token"+token[b]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
+            $("#"+players[m]+"Token"+token[b]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
             $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
             blockedposition.push(reposition[i][thistoken]);
             if(reposition[i][thistoken]<7){
