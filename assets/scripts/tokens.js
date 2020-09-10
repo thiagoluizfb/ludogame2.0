@@ -103,9 +103,14 @@ function whostarts(i){
 var dice = new Audio('assets/audio/RollingDice.wav');
 var tokenMoving = new Audio('assets/audio/tokenMoving.wav');
 var turn = new Audio('assets/audio/yourTurn.wav');
+var leave = new Audio('assets/audio/leaveHome.wav');
 
 function playdice() { 
   dice.play(); 
+}
+
+function playleave() { 
+  leave.play(); 
 }
 
 function playturn() { 
@@ -150,7 +155,6 @@ function game(i){
             $("#"+players[i]+"dice").css("z-index","3");
             $("#"+players[i]+"dice").one("click",function() {
                 $("#"+players[i]+"dice").css("background-color","white");
-                playdice();
                 rollthedice(i);
                 return;
             });
@@ -165,6 +169,7 @@ function game(i){
 
 function rollthedice(i){
     
+    playdice();
     $("#"+players[i]+"dice").css("z-index","1");
     d=0;
     
@@ -331,11 +336,13 @@ function nextplayer(i){
 }
 
 function leavehome(i) {
+    
     $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
 
-    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).animate({left: `${x[0]}px`,top: `${y[0]}px`,position: "absolute"},200);
+    $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).animate({left: `${x[0]}px`,top: `${y[0]}px`,position: "absolute"},500);
+    playleave();
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"left": x[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
