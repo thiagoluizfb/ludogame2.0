@@ -177,7 +177,7 @@ function rollthedice(i){
     
     function rolling(){
         dieone[i] = Number(Math.floor(Math.random()*6+1));
-        dietwo[i] = Number(Math.floor(Math.random()*6+1));
+        dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
         $("#"+players[i]+"diceone").html(dieone[i]);
         $("#"+players[i]+"dicetwo").html(dietwo[i]);
         if(d==20){
@@ -468,15 +468,19 @@ function canImove(i){
                     if(reposition[i][n]<blockedposition[b]){
                         if(blockedposition[b]<=newrepos1[i][n]){
                         // alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die One`);
-                            one = 1;
-                            tokenblocked[i][n][0] = 1;
+                            if(position[i][n] + dieone[i] < 46){
+                                one = 1;
+                                tokenblocked[i][n][0] = 1;
+                            };
                         };
                     };
                     if(reposition[i][n]<blockedposition[b]){
                         if(blockedposition[b]<=newrepos2[i][n]){
                             //alert(`I am the token ${token[n]}, color ${players[i]} I cannot pass the blocked position ${blockedposition[b]} using the die Two`);
-                            two = 1;
-                            tokenblocked[i][n][1] = 1;
+                            if(position[i][n] + dietwo[i] < 46){
+                                two = 1;
+                                tokenblocked[i][n][1] = 1;
+                            };
                         };
                     };
                 };
