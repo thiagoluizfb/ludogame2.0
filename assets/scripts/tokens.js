@@ -101,53 +101,65 @@ function whostarts(i){
 }
 
 var dice = new Audio('assets/audio/RollingDice.wav');
+var tokenMoving = new Audio('assets/audio/tokenMoving.wav');
+var turn = new Audio('assets/audio/yourTurn.wav');
 
 function playdice() { 
   dice.play(); 
 }
 
+function playturn() { 
+  turn.play(); 
+}
+
+function playmove() { 
+  tokenMoving.play(); 
+}
+
 function game(i){
+    setTimeout(() => {
+        if(tokensatend[i]<4){
+            playturn();
+            remainToMove = 2;
+            $("#dicemoveone").show();
+            $("#dicemovetwo").show();
+            $("#"+players[i]+"dice").css("background-color","rgba(150, 155, 80)");
+            //i=3; 
 
-    if(tokensatend[i]<4){
-        remainToMove = 2;
-        $("#dicemoveone").show();
-        $("#dicemovetwo").show();
-        $("#"+players[i]+"dice").css("background-color","rgba(150, 155, 80)");
-        //i=3; 
-
-        if(players[i]=="blue"){
-            x = blueleft;
-            y = bluetop;
-        }else{
-            if(players[i]=="yellow"){
-                x = yellowleft;
-                y = yellowtop;
+            if(players[i]=="blue"){
+                x = blueleft;
+                y = bluetop;
             }else{
-                if(players[i]=="red"){
-                    x = redleft;
-                    y = redtop;
+                if(players[i]=="yellow"){
+                    x = yellowleft;
+                    y = yellowtop;
                 }else{
-                    if(players[i]=="green"){
-                        x = greenleft;
-                        y = greentop;
+                    if(players[i]=="red"){
+                        x = redleft;
+                        y = redtop;
+                    }else{
+                        if(players[i]=="green"){
+                            x = greenleft;
+                            y = greentop;
+                        };
                     };
                 };
             };
-        };
 
-        $("#layer").off("click");
-        $("#"+players[i]+"dice").css("z-index","3");
-        $("#"+players[i]+"dice").one("click",function() {
-            $("#"+players[i]+"dice").css("background-color","white");
-            playdice();
-            rollthedice(i);
+            $("#layer").off("click");
+            $("#"+players[i]+"dice").css("z-index","3");
+            $("#"+players[i]+"dice").one("click",function() {
+                $("#"+players[i]+"dice").css("background-color","white");
+                playdice();
+                rollthedice(i);
+                return;
+            });
+        }else{
+            nextplayer(i);
             return;
-        });
-    }else{
-        nextplayer(i);
+        };
         return;
-    };
-    return;
+    }, 500);
 }
 
 
@@ -598,6 +610,7 @@ function move(i){
         //alert("Ready to move");
         $("#"+players[i]+"Token"+token[thistoken]).animate({left: `${x[newpos-k+l]}px`,top: `${y[newpos-k+l]}px`,position: "absolute"},200);
         $("#"+players[i]+"Token"+token[thistoken]).css({"left": x[newpos-k+l]+"px","top": y[newpos-k+l]+"px","position": "absolute"});
+        playmove();
         //$(".mainlayer").html(`${xposition} </br> ${yposition}`);
         l++;
         if (l==k){
