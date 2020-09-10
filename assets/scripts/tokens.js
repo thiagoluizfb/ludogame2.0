@@ -100,6 +100,12 @@ function whostarts(i){
     //return;
 }
 
+var dice = new Audio('assets/audio/RollingDice.wav');
+
+function playdice() { 
+  dice.play(); 
+}
+
 function game(i){
 
     if(tokensatend[i]<4){
@@ -133,6 +139,7 @@ function game(i){
         $("#"+players[i]+"dice").css("z-index","3");
         $("#"+players[i]+"dice").one("click",function() {
             $("#"+players[i]+"dice").css("background-color","white");
+            playdice();
             rollthedice(i);
             return;
         });
@@ -145,31 +152,45 @@ function game(i){
 
 
 function rollthedice(i){
-
+    
     $("#"+players[i]+"dice").css("z-index","1");
-    dieone[i] = Number(Math.floor(Math.random()*6+1));
-    dietwo[i] = 5; //Number(Math.floor(Math.random()*6+1));
-    $("#"+players[i]+"diceone").html(dieone[i]);
-    $("#"+players[i]+"dicetwo").html(dietwo[i]);
-    d_one=dieone[i];
-    d_two=dietwo[i];
-    if(dieone[i] == dietwo[i]){
-        doubledice += 1;
-    }else{
-        doubledice = 0;
-    }
-
-    if(doubledice == 3){
-        //alert(`The color ${players[i]} and the token ${thistoken}`);
-        unblockspace(i,thistoken);
-        sendhome(i,thistoken);
-        doubledice = 0;
-        nextplayer(i);
-        return;
+    d=0;
+    
+    roll = setInterval(rolling,5);
+    
+    function rolling(){
+        dieone[i] = Number(Math.floor(Math.random()*6+1));
+        dietwo[i] = Number(Math.floor(Math.random()*6+1));
+        $("#"+players[i]+"diceone").html(dieone[i]);
+        $("#"+players[i]+"dicetwo").html(dietwo[i]);
+        if(d==20){
+            clearInterval(roll);
+            return;
+        };
+        d++;
     };
 
-    checkFive(i);
-    return;
+    setTimeout(() => {
+        d_one=dieone[i];
+        d_two=dietwo[i];
+        if(dieone[i] == dietwo[i]){
+            doubledice += 1;
+        }else{
+            doubledice = 0;
+        }
+
+        if(doubledice == 3){
+            //alert(`The color ${players[i]} and the token ${thistoken}`);
+            unblockspace(i,thistoken);
+            sendhome(i,thistoken);
+            doubledice = 0;
+            nextplayer(i);
+            return;
+        };
+
+        checkFive(i);
+        return;
+    }, 250);
 }
 
 function checkFive(i){
