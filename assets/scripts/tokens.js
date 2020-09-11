@@ -299,12 +299,11 @@ function checkFive(i){
 function whoishere(i){
     
     senthome = 0;
-
     for(m=0;m<players.length-1;m++){
         for(n=0;n<4;n++){
             if(z+1 == reposition[m][n]){
                 if(i != m){
-                    if(position[i][thistoken] > 0 && position[i][thistoken]<47){
+                    if(position[m][n] > 0 && position[i][thistoken]<47){
                         sendhome(m,n);
                     };
                     if(reposition[m][n] < 7){
