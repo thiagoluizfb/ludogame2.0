@@ -3,7 +3,7 @@ $(".board").hide();
 let players = ["blue","yellow","red","green"];
 let colors = ["blue","yellow","red","green"];
 let token = ["One","Two","Three","Four"];
-let robot = [0,1,1,0];
+let robot = [1,1,1,1];
 
 let redleft = [255,	230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
 let redtop = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,155,155,155,155,155];
@@ -20,7 +20,7 @@ var moveleft =0;
 var d_one= 0;
 var d_two= 0;
 var tokensathome = [4,4,4,4];
-var tokensatend = [4,0,0,4];
+var tokensatend = [0,0,0,0];
 
 var thistoken = 0;
 var remainToMove = 2;
@@ -41,14 +41,14 @@ var out = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var xposition = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var yposition = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 
-$("#players2").click(function twoplayers(){
+$("#players2").one("click",function twoplayers(){
     players=[];
     players.push("blue");
     players.push("red");
     return;
 });
 
-$("#players4").click(function twoplayers(){
+$("#players4").one("click",function twoplayers(){
     players=[];
     players.push("blue");
     players.push("yellow");
@@ -57,7 +57,7 @@ $("#players4").click(function twoplayers(){
     return;
 });
 
-$("#play").click(function starts(){
+$("#play").one("click",function starts(){
     $(".board").show();
     $("#start").css("z-index","-1");
     $("#layer").css("background-image","none");
@@ -98,7 +98,7 @@ function whostarts(i){
         },200);
     }
     },200);
-    //return;
+    return;
 }
 
 var dice = new Audio('assets/audio/RollingDice.wav');
@@ -308,7 +308,7 @@ function checkFive(i){
 function whoishere(i){
     
     senthome = 0;
-    for(m=0;m<players.length-1;m++){
+    for(m=0;m<players.length;m++){
         for(n=0;n<4;n++){
             if(z+1 == reposition[m][n]){
                 if(i != m){
@@ -388,6 +388,38 @@ function options(i){
         setTimeout(() => {
             for(n=0;n<4;n++){
                 if(out[i][n] == 1){
+                    if(safespace.includes(reposition[i][n]+dieone[i]+dietwo[i]) ||
+                    safespace.includes(reposition[i][n]+dieone[i]) ||
+                    safespace.includes(reposition[i][n]+dietwo[i])){
+                        if(tokenblocked[i][n][0] == 0){
+                            if(dieone[i]>0){
+                                moveleft  = dieone[i];
+                                dieone[i]=0;
+                                thistoken = n;
+                                dehighlight(i);
+                                move(i);
+                                return;
+                            };
+                        };
+                    };
+                    if(safespace.includes(reposition[i][n]+dieone[i]+dietwo[i]) ||
+                    safespace.includes(reposition[i][n]+dieone[i]) ||
+                    safespace.includes(reposition[i][n]+dietwo[i])){
+                        if(tokenblocked[i][n][1] == 0){
+                            if(dietwo[i]>0){
+                                moveleft  = dietwo[i];
+                                dietwo[i]=0;
+                                thistoken = n;
+                                dehighlight(i);
+                                move(i);
+                                return;
+                            };
+                        };
+                    };
+                };
+            };
+            for(n=0;n<4;n++){
+                if(out[i][n] == 1){
                     if(tokenblocked[i][n][0] == 0){
                         if(dieone[i]>0){
                             moveleft  = dieone[i];
@@ -397,7 +429,7 @@ function options(i){
                             move(i);
                             return;
                         };
-                    };
+                    }; 
                     if(tokenblocked[i][n][1] == 0){
                         if(dietwo[i]>0){
                             moveleft  = dietwo[i];
@@ -409,7 +441,7 @@ function options(i){
                         };
                     };
                 };
-            };
+            };             
         }, 1000);
     };
     return;
@@ -575,8 +607,8 @@ function canImove(i){
     
     if(remainToMove == 2){
         if(blockedoption == 8){
-            alert(blockedoption);
-            alert("No moves left");
+            //alert(blockedoption);
+            //alert("No moves left");
             if(doubledice >0){
                 game(i);
             }else{
@@ -587,8 +619,8 @@ function canImove(i){
     };
     if(remainToMove == 1){
         if(blockedoption == 4){
-            alert(blockedoption);
-            alert("No moves left");
+            //alert(blockedoption);
+            //alert("No moves left");
             if(doubledice >0){
                 game(i);
             }else{
@@ -612,13 +644,13 @@ function dehighlight(i){
 }
 
 function unblockspace(i,thistoken){
-    for(m=0;m<players.length-1;m++){
+    for(m=0;m<players.length;m++){
         for(n=0;n<4;n++){
             if(blockedposition.includes(reposition[i][thistoken])){
                 if(out[m][n]==1 && reposition[m][n] == reposition[i][thistoken]){
                     $("#"+players[m]+"Token"+token[n]).css({"left": x[position[i][thistoken]-1]+"px","top": y[position[i][thistoken]-1]+"px","position": "absolute"});
                 };
-                if(n==3 && m == players.length-2){
+                if(n==3 && m == players.length-1){
                     if(reposition[i][thistoken] < 7){
                     blockedposition.splice(blockedposition.indexOf(reposition[i][thistoken]+48),1); 
                     };
