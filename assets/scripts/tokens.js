@@ -3,6 +3,7 @@ $(".board").hide();
 let players = ["blue","yellow","red","green"];
 let colors = ["blue","yellow","red","green"];
 let token = ["One","Two","Three","Four"];
+let robot = [0,1,1,0];
 
 let redleft = [255,	230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
 let redtop = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,155,155,155,155,155];
@@ -153,11 +154,19 @@ function game(i){
 
             $("#layer").off("click");
             $("#"+players[i]+"dice").css("z-index","3");
-            $("#"+players[i]+"dice").one("click",function() {
-                $("#"+players[i]+"dice").css("background-color","white");
-                rollthedice(i);
-                return;
-            });
+            if(robot[i] == 0){
+                $("#"+players[i]+"dice").one("click",function() {
+                    $("#"+players[i]+"dice").css("background-color","white");
+                    rollthedice(i);
+                    return;
+                });
+            }else{
+                setTimeout(() => {
+                    $("#"+players[i]+"dice").css("background-color","white");
+                    rollthedice(i);
+                    return;
+                }, 1000);
+            };
         }else{
             nextplayer(i);
             return;
@@ -373,7 +382,42 @@ function options(i){
 
     highlight(i);
 
-   $(".tokenwrapper"+players[i]).one("click",function(){
+    if(robot[i] == 0){
+        activatedice(i);
+    }else{
+        setTimeout(() => {
+            for(n=0;n<4;n++){
+                if(out[i][n] == 1){
+                    if(tokenblocked[i][n][0] == 0){
+                        if(dieone[i]>0){
+                            moveleft  = dieone[i];
+                            dieone[i]=0;
+                            thistoken = n;
+                            dehighlight(i);
+                            move(i);
+                            return;
+                        };
+                    };
+                    if(tokenblocked[i][n][1] == 0){
+                        if(dietwo[i]>0){
+                            moveleft  = dietwo[i];
+                            dietwo[i]=0;
+                            thistoken = n;
+                            dehighlight(i);
+                            move(i);
+                            return;
+                        };
+                    };
+                };
+            };
+        }, 1000);
+    };
+    return;
+}
+
+function activatedice(i){
+
+    $(".tokenwrapper"+players[i]).one("click",function(){
         $(this).parent().css("z-index","1");
         dehighlight(i);
         $("#dicewrapper").show();
@@ -391,12 +435,8 @@ function options(i){
         $("#dicewrapper").css("top", yposition[[i]][thistoken]-35);
         $("#layer").on("click",function(){options(i)});       
         return;
-        //alert("this is the token "+ thistoken);
-        //alert("my position is: left "+xposition[[i]][thistoken]+" and top "+yposition[[i]][thistoken]);
-        //alert("My position is left: "+xposition[i][token.indexOf(players[i]))
     });
 
-    
     $("#dicemoveone").one("click", function(){
         //alert("Moving from dicemoveone");
         moveleft  = dieone[i];
@@ -412,9 +452,9 @@ function options(i){
         $(this).hide();
         move(i);
     });
-
     return;
 }
+
 
 function highlight(i){
    
