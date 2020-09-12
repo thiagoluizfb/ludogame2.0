@@ -72,15 +72,31 @@ for(n=0;n<4;n++){
     $(`#${players[n]}human`).on("click",function human() {
        $(this).prop("checked",true);
        $(this).siblings().prop("checked",false);
-       robot[r.indexOf($(this).attr("id"))] = 0;
-       $(".mainlayer").html(robot);
+       if(players.length == 2){ 
+           if(r.indexOf($(this).attr("id")) == 2 ){
+               robot[r.indexOf($(this).attr("id"))-1] = 0;
+           }else{
+               robot[r.indexOf($(this).attr("id"))] = 0;
+           };
+       }else{
+           robot[r.indexOf($(this).attr("id"))] = 0;
+       };
+       $(".mainlayer").html(players + "  " + robot);
        return;
     });
     $(`#${players[n]}bot`).on("click",function bot() {
        $(this).prop("checked",true);
        $(this).siblings().prop("checked",false);
-       robot[r.indexOf($(this).siblings().attr("id"))] = 1;
-       $(".mainlayer").html(robot);
+       if(players.length == 2){ 
+           if(r.indexOf($(this).siblings().attr("id")) == 2 ){
+               robot[r.indexOf($(this).siblings().attr("id"))-1] = 1;
+           }else{
+               robot[r.indexOf($(this).siblings().attr("id"))] = 1;
+           };
+       }else{
+           robot[r.indexOf($(this).siblings().attr("id"))] = 1;
+       };
+       $(".mainlayer").html(players + "  " + robot);
        return;
     });
 }
