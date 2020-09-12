@@ -42,14 +42,23 @@ var out = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var xposition = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var yposition = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 
-$("#players2").one("click",function twoplayers(){
+
+$("#myCheck").on("click",function choose() {
+    var x = document.getElementById("myCheck");
+    var y = document.getElementById("myChecktwo");
+    x.checked = true;
+    y.checked = false;
     players=[];
     players.push("blue");
     players.push("red");
-    return;
+    return; 
 });
 
-$("#players4").one("click",function twoplayers(){
+$("#myChecktwo").on("click",function choose() {
+    var x = document.getElementById("myCheck");
+    var y = document.getElementById("myChecktwo");
+    y.checked = true;
+    x.checked = false;
     players=[];
     players.push("blue");
     players.push("yellow");
@@ -57,6 +66,26 @@ $("#players4").one("click",function twoplayers(){
     players.push("green");
     return;
 });
+
+for(n=0;n<4;n++){
+    let r = ["bluehuman","yellowhuman","redhuman","greenhuman"];
+    $(`#${players[n]}human`).on("click",function human() {
+       $(this).prop("checked",true);
+       $(this).siblings().prop("checked",false);
+       robot[r.indexOf($(this).attr("id"))] = 0;
+       $(".mainlayer").html(robot);
+       return;
+    });
+    $(`#${players[n]}bot`).on("click",function bot() {
+       $(this).prop("checked",true);
+       $(this).siblings().prop("checked",false);
+       robot[r.indexOf($(this).siblings().attr("id"))] = 1;
+       $(".mainlayer").html(robot);
+       return;
+    });
+}
+
+
 
 $("#play").one("click",function starts(){
     $(".board").show();
