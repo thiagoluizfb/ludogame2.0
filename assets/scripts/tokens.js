@@ -1,4 +1,6 @@
 $(".board").hide();
+$("#players").hide();
+$("#start").show();
 
 let players = ["blue","yellow","red","green"];
 let colors = ["blue","yellow","red","green"];
@@ -44,34 +46,32 @@ var yposition = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 
 
 $("#myCheck").on("click",function choose() {
-    var x = document.getElementById("myCheck");
-    var y = document.getElementById("myChecktwo");
-    x.checked = true;
-    y.checked = false;
     players=[];
     players.push("blue");
     players.push("red");
+    $(`.fourplayers`).hide();
+    $("#myChecktwo").removeClass("playersnumber");
+    $("#myCheck").addClass("playersnumber");
     return; 
 });
 
 $("#myChecktwo").on("click",function choose() {
-    var x = document.getElementById("myCheck");
-    var y = document.getElementById("myChecktwo");
-    y.checked = true;
-    x.checked = false;
     players=[];
     players.push("blue");
     players.push("yellow");
     players.push("red");
     players.push("green");
+    $(`.fourplayers`).show();
+    $("#myCheck").removeClass("playersnumber");
+    $("#myChecktwo").addClass("playersnumber");
     return;
 });
 
 for(n=0;n<4;n++){
     let r = ["bluehuman","yellowhuman","redhuman","greenhuman"];
     $(`#${players[n]}human`).on("click",function human() {
-       $(this).prop("checked",true);
-       $(this).siblings().prop("checked",false);
+       $(this).addClass(`playersnumber`);
+       $(this).siblings().removeClass(`playersnumber`);
        if(players.length == 2){ 
            if(r.indexOf($(this).attr("id")) == 2 ){
                robot[r.indexOf($(this).attr("id"))-1] = 0;
@@ -81,12 +81,12 @@ for(n=0;n<4;n++){
        }else{
            robot[r.indexOf($(this).attr("id"))] = 0;
        };
-       $(".mainlayer").html(players + "  " + robot);
+       //$(".mainlayer").html(players + "  " + robot);
        return;
     });
     $(`#${players[n]}bot`).on("click",function bot() {
-       $(this).prop("checked",true);
-       $(this).siblings().prop("checked",false);
+       $(this).addClass(`playersnumber`);
+       $(this).siblings().removeClass(`playersnumber`);
        if(players.length == 2){ 
            if(r.indexOf($(this).siblings().attr("id")) == 2 ){
                robot[r.indexOf($(this).siblings().attr("id"))-1] = 1;
@@ -96,7 +96,7 @@ for(n=0;n<4;n++){
        }else{
            robot[r.indexOf($(this).siblings().attr("id"))] = 1;
        };
-       $(".mainlayer").html(players + "  " + robot);
+       //$(".mainlayer").html(players + "  " + robot);
        return;
     });
 }
@@ -104,8 +104,15 @@ for(n=0;n<4;n++){
 
 
 $("#play").one("click",function starts(){
+    $("#start").hide();
+    $("#players").show();
+    $("#layer").css("background-image","none");
+});
+
+$("#startgame").one("click",function starts(){
     $(".board").show();
-    $("#start").css("z-index","-1");
+    $(this).hide();
+    $("#players").hide();
     $("#layer").css("background-image","none");
     let i = 0;
     whostarts(i);
@@ -391,7 +398,7 @@ function nextplayer(i){
 
 function leavehome(i) {
     
-    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+   // $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
 
@@ -411,7 +418,7 @@ function leavehome(i) {
     out[i][out[i].indexOf(0)] = 1;
     tokensathome[i]-=1;
     remainToMove -= 1;
-    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+    //$(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
     givemesomespace(i);
     return;
 }
@@ -790,14 +797,14 @@ function move(i){
             givemesomespace(i);
           
             if(remainToMove>0){
-                $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+               // $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
                 checkFive(i);
                 if(position[i][thistoken] == 51){tokensatend[i] +=1;};
                 if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
                 clearInterval(myVar);
                 return;
             }else{
-                $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+               //$(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
                 if(position[i][thistoken] == 51){tokensatend[i] +=1;};
                 if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
                 if(doubledice >0){
@@ -938,7 +945,7 @@ function blockspace(i,m,b,thistoken){
                     };
 
                 };
-                $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+                //$(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
             };
 
         }else{
@@ -948,7 +955,7 @@ function blockspace(i,m,b,thistoken){
                         $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
                         lastblockedposition[i].push(position[i][thistoken]);
 
-                    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+                   // $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
                 };
             };
         }

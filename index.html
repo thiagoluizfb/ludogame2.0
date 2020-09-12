@@ -6,45 +6,81 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css" type="text/css" />
     <link rel="shortcut icon" href="assets/audio">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Ludo Mania</title>
 
 </head>
 <body>
+    
     <div class="container-fluid">
-    <div class="mainlayer"></div>
+
+        <div id="players">
+            <div>
+                <span class="settings">G</span>
+                <span class="exit">E</span>
+                <div id="startgame"><button class="initbtn pt-2" >PLAY</button></div>
+            </div>
+            <div class="vertical-align text-justify-center">
+                <div class="row">
+                    <div class="col-12 pt-3">
+                        <h1>Select players</h1>
+                    </div>
+                </div>
+                <div class="row mx-0 justify-content-center">
+                    <div class="col-6 p-2">
+                        <h2 id="myCheck">2</h2>    
+                    </div>
+                    <div class="col-6 p-2">
+                        <h2 id="myChecktwo">4</h2> 
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <span class="col-4 ml-2 g">Blue</span>
+                    <span id="bluehuman" class="col-3">Human</span>
+                    <span id="bluebot" class="col-2">Bot</span>  
+                </div>
+                <div class="row text-center fourplayers">
+                    <span class="col-4 ml-2 a">Yellow</span>
+                    <span id="yellowhuman" class="col-3">Human</span>
+                    <span id="yellowbot" class="col-2">Bot</span>  
+                </div>
+                <div class="row text-center">
+                    <span class="col-4 ml-2 m">Red</span>
+                    <span id="redhuman" class="col-3">Human</span>
+                    <span id="redbot" class="col-2">Bot</span>  
+                </div>
+                <div class="row text-center fourplayers">
+                    <span class="col-4 ml-2 e">Green</span>
+                    <span id="greenhuman" class="col-3">Human</span>
+                    <span id="greenbot" class="col-2">Bot</span>  
+                </div>
+            </div>
+        </div>
+
         <div id="start">
             <span class="settings">G</span>
             <span class="exit">E</span>
-            <div class="logo">LOGO</div>
-            #Players:    
-            <input type="checkbox" id="myCheck">2   
-            <input type="checkbox" id="myChecktwo" checked>4
-            <div>
-                Blue:
-                <input type="checkbox" id="bluehuman" checked>Human   
-                <input type="checkbox" id="bluebot">Bot
-            </div>
-            <div>
-                Yellow:
-                <input type="checkbox" id="yellowhuman" checked>Human   
-                <input type="checkbox" id="yellowbot">Bot
-            </div>
-            <div>
-                Red:
-                <input type="checkbox" id="redhuman" checked>Human   
-                <input type="checkbox" id="redbot">Bot
-            </div>
-            <div>
-                Green:
-                <input type="checkbox" id="greenhuman" checked>Human   
-                <input type="checkbox" id="greenbot">Bot
+            <div class="logo pt-3">
+                <h2>
+                    <span class="e">L</span>
+                    <span class="m">U</span>
+                    <span class="g">D</span>
+                    <span class="a">O</span>
+                </h2>
+                <h2>
+                    <span class="g">G</span>
+                    <span class="a">A</span>
+                    <span class="m">M</span>
+                    <span class="e">E</span>
+                </h2>
             </div>
             <div>
                 <div id="play"><button class="initbtn" >PLAY</button></div>
                 <div id="rules"><button class="initbtn">Game Rules</button></div>
             </div>
         </div>
+
         <div class="board" >
         <div id="layer" class="text-center"></div> 
         <div id="blueTokenOne"><div class="tokenwrapperblue"><div class="tokenblue"></div></div></div>
@@ -103,7 +139,7 @@
                 <div class="vline"></div>
                 <div class="vline greenhome"></div>
                 <div class="vline greenhome"></div>
-                <div class="vline safespace"></div>
+                <div class="vline safespace"><i class="fa fa-star-o" aria-hidden="true"></i></div>
                 <div class="vline"></div>
                 <div class="vline"></div>
                 <div class="vline"></div>
@@ -140,11 +176,11 @@
             <div class="row hline p-0 m-0">
                 <div class="vline">45</div>
                 <div class="vline">44</div>
-                <div class="vline safespace"></div>
+                <div class="vline safespace"><i class="fa fa-star-o" aria-hidden="true"></i></div>
                 <div class="vline">42</div>
                 <div class="vline">41</div>
                 <div class="vline">40</div>
-                <div class="vline greenhome"></div>
+                <div class="vline greenhome text-center"><i class="fa fa-trophy" aria-hidden="true"></i></div>
                 <div class="vline">28</div>
                 <div class="vline">27</div>
                 <div class="vline">26</div>
@@ -158,9 +194,9 @@
                 <div class="vline bluehome"></div>
                 <div class="vline bluehome"></div>
                 <div class="vline bluehome"></div>
-                <div class="vline bluehome"></div>
+                <div class="vline bluehome text-center"><i class="fa fa-trophy" aria-hidden="true"></i></div>
                 <div class="vline"></div>
-                <div class="vline redhome"></div>
+                <div class="vline redhome text-center"><i class="fa fa-trophy" aria-hidden="true"></i></div>
                 <div class="vline redhome"></div>
                 <div class="vline redhome"></div>
                 <div class="vline redhome"></div>
@@ -173,11 +209,11 @@
                 <div class="vline">2</div>
                 <div class="vline">3</div>
                 <div class="vline">4</div>
-                <div class="vline yellowhome"></div>
+                <div class="vline yellowhome text-center"><i class="fa fa-trophy" aria-hidden="true"></i></div>
                 <div class="vline">16</div>
                 <div class="vline">17</div>
                 <div class="vline">18</div>
-                <div class="vline safespace"></div>
+                <div class="vline safespace"><i class="fa fa-star-o" aria-hidden="true"></i></div>
                 <div class="vline">20</div>
                 <div>21</div>
             </div>
@@ -215,7 +251,7 @@
                 <div class="vline"></div>
                 <div class="vline"></div>
                 <div class="vline"></div>
-                <div class="vline safespace"></div>
+                <div class="vline safespace"><i class="fa fa-star-o" aria-hidden="true"></i></div>
                 <div class="vline yellowhome"></div>
                 <div class="vline yellowhome"></div>
                 <div class="vline"></div>
@@ -369,6 +405,7 @@
                 <div id="dicemovetwo" class="text-center">1</div>
             </div>
         </div>
+
     </div>
     
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
