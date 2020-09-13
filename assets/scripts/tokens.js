@@ -1,11 +1,27 @@
 $(".board").hide();
 $("#players").hide();
 $("#start").show();
+$(".exit").hide();
+$("#startgame").hide();
+$(".selecttype").hide();
 
-let players = ["blue","yellow","red","green"];
+if($( window ).width()){
+    setInterval(() => {
+        mtop = ($( window ).width()-$( ".board" ).height())/4;
+        if(mtop<100){mtop=100;};
+        z = mtop/100;
+        if(z>1.5){z=1.5;};
+        if(mtop>115){mtop=115;};
+        $(".mainlayer").html(mtop);
+        $( ".board" ).css("margin", `${100-15*z}px auto`);
+        $( ".board" ).css("zoom", `${z}`);
+    }, 1);
+}
+
+let players = ["blue","red"];
 let colors = ["blue","yellow","red","green"];
 let token = ["One","Two","Three","Four"];
-let robot = [1,1,1,1];
+let robot = [0,0,0,0];
 
 let redleft = [255,	230,205,180,180,180,180,180,180,155,130,130,130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,280,255,230,205,180];
 let redtop = [130,130,130,130,105,80,55,30,5,5,5,30,55,80,105,130,130,130,130,130,130,155,180,180,180,180,180,180,205,230,255,280,305,305,305,280,255,230,205,180,180,180,180,180,180,155,155,155,155,155,155];
@@ -67,9 +83,30 @@ $("#myChecktwo").on("click",function choose() {
     return;
 });
 
+$("#next").on("click",function choose() {
+    $(this).hide();
+    $("#startgame").show();
+    $(".exit").show();
+    $(".selectplayers").toggle();
+    $(".selecttype").show();
+    return; 
+});
+
+$(".exit").on("click",function choose() {
+    $(this).hide();
+    $("#next").show();
+    $("#startgame").hide();
+    $(".selectplayers").toggle();
+    $(".selecttype").hide();
+    return; 
+});
+
+
 for(n=0;n<4;n++){
+    
     let r = ["bluehuman","yellowhuman","redhuman","greenhuman"];
-    $(`#${players[n]}human`).on("click",function human() {
+    $(`#${colors[n]}human`).on("click",function human() {
+       //$(".mainlayer").html(players + "  " + robot);
        $(this).addClass(`playersnumber`);
        $(this).siblings().removeClass(`playersnumber`);
        if(players.length == 2){ 
@@ -82,9 +119,9 @@ for(n=0;n<4;n++){
            robot[r.indexOf($(this).attr("id"))] = 0;
        };
        //$(".mainlayer").html(players + "  " + robot);
-       return;
     });
-    $(`#${players[n]}bot`).on("click",function bot() {
+    $(`#${colors[n]}bot`).on("click",function bot() {
+      //  $(".mainlayer").html(players + "  " + robot);
        $(this).addClass(`playersnumber`);
        $(this).siblings().removeClass(`playersnumber`);
        if(players.length == 2){ 
@@ -96,8 +133,7 @@ for(n=0;n<4;n++){
        }else{
            robot[r.indexOf($(this).siblings().attr("id"))] = 1;
        };
-       //$(".mainlayer").html(players + "  " + robot);
-       return;
+     //  $(".mainlayer").html(players + "  " + robot);
     });
 }
 
@@ -109,13 +145,14 @@ $("#play").one("click",function starts(){
     $("#layer").css("background-image","none");
 });
 
-$("#startgame").one("click",function starts(){
+$("#startgame").on("click",function starts(){  
     $(".board").show();
     $(this).hide();
     $("#players").hide();
     $("#layer").css("background-image","none");
     let i = 0;
     whostarts(i);
+    return;
 });
 
 function whostarts(i){

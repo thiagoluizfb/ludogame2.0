@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Luckiest+Guy:100,200,300,400,500,600,700|Acme:100,200,300,400,500,600,700');
 
 
+
 body{
     background-color:  rgb(177, 150, 121);
     background-position: center;
@@ -24,10 +25,11 @@ body{
     color:white;
 }
 
+
+
 .board{
     border-right: solid black 1px;
-    padding: 0px;
-    margin: 150px auto 200px;
+    padding: 0px;    
     /* margin: -300px auto; Margin for desktop
     zoom: 150% zoom for desktop*/
     height: 325px;
@@ -625,3 +627,4 @@ body{
     font-size: 8px;
     line-height: center;
 }
+
