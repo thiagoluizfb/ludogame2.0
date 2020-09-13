@@ -18,9 +18,9 @@ let yellowtop = [255,230,205,180,180,180,180,180,180,155,130,130,130,130,130,130
 let safespace = [1,7,10,13,19,22,25,31,34,37,43,46];
 
 
-var moveleft =0;
-var d_one= 0;
-var d_two= 0;
+var moveleft = 0;
+var d_one = 0;
+var d_two = 0;
 var tokensathome = [4,4,4,4];
 var tokensatend = [0,0,0,0];
 
