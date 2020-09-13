@@ -3,7 +3,7 @@
 
 
 body{
-    background-color:  rgb(177, 150, 121);
+    background-color:  lightgreen;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -43,8 +43,7 @@ body{
     background-color:  rgb(177, 100, 121);
     border-radius: 50px;
     padding: 0px;
-    margin: 150px auto 200px;
-    height: 350px;
+    height: 325px;
     width: 250px;
     position: relative;
     z-index: 3;
@@ -56,8 +55,7 @@ body{
     background-color:  rgb(177, 100, 121);
     border-radius: 50px;
     padding: 0px;
-    margin: 150px auto 200px;
-    height: 350px;
+    height: 325px;
     width: 250px;
     position: relative;
     z-index: 3;

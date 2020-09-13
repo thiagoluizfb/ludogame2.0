@@ -1,20 +1,30 @@
-$(".board").hide();
+$(".board").show();
 $("#players").hide();
-$("#start").show();
+$("#start").hide();
 $(".exit").hide();
 $("#startgame").hide();
 $(".selecttype").hide();
 
 if($( window ).width()){
     setInterval(() => {
-        mtop = ($( window ).width()-$( ".board" ).height())/4;
-        if(mtop<100){mtop=100;};
-        z = mtop/100;
-        if(z>1.5){z=1.5;};
+        mtop = $(window).height()-$( ".board" ).height();
+        
+       
+        mleft = 100*z*325;
+        //$(".mainlayer").html(z);
         if(mtop>115){mtop=115;};
-        $(".mainlayer").html(mtop);
-        $( ".board" ).css("margin", `${100-15*z}px auto`);
-        $( ".board" ).css("zoom", `${z}`);
+        if(mtop<100){mtop=100;};
+        z = mtop/350/4;
+        if(z>0.5){z=0.5;};
+        //if(z<0.9){z=0.9;};
+        $(".mainlayer").html(z);
+        
+        $( ".board" ).css("margin", `150px auto`);
+        $( ".board" ).css("zoom", `${(1+z)*100}%`);
+        /*$("#start").css("margin", `${mtop}px auto`);
+        $( "#start" ).css("zoom", `${(1+z)*100}%`);
+        $("#players").css("margin", `${mtop}px auto`);
+        $( "#players" ).css("zoom", `${(1+z)*100}%`);*/
     }, 1);
 }
 
