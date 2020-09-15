@@ -341,7 +341,7 @@ function game(i){
 
 function rollthedice(i){
 
-    dieone[i] = Number(Math.floor(Math.random()*6+1));
+    dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
     dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
 
     playdice();
@@ -406,7 +406,7 @@ function checkFive(i){
                 //alert("wait");
                 dieone[i] = 0;           
                 $("#dicemoveone").hide();
-                givemesomespace(i);
+                setTimeout(() => { givemesomespace(i); }, 250);
                 if(remainToMove == 0){
                     if(doubledice > 0){
                         setTimeout(() => { game(i); }, 1000);
@@ -438,7 +438,7 @@ function checkFive(i){
                // alert("wait");
                 dietwo[i] = 0;
                 $("#dicemovetwo").hide();
-                givemesomespace(i);
+                setTimeout(() => { givemesomespace(i); }, 250);
                 if(remainToMove == 0){
                     if(doubledice > 0){
                         setTimeout(() => { game(i); }, 1000);
@@ -476,7 +476,7 @@ function checkFive(i){
 function whoishere(i){
     
     senthome = 0;
-    for(m=0;m<players.length;m++){
+    for(m=0;m<players.length-1;m++){
         for(n=0;n<4;n++){
             if(z+1 == reposition[m][n]){
                 if(i != m){
@@ -513,7 +513,7 @@ function nextplayer(i){
 
 function leavehome(i) {
     
-   // $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+   $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
 
@@ -533,7 +533,7 @@ function leavehome(i) {
     out[i][out[i].indexOf(0)] = 1;
     tokensathome[i]-=1;
     remainToMove -= 1;
-    //$(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
     givemesomespace(i);
     return;
 }
@@ -580,7 +580,6 @@ function options(i){
                         if(tokenblocked[i][n][1] == 0){
                             if(dietwo[i]>0){
                                 moveleft  = dietwo[i];
-                                $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-five dice"></i>`);
                                 dietwo[i]=0;
                                 thistoken = n;
                                 dehighlight(i);
@@ -597,6 +596,7 @@ function options(i){
                         if(dieone[i]>0){
                             moveleft  = dieone[i];
                             dieone[i]=0;
+                            thistoken = n;
                             dehighlight(i);
                             move(i);
                             return;
@@ -890,14 +890,14 @@ function move(i){
             givemesomespace(i);
           
             if(remainToMove>0){
-               // $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+               $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
                 checkFive(i);
                 if(position[i][thistoken] == 51){tokensatend[i] +=1;};
                 if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
                 clearInterval(myVar);
                 return;
             }else{
-               //$(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+               $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
                 if(position[i][thistoken] == 51){tokensatend[i] +=1;};
                 if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
                 if(doubledice >0){
@@ -945,7 +945,7 @@ function givemesomespace(i){
     var hit = 0;
     var m = 0;
     var o = 0;
-    for(h=0;h<players.length;h++){
+    for(h=0;h<players.length-1;h++){
         //alert(h);
         if(h != i){
             for(a=0;a<4;a++){
@@ -1038,7 +1038,7 @@ function blockspace(i,m,b,thistoken){
                     };
 
                 };
-                //$(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+                $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
             };
 
         }else{
@@ -1048,7 +1048,7 @@ function blockspace(i,m,b,thistoken){
                         $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
                         lastblockedposition[i].push(position[i][thistoken]);
 
-                   // $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
+                    $(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition} </br> ${lastblockedposition}`);
                 };
             };
         }
