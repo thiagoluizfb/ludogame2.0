@@ -23,7 +23,7 @@ if($( window ).width()){
             }
         };
 
-        mx = Math.min(0.9*$(window).width()-375,0.9*$(window).height()-375);
+        mx = Math.min(0.9*$(window).width()-425,0.9*$(window).height()-425);
         
         z = (375+mx/2)/375;
         
@@ -32,13 +32,12 @@ if($( window ).width()){
         };
 
         //$(".mainlayer").html(z);
-
-        $( ".board" ).css("margin", `${($(window).height()-$("body").height())/2}px auto`);
         $( ".board" ).css("zoom", `${(z)}`);
-        $("#start").css("margin", `${($(window).height()-$("#start").height())/2}px auto`);
+        $( ".board" ).css("margin", `${($(window).height()-$("body").height()*z)/2}px auto`);
         $( "#start" ).css("zoom", `${(z)}`);
-        $("#players").css("margin",  `${($(window).height()-$("#players").height())/2}px auto`);
+        $("#start").css("margin", `${($(window).height()-$("#start").height()*z)/4}px auto`);
         $( "#players" ).css("zoom", `${(z)}`);
+        $("#players").css("margin",  `${($(window).height()-$("#players").height()*z)/4}px auto`);
     }, 1);
 }
 
@@ -360,6 +359,8 @@ function rollthedice(i){
         if(d==40){
             dieone[i] = Number(Math.floor(Math.random()*6+1));
             dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
+            rollone = dieone[i];
+            rolltwo = dietwo[i];
             $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
             $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
             clearInterval(roll);
