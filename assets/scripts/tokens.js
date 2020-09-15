@@ -1,44 +1,48 @@
 $(".board").hide();
 $("#players").hide();
-$("#start").hide();
+$("#start").show();
 $(".exit").hide();
-$("#startgame").hide();0/
+$("#startgame").hide();
 $(".selecttype").hide();
 
-if($(window).height()<$(window).width()){
-    $(".mainlayer").html("This game was supposed to be played in portrait");
-    $(".board").hide();
-}else{
-    $(".board").show();
-}
+let playing = 0;
+let playerSelected = 0;
 
 if($( window ).width()){
     setInterval(() => {
-        x = Math.min(0.90*$(window).width()-375,0.9*$(window).height()-375);
-        
-        //mtop = $(window).height()-$( ".board" ).height();
-        z = (375+x/2)/375;
-    
 
-        //mleft = 100*z*325;
-        //$(".mainlayer").html(z);
-       // if(mtop>115){mtop=115;};
-       // if(mtop<100){mtop=100;};
+        if ($(window).height()<425){
+            $(".board").hide();
+            $( "#start").hide();
+            $( "#players").hide();
+        }else{
+            if(playing == 1){
+                $(".board").show();
+            }else{
+                $(".board").hide();
+            }
+        };
+
+        mx = Math.min(0.9*$(window).width()-375,0.9*$(window).height()-375);
         
-        //if(z>0.5){z=0.5;};
-        //if(z<0.9){z=0.9;};
-        //$(".mainlayer").html(z);
+        z = (375+mx/2)/375;
         
+        if ($(window).width()<325){
+            z = 0.8;
+        };
+
+        //$(".mainlayer").html(z);
+
         $( ".board" ).css("margin", `${$(window).height()/8}px auto`);
         $( ".board" ).css("zoom", `${(z)}`);
-        /*$("#start").css("margin", `${mtop}px auto`);
-        $( "#start" ).css("zoom", `${(1+z)*100}%`);
-        $("#players").css("margin", `${mtop}px auto`);
-        $( "#players" ).css("zoom", `${(1+z)*100}%`);*/
+        $("#start").css("margin", `${$(window).height()/8}px auto`);
+        $( "#start" ).css("zoom", `${(z)}`);
+        $("#players").css("margin",  `${$(window).height()/8}px auto`);
+        $( "#players" ).css("zoom", `${(z)}`);
     }, 1);
 }
 
-let players = ["blue","red"];
+let players = [];
 let colors = ["blue","yellow","red","green"];
 let token = ["One","Two","Three","Four"];
 let robot = [0,0,0,0];
@@ -86,8 +90,12 @@ $("#myCheck").on("click",function choose() {
     players.push("blue");
     players.push("red");
     $(`.fourplayers`).hide();
+    $(`#greendice`).hide();
+    $(`#yellowdice`).hide();
     $("#myChecktwo").removeClass("playersnumber");
     $("#myCheck").addClass("playersnumber");
+    playselected();
+    playerSelected = 1;
     return; 
 });
 
@@ -98,17 +106,26 @@ $("#myChecktwo").on("click",function choose() {
     players.push("red");
     players.push("green");
     $(`.fourplayers`).show();
+    $(`#greendice`).show();
+    $(`#yellowdice`).show();
     $("#myCheck").removeClass("playersnumber");
     $("#myChecktwo").addClass("playersnumber");
+    playselected();
+    playerSelected = 1;
     return;
 });
 
 $("#next").on("click",function choose() {
-    $(this).hide();
-    $("#startgame").show();
-    $(".exit").show();
-    $(".selectplayers").toggle();
-    $(".selecttype").show();
+    if(playerSelected == 1){
+        $(this).hide();
+        $("#startgame").show();
+        $(".exit").show();
+        $(".selectplayers").toggle();
+        $(".selecttype").show();
+        playselected();
+    }else{
+        alert("Select the number of players");
+    };
     return; 
 });
 
@@ -118,6 +135,7 @@ $(".exit").on("click",function choose() {
     $("#startgame").hide();
     $(".selectplayers").toggle();
     $(".selecttype").hide();
+    playselected();
     return; 
 });
 
@@ -127,6 +145,7 @@ for(n=0;n<4;n++){
     let r = ["bluehuman","yellowhuman","redhuman","greenhuman"];
     $(`#${colors[n]}human`).on("click",function human() {
        //$(".mainlayer").html(players + "  " + robot);
+       playselected();
        $(this).addClass(`playersnumber`);
        $(this).siblings().removeClass(`playersnumber`);
        if(players.length == 2){ 
@@ -142,6 +161,7 @@ for(n=0;n<4;n++){
     });
     $(`#${colors[n]}bot`).on("click",function bot() {
       //  $(".mainlayer").html(players + "  " + robot);
+      playselected();
        $(this).addClass(`playersnumber`);
        $(this).siblings().removeClass(`playersnumber`);
        if(players.length == 2){ 
@@ -159,27 +179,51 @@ for(n=0;n<4;n++){
 
 
 
-$("#play").one("click",function starts(){
+$("#play").on("click",function starts(){
+    playselected();
     $("#start").hide();
     $("#players").show();
-    $("#layer").css("background-image","none");
 });
 
-$("#startgame").on("click",function starts(){  
+$("#startgame").on("click",function starts(){ 
+    playstart();
     $(".board").show();
     $(this).hide();
     $("#players").hide();
     $("#layer").css("background-image","none");
+    playing = 1;
     let i = 0;
-    whostarts(i);
+    setTimeout(() => {
+        whostarts(i);
+    }, 1000); 
     return;
 });
 
 function whostarts(i){
+    playdice();
+    d=0;
+    
+    dicenum = ["one","two","three","four","five","six"];
+
+    roll = setInterval(rolling,5);
     dieone[i] = Number(Math.floor(Math.random()*6+1));
     dietwo[i] = Number(Math.floor(Math.random()*6+1));
-    $("#"+players[i]+"diceone").html(dieone[i]);
-    $("#"+players[i]+"dicetwo").html(dietwo[i]);
+
+    function rolling(){
+        
+        rollone = Number(Math.floor(Math.random()*6+1));
+        rolltwo = Number(Math.floor(Math.random()*6+1));
+        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
+        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
+        if(d==40){
+            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
+            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
+            clearInterval(roll);
+            return;
+        };
+        d++;
+    };
+    
     results[i] = dieone[i] + dietwo[i];
     setTimeout(function(){
         $("#"+players[i]+"dice").css("z-index","1");
@@ -205,9 +249,9 @@ function whostarts(i){
             doubledice = 0;
             game(i);
             return;
-        },200);
+        },2000);
     }
-    },200);
+    },1000);
     return;
 }
 
@@ -215,6 +259,8 @@ var dice = new Audio('assets/audio/RollingDice.wav');
 var tokenMoving = new Audio('assets/audio/tokenMoving.wav');
 var turn = new Audio('assets/audio/yourTurn.wav');
 var leave = new Audio('assets/audio/leaveHome.wav');
+var selected = new Audio('assets/audio/select.wav');
+var start = new Audio('assets/audio/start.wav');
 
 function playdice() { 
   dice.play(); 
@@ -232,6 +278,14 @@ function playmove() {
   tokenMoving.play(); 
 }
 
+function playselected() { 
+  selected.play(); 
+}
+
+function playstart() { 
+  start.play(); 
+}
+
 function game(i){
     setTimeout(() => {
         if(tokensatend[i]<4){
@@ -239,7 +293,7 @@ function game(i){
             remainToMove = 2;
             $("#dicemoveone").show();
             $("#dicemovetwo").show();
-            $("#"+players[i]+"dice").css("background-color","rgba(150, 155, 80)");
+            $("#"+players[i]+"dice").addClass("pulseshadow");
             //i=3; 
 
             if(players[i]=="blue"){
@@ -266,13 +320,13 @@ function game(i){
             $("#"+players[i]+"dice").css("z-index","3");
             if(robot[i] == 0){
                 $("#"+players[i]+"dice").one("click",function() {
-                    $("#"+players[i]+"dice").css("background-color","white");
+                    $("#"+players[i]+"dice").removeClass("pulseshadow");
                     rollthedice(i);
                     return;
                 });
             }else{
                 setTimeout(() => {
-                    $("#"+players[i]+"dice").css("background-color","white");
+                    $("#"+players[i]+"dice").removeClass("pulseshadow");
                     rollthedice(i);
                     return;
                 }, 1000);
@@ -292,14 +346,21 @@ function rollthedice(i){
     $("#"+players[i]+"dice").css("z-index","1");
     d=0;
     
+    dicenum = ["one","two","three","four","five","six"];
+
     roll = setInterval(rolling,5);
-    
+    dieone[i] = Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
+
     function rolling(){
-        dieone[i] = Number(Math.floor(Math.random()*6+1));
-        dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
-        $("#"+players[i]+"diceone").html(dieone[i]);
-        $("#"+players[i]+"dicetwo").html(dietwo[i]);
-        if(d==20){
+        
+        rollone = Number(Math.floor(Math.random()*6+1));
+        rolltwo = Number(Math.floor(Math.random()*6+1));
+        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
+        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
+        if(d==40){
+            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
+            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
             clearInterval(roll);
             return;
         };
@@ -311,6 +372,7 @@ function rollthedice(i){
         d_two=dietwo[i];
         if(dieone[i] == dietwo[i]){
             doubledice += 1;
+            $("#"+players[i]+"dice").children().children().css("color","gold");
         }else{
             doubledice = 0;
         }

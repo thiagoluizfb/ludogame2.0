@@ -35,7 +35,7 @@ body{
     height: 325px;
     width: 325px;
     position: relative;
-    box-shadow: 5px 5px black;
+    box-shadow: 5px 5px 15px 5px rgba(109, 0, 73);
 }
 
 #start{
@@ -125,6 +125,8 @@ body{
 .pointer:hover{
     cursor: pointer;
 }
+
+
 
 
 .hline{
@@ -509,77 +511,100 @@ body{
     color: #fff;
 }
 
+.dice{
+    border: solid rgba(109, 0, 73) 4px;
+    color:#f3f3f3;
+    font-size: 38px;
+    margin: 0px !important;
+    padding: 0px !important;
+    background-color:rgba(109, 0, 73);
+    border-radius: 10%;
+}
+
+/* https://www.florin-pop.com/ */
+.pulseshadow{
+    box-shadow: 0 0 0 0 rgba(109, 0, 73, 1);
+	transform: scale(1);
+	animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 5 0 rgba(109, 0, 73, 0.7);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 5 10px rgba(109, 0, 73, 0);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 5 0 rgba(109, 0, 73, 0);
+	}
+}
+/* https://www.florin-pop.com/ */
+
+
 #bluedice{
-    border: solid black 1px;
-    background-color: white;
-    height: 50px;
-    width: 100px;
     position: absolute;
+    margin-top: 10px;
+    margin-left: 20px;
 }
 
 #bluediceone, #bluedicetwo{
-    border: solid black 1px;
-    margin: 0px;
-    padding: 0px;
-    height: 25px;
-    width: 25px;
+    margin: 0px 2px;
+    padding: auto auto;
+    height: 40px;
+    width: 40px;
     display: inline-block;
+    text-align: center;
 }
 
 #yellowdice{
-    border: solid black 1px;
-    background-color: white;
-    height: 50px;
-    width: 100px;
     position: absolute;
-    right: 0px;
+    margin-top: 10px;
+    right: 20px;
 }
 
 #yellowdiceone, #yellowdicetwo{
-    border: solid black 1px;
-    margin: 0px;
-    padding: 0px;
-    height: 25px;
-    width: 25px;
+    margin: 0px 2px;
+    padding: auto auto;
+    height: 40px;
+    width: 40px;
     display: inline-block;
+    text-align: center;
 }
 
 #reddice{
-    border: solid black 1px;
-    background-color: white;
-    height: 50px;
-    width: 100px;
     position: absolute;
-    top: -50px;
-    right: 0px;
+    top: -60px;
+    right: 20px;
 }
 
 #reddiceone, #reddicetwo{
-    border: solid black 1px;
-    margin: 0px;
-    padding: 0px;
-    height: 25px;
-    width: 25px;
+    margin: 0px 2px;
+    padding: auto auto;
+    height: 40px;
+    width: 40px;
     display: inline-block;
+    text-align: center;
 }
 
 #greendice{
-    border: solid black 1px;
-    background-color: white;
-    height: 50px;
-    width: 100px;
     position: absolute;
-    top: -50px;
-    left: 0px;
+    top: -60px;
+    left: 20px;
 }
 
 #greendiceone, #greendicetwo{
-    border: solid black 1px;
-    margin: 0px;
-    padding: 0px;
-    height: 25px;
-    width: 25px;
+    margin: 0px 2px;
+    padding: auto auto;
+    height: 40px;
+    width: 40px;
     display: inline-block;
+    text-align: center;
 }
 
 #dicewrapper{
@@ -600,23 +625,23 @@ body{
 #dicemoveone{
     margin: 1px;
     padding: 1px;
-    height: 25px;
-    width: 25px;
+    height: 30px;
+    width: 30px;
     position: relative;
     border: solid black 1px;
     display: inline-block;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 #dicemovetwo{
     margin: 1px;
     padding: 1px;
-    height: 25px;
-    width: 25px;
+    height: 30px;
+    width: 30px;
     position: relative;
     border: solid black 1px;
     display: inline-block;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 #dicewrapper p{
