@@ -35,9 +35,9 @@ if($( window ).width()){
         $( ".board" ).css("zoom", `${(z)}`);
         $( ".board" ).css("margin", `${($(window).height()-$("body").height()*z)/2}px auto`);
         $( "#start" ).css("zoom", `${(z)}`);
-        $("#start").css("margin", `${($(window).height()-$("#start").height()*z)/4}px auto`);
+        $("#start").css("margin", `${($(window).height()-$("#start").height()*z)/2}px auto`);
         $( "#players" ).css("zoom", `${(z)}`);
-        $("#players").css("margin",  `${($(window).height()-$("#players").height()*z)/4}px auto`);
+        $("#players").css("margin",  `${($(window).height()-$("#players").height()*z)/2}px auto`);
     }, 1);
 }
 
@@ -68,7 +68,8 @@ var remainToMove = 2;
 
 
 
-
+var rollone = [0,0,0,0];
+var rolltwo = [0,0,0,0];
 var dieone = [0,0,0,0];
 var dietwo = [0,0,0,0];
 var results = [0,0,0,0];
@@ -200,30 +201,29 @@ $("#startgame").on("click",function starts(){
 
 function whostarts(i){
     playdice();
+   
     d=0;
-    
     dicenum = ["one","two","three","four","five","six"];
-
-    roll = setInterval(rolling,5);
-
-
+    roll = setInterval(rolling,1);
     function rolling(){ 
-        rollone = Number(Math.floor(Math.random()*6+1));
-        rolltwo = Number(Math.floor(Math.random()*6+1));
-        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
-        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
-        if(d==40){
+        rollone[i] = Number(Math.floor(Math.random()*6+1));
+        rolltwo[i] = Number(Math.floor(Math.random()*6+1));
+        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]-1]} dice"></i>`);
+        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]-1]} dice"></i>`);
+        if(d==100){
             dieone[i] = Number(Math.floor(Math.random()*6+1));
             dietwo[i] = Number(Math.floor(Math.random()*6+1));
-            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
-            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
+            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
+            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
+            results[i] = dieone[i] + dietwo[i];
             clearInterval(roll);
             return;
         };
         d++;
     };
     
-    results[i] = dieone[i] + dietwo[i];
+    
+    
     setTimeout(function(){
         $("#"+players[i]+"dice").css("z-index","1");
         if(i<players.length-1){
@@ -232,7 +232,7 @@ function whostarts(i){
         }
         if (i==players.length-1){
             setTimeout(function(){
-                results.pop();
+                alert(results);
                 winner = Array.from(results);
                 winner.sort(function(a, b){return b-a});
             if (winner[0]===winner[1]){
@@ -248,7 +248,7 @@ function whostarts(i){
             doubledice = 0;
             game(i);
             return;
-        },2000);
+        },1000);
     }
     },1000);
     return;
@@ -340,35 +340,30 @@ function game(i){
 
 
 function rollthedice(i){
-    
+
+    dieone[i] = Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
+
     playdice();
-    $("#"+players[i]+"dice").css("z-index","1");
+
     d=0;
-    
     dicenum = ["one","two","three","four","five","six"];
+    rolled = setInterval(rollingdice,1);
 
-    roll = setInterval(rolling,5);
-    
-
-    function rolling(){
-        
-        rollone = Number(Math.floor(Math.random()*6+1));
-        rolltwo = Number(Math.floor(Math.random()*6+1));
-        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
-        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
-        if(d==40){
-            dieone[i] = Number(Math.floor(Math.random()*6+1));
-            dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
-            rollone = dieone[i];
-            rolltwo = dietwo[i];
-            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
-            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
-            clearInterval(roll);
+    function rollingdice(){ 
+        rollone[i] = Number(Math.floor(Math.random()*6+1));
+        rolltwo[i] = Number(Math.floor(Math.random()*6+1));
+        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]-1]} dice"></i>`);
+        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]-1]} dice"></i>`);
+        if(d==100){
+            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
+            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
+            clearInterval(rolled);
             return;
         };
         d++;
     };
-
+    
     setTimeout(() => {
         if(dieone[i] == dietwo[i]){
             doubledice += 1;
@@ -385,10 +380,11 @@ function rollthedice(i){
             nextplayer(i);
             return;
         };
-
+        if(dieone[i]==5){$("#"+players[i]+"diceone").html(`<i class="fas fa-dice-five dice"></i>`);};
+        if(dietwo[i]==5){$("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-five dice"></i>`);};
         checkFive(i);
         return;
-    }, 250);
+    }, 500);
 }
 
 function checkFive(i){
@@ -403,20 +399,26 @@ function checkFive(i){
                 z = 12*i;
             };
             if(blockedposition.includes(z+1)){
+                $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-five dice"></i>`); 
                 whoishere(i);
             };
             if(blockedposition.includes(z+1) == false){
                 //alert("leaving die token" + thistoken);
+                $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-five dice"></i>`); 
                 reposition[i][out[i].indexOf(0)] = z;
                 leavehome(i);
+                //alert("wait");
                 dieone[i] = 0;
+                $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-five dice"></i>`);             
                 $("#dicemoveone").hide();
-                setTimeout(function(){givemesomespace(i)},500);
+                givemesomespace(i);
                 if(remainToMove == 0){
                     if(doubledice > 0){
-                        game(i);
+                        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-five dice"></i>`); 
+                        setTimeout(() => { game(i); }, 1000);
                     }else{
-                        nextplayer(i);
+                        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-five dice"></i>`); 
+                        setTimeout(() => { nextplayer(i); }, 1000);
                     };
                     return;
                 }
@@ -435,19 +437,26 @@ function checkFive(i){
             };
             //alert("leaving die token" + thistoken);
             if(blockedposition.includes(z+1)){
+                $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-five dice"></i>`); 
                 whoishere(i);
             };
             if(blockedposition.includes(z+1) == false){
+                
+                $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-five dice"></i>`); 
                 reposition[i][out[i].indexOf(0)] = z;
                 leavehome(i);
+               // alert("wait");
+                $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-five dice"></i>`); 
                 dietwo[i] = 0;
                 $("#dicemovetwo").hide();
-                setTimeout(function(){givemesomespace(i)},500);
+                givemesomespace(i);
                 if(remainToMove == 0){
-                    if(doubledice >0){
-                        game(i);
+                    if(doubledice > 0){
+                        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-five dice"></i>`); 
+                        setTimeout(() => { game(i); }, 1000);
                     }else{
-                        nextplayer(i);
+                        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-five dice"></i>`); 
+                        setTimeout(() => { nextplayer(i); }, 1000);
                     };
                     return;
                 }
@@ -460,18 +469,18 @@ function checkFive(i){
         options(i);
         return;
         }else{
-            if(doubledice >0){
-                game(i);
+            if(doubledice > 0){
+                setTimeout(() => { game(i); }, 1000);
             }else{
-                nextplayer(i);
+                setTimeout(() => { nextplayer(i); }, 1000);
             };
             return;
         };
     }else{
-        if(doubledice >0){
-            game(i);
+        if(doubledice > 0){
+            setTimeout(() => { game(i); }, 1000);
         }else{
-            nextplayer(i);
+            setTimeout(() => { nextplayer(i); }, 1000);
         };
         return;
     };
@@ -584,6 +593,7 @@ function options(i){
                         if(tokenblocked[i][n][1] == 0){
                             if(dietwo[i]>0){
                                 moveleft  = dietwo[i];
+                                $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-five dice"></i>`);
                                 dietwo[i]=0;
                                 thistoken = n;
                                 dehighlight(i);
@@ -600,7 +610,6 @@ function options(i){
                         if(dieone[i]>0){
                             moveleft  = dieone[i];
                             dieone[i]=0;
-                            thistoken = n;
                             dehighlight(i);
                             move(i);
                             return;
