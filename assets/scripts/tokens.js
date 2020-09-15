@@ -28,16 +28,16 @@ if($( window ).width()){
         z = (375+mx/2)/375;
         
         if ($(window).width()<325){
-            z = 0.8;
+            z = 0.75;
         };
 
         //$(".mainlayer").html(z);
 
-        $( ".board" ).css("margin", `${$(window).height()/8}px auto`);
+        $( ".board" ).css("margin", `${($(window).height()-$("body").height())/2}px auto`);
         $( ".board" ).css("zoom", `${(z)}`);
-        $("#start").css("margin", `${$(window).height()/8}px auto`);
+        $("#start").css("margin", `${($(window).height()-$("#start").height())/2}px auto`);
         $( "#start" ).css("zoom", `${(z)}`);
-        $("#players").css("margin",  `${$(window).height()/8}px auto`);
+        $("#players").css("margin",  `${($(window).height()-$("#players").height())/2}px auto`);
         $( "#players" ).css("zoom", `${(z)}`);
     }, 1);
 }
@@ -349,8 +349,7 @@ function rollthedice(i){
     dicenum = ["one","two","three","four","five","six"];
 
     roll = setInterval(rolling,5);
-    dieone[i] = Number(Math.floor(Math.random()*6+1));
-    dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
+    
 
     function rolling(){
         
@@ -359,6 +358,8 @@ function rollthedice(i){
         $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
         if(d==40){
+            dieone[i] = Number(Math.floor(Math.random()*6+1));
+            dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
             $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
             $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
             clearInterval(roll);
@@ -368,8 +369,6 @@ function rollthedice(i){
     };
 
     setTimeout(() => {
-        d_one=dieone[i];
-        d_two=dietwo[i];
         if(dieone[i] == dietwo[i]){
             doubledice += 1;
             $("#"+players[i]+"dice").children().children().css("color","gold");
