@@ -205,18 +205,18 @@ function whostarts(i){
     dicenum = ["one","two","three","four","five","six"];
 
     roll = setInterval(rolling,5);
-    dieone[i] = Number(Math.floor(Math.random()*6+1));
-    dietwo[i] = Number(Math.floor(Math.random()*6+1));
 
-    function rolling(){
-        
+
+    function rolling(){ 
         rollone = Number(Math.floor(Math.random()*6+1));
         rolltwo = Number(Math.floor(Math.random()*6+1));
         $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
         if(d==40){
-            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
-            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
+            dieone[i] = Number(Math.floor(Math.random()*6+1));
+            dietwo[i] = Number(Math.floor(Math.random()*6+1));
+            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
+            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
             clearInterval(roll);
             return;
         };
@@ -361,8 +361,8 @@ function rollthedice(i){
             dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
             rollone = dieone[i];
             rolltwo = dietwo[i];
-            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
-            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
+            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone-1]} dice"></i>`);
+            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo-1]} dice"></i>`);
             clearInterval(roll);
             return;
         };
