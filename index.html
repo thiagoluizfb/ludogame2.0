@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +11,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Ludo Mania</title>
 </head>
+
 <body>
-    <div class="mainlayer"></div>  
+    <div class="mainlayer"></div>  <!-- Used to print information of a variable (positioning) when the game is being played, for testing purposes -->
     <div class="container-fluid">
 
+        <!-- Menu to select number of players -->
         <div id="players">
             <div>
                 <span class="settings"><i class="fa fa-cogs" aria-hidden="true"></i></span>
-                <span class="exit pointer"><i class="fa fa-undo" aria-hidden="true"></i></span>
+                <span class="back pointer"><i class="fa fa-undo" aria-hidden="true"></i></span>
                 <div id="next"><button class="initbtn mt-5">Next</button></div>
                 <div id="startgame"><button class="initbtn mt-5" >PLAY</button></div>
             </div>
@@ -34,10 +37,10 @@
                 </div>
                 <div class="row mx-0 justify-content-center">
                     <div class="col-6 p-1 pointer g">
-                        <h2 id="myCheck">2</h2>    
+                        <h2 id="twoplayers">2</h2>    
                     </div>
                     <div class="col-6 p-1 pointer m">
-                        <h2 id="myChecktwo">4</h2> 
+                        <h2 id="fourplayers">4</h2> 
                     </div>
                 </div>
             </div>
@@ -83,6 +86,7 @@
             </div>
         </div>
 
+        <!-- Menu to select type of players -->
         <div id="start">
             <div class="logo mt-2 pt-5 pb-4">
                 <h1>
@@ -102,30 +106,32 @@
                 <div id="play"><button class="initbtn" >PLAY</button></div>
             </div>
         </div>
-
+        
         <div class="board" >
-        <div id="layer" class="text-center"></div> 
-        <div id="blueTokenOne"><div class="tokenwrapperblue"><div class="tokenblue"></div></div></div>
-        <div id="blueTokenTwo"><div class="tokenwrapperblue"><div class="tokenblue"></div></div></div>
-        <div id="blueTokenThree"><div class="tokenwrapperblue"><div class="tokenblue"></div></div></div>
-        <div id="blueTokenFour"><div class="tokenwrapperblue"><div class="tokenblue"></div></div></div>
+        
+			<div id="layer" class="text-center"></div> 
+			<div id="blueTokenOne"><div class="tokenwrapperblue"><div class="tokenblue"></div></div></div>
+			<div id="blueTokenTwo"><div class="tokenwrapperblue"><div class="tokenblue"></div></div></div>
+			<div id="blueTokenThree"><div class="tokenwrapperblue"><div class="tokenblue"></div></div></div>
+			<div id="blueTokenFour"><div class="tokenwrapperblue"><div class="tokenblue"></div></div></div>
 
-        <div id="yellowTokenOne"><div class="tokenwrapperyellow"><div class="tokenyellow"></div></div></div>
-        <div id="yellowTokenTwo"><div class="tokenwrapperyellow"><div class="tokenyellow"></div></div></div>
-        <div id="yellowTokenThree"><div class="tokenwrapperyellow"><div class="tokenyellow"></div></div></div>
-        <div id="yellowTokenFour"><div class="tokenwrapperyellow"><div class="tokenyellow"></div></div></div>
+			<div id="yellowTokenOne"><div class="tokenwrapperyellow"><div class="tokenyellow"></div></div></div>
+			<div id="yellowTokenTwo"><div class="tokenwrapperyellow"><div class="tokenyellow"></div></div></div>
+			<div id="yellowTokenThree"><div class="tokenwrapperyellow"><div class="tokenyellow"></div></div></div>
+			<div id="yellowTokenFour"><div class="tokenwrapperyellow"><div class="tokenyellow"></div></div></div>
 
-        <div id="redTokenOne"><div class="tokenwrapperred"><div class="tokenred"></div></div></div>
-        <div id="redTokenTwo"><div class="tokenwrapperred"><div class="tokenred"></div></div></div>
-        <div id="redTokenThree"><div class="tokenwrapperred"><div class="tokenred"></div></div></div>
-        <div id="redTokenFour"><div class="tokenwrapperred"><div class="tokenred"></div></div></div>
+			<div id="redTokenOne"><div class="tokenwrapperred"><div class="tokenred"></div></div></div>
+			<div id="redTokenTwo"><div class="tokenwrapperred"><div class="tokenred"></div></div></div>
+			<div id="redTokenThree"><div class="tokenwrapperred"><div class="tokenred"></div></div></div>
+			<div id="redTokenFour"><div class="tokenwrapperred"><div class="tokenred"></div></div></div>
 
-        <div id="greenTokenOne"><div class="tokenwrappergreen"><div class="tokengreen"></div></div></div>
-        <div id="greenTokenTwo"><div class="tokenwrappergreen"><div class="tokengreen"></div></div></div>
-        <div id="greenTokenThree"><div class="tokenwrappergreen"><div class="tokengreen"></div></div></div>
-        <div id="greenTokenFour"><div class="tokenwrappergreen"><div class="tokengreen"></div></div></div>
+			<div id="greenTokenOne"><div class="tokenwrappergreen"><div class="tokengreen"></div></div></div>
+			<div id="greenTokenTwo"><div class="tokenwrappergreen"><div class="tokengreen"></div></div></div>
+			<div id="greenTokenThree"><div class="tokenwrappergreen"><div class="tokengreen"></div></div></div>
+			<div id="greenTokenFour"><div class="tokenwrappergreen"><div class="tokengreen"></div></div></div>
 
-                <div class="row hline p-0 m-0">
+			<!-- Board Grid-->
+			<div class="row hline p-0 m-0">
                 <div class="vline"></div>
                 <div class="vline"></div>
                 <div class="vline"></div>
@@ -309,6 +315,8 @@
                 <div class="vline"></div>
                 <div class="vline"></div>
             </div>
+
+			<!-- HQs -->
             <div class="home blue">
                 <div class="row m-0 p-0">
                     <div class="col-6 token-home-wrapper p-0">
@@ -398,6 +406,7 @@
                 </div>
             </div>
 
+			<!-- Players' dice -->
             <div id="bluedice">
                 <div id="bluediceone">
                     <i class="fas fa-dice-six dice"></i>
@@ -430,6 +439,8 @@
                     <i class="fas fa-dice-six dice"></i>
                 </div>
             </div>
+
+			<!-- Dice option when token is selected -->
             <div id="dicewrapper">
                 <div id="dicemoveone" class="text-center">6</div>
                 <div id="dicemovetwo" class="text-center">6</div>

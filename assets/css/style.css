@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Luckiest+Guy:100,200,300,400,500,600,700|Acme:100,200,300,400,500,600,700');
 
 
-
 body{
     background-color:  lightgreen;
     background-position: center;
@@ -11,33 +10,11 @@ body{
     color: rgba(109, 0, 73);
 }
 
-#layer{
-    padding: 0px;
-    margin: -50px 0px;
-    height: 425px;
-    width: 325px;
-    position: absolute;
-    z-index: 2;
-    text-align: center;
-}
-
 .mainlayer{
     color:white;
 }
 
-
-
-.board{
-    border-right: solid black 1px;
-    padding: 0px;    
-    /* margin: -300px auto; Margin for desktop
-    zoom: 150% zoom for desktop*/
-    height: 325px;
-    width: 325px;
-    position: relative;
-    box-shadow: 5px 5px 15px 5px rgba(109, 0, 73);
-}
-
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////Main Menu*/
 #start{
     border: solid 3px rgba(109, 0, 73);
     background-color:  rgb(177, 100, 121);
@@ -68,7 +45,6 @@ body{
     border-radius: 100%;
 }
 
-
 .settings{
     left: 20px;
     top: 20px;
@@ -76,7 +52,7 @@ body{
     position: absolute;
 }
 
-.exit{
+.back{
     right: 20px;
     top: 20px;
     width: 25px;
@@ -100,6 +76,7 @@ body{
 .e{
     color: green;
 }
+
 .initbtn{
     border: solid 3px rgba(109, 0, 73);
     background-color:  rgb(177, 100, 121);
@@ -126,8 +103,26 @@ body{
     cursor: pointer;
 }
 
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////Board*/
 
+.board{
+    border-right: solid black 1px;
+    padding: 0px;
+    height: 325px;
+    width: 325px;
+    position: relative;
+    box-shadow: 5px 5px 15px 5px rgba(109, 0, 73);
+}
 
+#layer{
+    padding: 0px;
+    margin: -50px 0px;
+    height: 425px;
+    width: 325px;
+    position: absolute;
+    z-index: 2;
+    text-align: center;
+}
 
 .hline{
     background-color: #fff;
@@ -223,6 +218,8 @@ body{
     width: 12.5%;
     border-radius: 100%;
 }
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////Tokens */
 
 #blueTokenOne{
     height: 12px;
@@ -510,6 +507,7 @@ body{
     font-size: 5px;
     color: #fff;
 }
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////DICE*/
 
 .dice{
     border: solid rgba(109, 0, 73) 4px;
@@ -521,32 +519,6 @@ body{
     border-radius: 10%;
 }
 
-/* https://www.florin-pop.com/ */
-.pulseshadow{
-    box-shadow: 0 0 0 0 rgba(109, 0, 73, 1);
-	transform: scale(1);
-	animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-	0% {
-		transform: scale(0.95);
-		box-shadow: 0 0 5 0 rgba(109, 0, 73, 0.7);
-	}
-
-	70% {
-		transform: scale(1);
-		box-shadow: 0 0 5 10px rgba(109, 0, 73, 0);
-	}
-
-	100% {
-		transform: scale(0.95);
-		box-shadow: 0 0 5 0 rgba(109, 0, 73, 0);
-	}
-}
-/* https://www.florin-pop.com/ */
-
-
 #bluedice{
     position: absolute;
     margin-top: 10px;
@@ -555,7 +527,6 @@ body{
 
 #bluediceone, #bluedicetwo{
     margin: 0px 2px;
-    padding: auto auto;
     height: 40px;
     width: 40px;
     display: inline-block;
@@ -570,7 +541,6 @@ body{
 
 #yellowdiceone, #yellowdicetwo{
     margin: 0px 2px;
-    padding: auto auto;
     height: 40px;
     width: 40px;
     display: inline-block;
@@ -585,7 +555,6 @@ body{
 
 #reddiceone, #reddicetwo{
     margin: 0px 2px;
-    padding: auto auto;
     height: 40px;
     width: 40px;
     display: inline-block;
@@ -600,7 +569,6 @@ body{
 
 #greendiceone, #greendicetwo{
     margin: 0px 2px;
-    padding: auto auto;
     height: 40px;
     width: 40px;
     display: inline-block;
@@ -612,8 +580,6 @@ body{
     background-color: rgba(150, 155, 80);
     margin: 0px;
     padding: 2px;
-    /*width: 54.5px;*/
-    /*height: 27px;*/
     top: 180px;
     left: 80px;
     position: absolute;
@@ -644,10 +610,28 @@ body{
     font-size: 20px;
 }
 
-#dicewrapper p{
-    padding: 0px;
-    margin: 0px;
-    font-size: 8px;
-    line-height: center;
+/* Code posted on https://www.florin-pop.com/ slightly modified*/
+.pulseshadow{
+    box-shadow: 0 0 0 0 rgba(109, 0, 73, 1);
+	transform: scale(1);
+	animation: pulse 1s infinite;
 }
+
+@keyframes pulse {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 5px 0 rgba(109, 0, 73, 0.7);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 5px 10px rgba(109, 0, 73, 0);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 5px 0 rgba(109, 0, 73, 0);
+	}
+}
+/* Code posted on https://www.florin-pop.com/ slightly modified*/
 
