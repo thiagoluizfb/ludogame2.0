@@ -211,7 +211,7 @@ $("#startgame").on("click",function starts(){
     playing = 1;
     let i = 0;
 
-    setTimeout(() => {
+    setTimeout(function() {
         whostarts(i);
         return;
     }, 1000); 
@@ -288,7 +288,7 @@ function whostarts(i){
 the token color; The function rollthedice is called if there are tokens to play*/
 function game(i){
 
-    setTimeout(() => {
+    setTimeout(function() {
 
         if(tokensatend[i]<4){
 
@@ -321,7 +321,7 @@ function game(i){
                 };
             };
 
-            setTimeout(() => {
+            setTimeout(function() {
                 if(robot[i] == 0){
                     $("#"+players[i]+"dice").one("click",function() {
                         $("#"+players[i]+"diceone").removeClass("pulseshadow");
@@ -381,7 +381,7 @@ function rollthedice(i){
     };
     
     /*If both dice are the same value, the players have another turn and the dice become gold*/
-    setTimeout(() => {
+    setTimeout(function() {
         if(dieone[i] == dietwo[i]){
             doubledice += 1;
             $("#"+players[i]+"dice").children().children().css("color","gold");
@@ -389,7 +389,7 @@ function rollthedice(i){
             doubledice = 0;
         }
 
-        setTimeout(() => {
+        setTimeout(function() {
         //If there is three consecutive doubledice, the last token moved is sent back to its HQ
         if(doubledice == 3){
             unblockspace(i,thistoken);
@@ -432,12 +432,12 @@ function checkFive(i){
                 leavehome(i);
                 dieone[i] = 0;           
                 $("#dicemoveone").hide();
-                setTimeout(() => { givemesomespace(i); }, 250);
+                setTimeout(function() { givemesomespace(i); }, 250);
                 if(remainToMove == 0){
                     if(doubledice > 0){
-                        setTimeout(() => { game(i); }, 1000);
+                        setTimeout(function() { game(i); }, 1000);
                     }else{
-                        setTimeout(() => { nextplayer(i); }, 1000);
+                        setTimeout(function() { nextplayer(i); }, 1000);
                     }
                     return;
                 }
@@ -468,12 +468,12 @@ function checkFive(i){
                 leavehome(i);
                 dietwo[i] = 0;
                 $("#dicemovetwo").hide();
-                setTimeout(() => { givemesomespace(i); }, 250);
+                setTimeout(function() { givemesomespace(i); }, 250);
                 if(remainToMove == 0){
                     if(doubledice > 0){
-                        setTimeout(() => { game(i); }, 1000);
+                        setTimeout(function() { game(i); }, 1000);
                     }else{
-                        setTimeout(() => { nextplayer(i); }, 1000);
+                        setTimeout(function() { nextplayer(i); }, 1000);
                     }
                     return;
                 }
@@ -484,16 +484,15 @@ function checkFive(i){
     //If there is no tokens at home, then the player will proceed with the movement
     if(out[i].includes(1)){
         if(remainToMove > 0){
-
-            options(i);
+            setTimeout(function() { options(i) }, 1000);
             return;
 
         }else{
 
             if(doubledice > 0){
-                setTimeout(() => { game(i); }, 1000);
+                setTimeout(function() { game(i); }, 1000);
             }else{
-                setTimeout(() => { nextplayer(i); }, 1000);
+                setTimeout(function() { nextplayer(i); }, 1000);
             }
             return;
 
@@ -502,9 +501,9 @@ function checkFive(i){
     }else{
         //If there is no tokens outised home and no fives in the dice, the next player will be called
         if(doubledice > 0){
-            setTimeout(() => { game(i); }, 1000);
+            setTimeout(function() { game(i); }, 1000);
         }else{
-            setTimeout(() => { nextplayer(i); }, 1000);
+            setTimeout(function() { nextplayer(i); }, 1000);
         }
         return;
 
@@ -592,7 +591,7 @@ function options(i){
     if(robot[i] == 0){
         activatedice(i);
     }else{
-        setTimeout(() => {
+        setTimeout(function() {
             for(n=0;n<4;n++){
                 if(out[i][n] == 1){
                     if(safespace.includes(reposition[i][n]+dieone[i]+dietwo[i]) ||
