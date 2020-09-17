@@ -1,4 +1,4 @@
-# [The ludo game (https://thiagoluizfb.github.io/ludogame/)
+# [The ludo game](https://thiagoluizfb.github.io/ludogame/)
 
 
 * The main purpose of this game is provide a funny moment to the player.
