@@ -414,9 +414,9 @@ function checkFive(i){
                 setTimeout(function() { givemesomespace(i); }, 250);
                 if(remainToMove == 0){
                     if(doubledice > 0){
-                        setTimeout(function() { game(i); }, 1000);
+                        setTimeout(function() { game(i); }, 500);
                     }else{
-                        setTimeout(function() { nextplayer(i); }, 1000);
+                        setTimeout(function() { nextplayer(i); }, 500);
                     }
                     return;
                 }
@@ -450,9 +450,9 @@ function checkFive(i){
                 setTimeout(function() { givemesomespace(i); }, 250);
                 if(remainToMove == 0){
                     if(doubledice > 0){
-                        setTimeout(function() { game(i); }, 1000);
+                        setTimeout(function() { game(i); }, 500);
                     }else{
-                        setTimeout(function() { nextplayer(i); }, 1000);
+                        setTimeout(function() { nextplayer(i); }, 500);
                     }
                     return;
                 }
@@ -463,15 +463,14 @@ function checkFive(i){
     //If there is no tokens at home, then the player will proceed with the movement
     if(out[i].includes(1)){
         if(remainToMove > 0){
-            setTimeout(function() { options(i) }, 1000);
+            setTimeout(function() { options(i) }, 500);
             return;
 
         }else{
-
             if(doubledice > 0){
-                setTimeout(function() { game(i); }, 1000);
+                setTimeout(function() { game(i); }, 500);
             }else{
-                setTimeout(function() { nextplayer(i); }, 1000);
+                setTimeout(function() { nextplayer(i); }, 500);
             }
             return;
 
@@ -480,9 +479,9 @@ function checkFive(i){
     }else{
         //If there is no tokens outised home and no fives in the dice, the next player will be called
         if(doubledice > 0){
-            setTimeout(function() { game(i); }, 1000);
+            setTimeout(function() { game(i); }, 500);
         }else{
-            setTimeout(function() { nextplayer(i); }, 1000);
+            setTimeout(function() { nextplayer(i); }, 500);
         }
         return;
 
@@ -553,7 +552,7 @@ function leavehome(i) {
 /*Function to move show the options of each token before their movement;
 Each token will be activated with the movement options;*/
 function options(i){
-
+    
     if(remainToMove == 0){
         nextplayer(i);
     };
@@ -631,7 +630,7 @@ function options(i){
                     };
                 };
             };             
-        }, 1000);
+        }, 500);
     };
    
     return;
@@ -683,10 +682,19 @@ function activatedice(i){
 
 /*Function to define which token can move*/
 function canImove(i){
+    
+    if(remainToMove == 0){
+        if(doubledice > 0){
+            game(i);
+        }else{
+            nextplayer(i);
+        };
+    };
 
     let newrepos1 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
     let newrepos2 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
     blockedoption = 0;
+
 
     for(n=0;n<4;n++){
         
@@ -698,7 +706,7 @@ function canImove(i){
         
         /*The token that has its final relative position with each die cannot have any blocked relative position in the way,
         if the token is blocked or in its HQ, no options will be shown.*/
-        if(out[i][n]>0){
+          
             tokenblocked[i][n][0] = 0;
             tokenblocked[i][n][1] = 0;
             
@@ -756,10 +764,12 @@ function canImove(i){
                     tokenblocked[i][n][1] = 1;
                 };
             };
-
+                
+                
             if(dieone[i] == 0){one = 1};
             if(dietwo[i] == 0){two = 1};
-
+    
+        if(out[i][n]>0){  
             if(one+two == 0){
                 $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]},${dietwo[i]}<div class="chooseme"></div>`);
                 $("#"+players[i]+"Token"+token[n]).css("z-index","3");
@@ -788,36 +798,37 @@ function canImove(i){
                 };
             };
         };
-    };
-
-    for(n=0;n<4;n++){
         for(m=0;m<2;m++){
             blockedoption += tokenblocked[i][n][m];
         };
     };
-    
+
     //If there isnt any token able to move, the function will call the next player.
-    if(remainToMove == 2){
-        if(blockedoption == 8){
-            if(doubledice >0){
-                game(i);
-            }else{
-                nextplayer(i);
+    setTimeout (function(){
+        if(remainToMove == 2){
+            if(blockedoption == 8){
+                if(doubledice > 0){
+                    game(i);
+                    return;
+                }else{
+                    nextplayer(i);
+                    return;
+                };
+
             };
-            return;
         };
-    };
-    if(remainToMove == 1){
-        if(blockedoption == 4){
-            if(doubledice >0){
-                game(i);
-            }else{
-                nextplayer(i);
+        if(remainToMove == 1){
+            if(blockedoption == 4){
+                if(doubledice >0){
+                    game(i);
+                    return;
+                }else{
+                    nextplayer(i);
+                    return;
+                };
             };
-            return;
         };
-    };
-    return;
+    },250);
 }
 /*There is a bug in this function, if the token blue is its final position it can be blocked by tokens that are beyond the final of the loop,
 in order to fix it, it was added the condition that just before the final lane it cannot be blocked (position[i]<47), which created a unintended
