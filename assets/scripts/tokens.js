@@ -371,14 +371,8 @@ function rollthedice(i){
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]]} dice"></i>`);
         d++;
         if(d == 10){
-            dieone[i] = Number(Math.floor(Math.random()*6+1));
+            dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
             dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
-            if(dieone[i] == dietwo[i]){
-                doubledice += 1;
-                $("#"+players[i]+"dice").children().children().css("color","gold");
-            }else{
-                doubledice = 0;
-            }
             $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
             $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
             $(".mainlayer").html(`${dieone[i]} </br> ${dietwo[i]} </br> ${rollone[i]} </br> ${rolltwo[i]}`);
@@ -389,8 +383,12 @@ function rollthedice(i){
     
     /*If both dice are the same value, the players have another turn and the dice become gold*/
     setTimeout(function() {
-        
-
+         if(dieone[i] == dietwo[i]){
+                doubledice += 1;
+                $("#"+players[i]+"dice").children().children().css("color","gold");
+            }else{
+                doubledice = 0;
+            }
         setTimeout(function() {
         //If there is three consecutive doubledice, the last token moved is sent back to its HQ
         if(doubledice == 3){
