@@ -95,6 +95,9 @@ let tokenMoving = new Audio('assets/audio/tokenmoving.wav');
 let turn = new Audio('assets/audio/yourturn.wav');
 let selected = new Audio('assets/audio/select.wav');
 let start = new Audio('assets/audio/start.wav');
+let block = new Audio('assets/audio/block.wav');
+let hit = new Audio('assets/audio/senthome.wav');
+let final = new Audio('assets/audio/lastspace.wav');
 
 
 /*Function activated if the 2 players is selected in the main menu*/
@@ -385,7 +388,7 @@ function rollthedice(i){
     setTimeout(function() {
          if(dieone[i] == dietwo[i]){
                 doubledice += 1;
-                $("#"+players[i]+"dice").children().children().css("color","gold");
+                $("#"+players[i]+"dice").children().children().css("color","green");
             }else{
                 doubledice = 0;
             }
@@ -933,14 +936,20 @@ function move(i){
             if(remainToMove>0){
 
                 checkFive(i);
-                if(position[i][thistoken] == 51){tokensatend[i] +=1;};
+                if(position[i][thistoken] == 51){
+                    final.play();
+                    tokensatend[i] +=1;
+                };
                 if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
                 clearInterval(myMove);
                 return;
 
             }else{
 
-                if(position[i][thistoken] == 51){tokensatend[i] +=1;};
+                if(position[i][thistoken] == 51){
+                    final.play();
+                    tokensatend[i] +=1;
+                };
                 if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
 
                 if(doubledice >0){
@@ -1014,6 +1023,7 @@ function givemesomespace(i){
 
 /*Function called to animate token sent home and positioning*/
 function sendhome(m,o){
+    hit.play();
     $("#"+players[m]+"Token"+token[o]).animate({left: `${initleft[colors.indexOf(players[m])][o]}px`,top: `${inittop[colors.indexOf(players[m])][o]}px`,position: "absolute"},200);
     position[m][o]=0;
     out[m][o]=0;
@@ -1023,7 +1033,7 @@ function sendhome(m,o){
 
 /*Function called to animate tokens blocking the position and positioning*/
 function blockspace(i,m,b,thistoken){
-    
+    block.play();
     if(position[i][thistoken] > 0){
         if(position[i][thistoken]<47){
             
