@@ -237,8 +237,12 @@ function whostarts(i){
         rolltwo[i] = Number(Math.floor(Math.random()*6+1));
         $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]-1]} dice"></i>`);
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]-1]} dice"></i>`);
-        if(d == 10){
+        if(d == 5){
             clearInterval(roll);
+            dieone[i] = Number(Math.floor(Math.random()*6+1));
+            dietwo[i] = Number(Math.floor(Math.random()*6+1));
+            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
+            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
             return;
         };
         d++;
@@ -247,10 +251,7 @@ function whostarts(i){
     /*Function to define who starts*/
     setTimeout(function(){
 
-        dieone[i] = Number(Math.floor(Math.random()*6+1));
-        dietwo[i] = Number(Math.floor(Math.random()*6+1));
-        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
-        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
+        
         results[i] = dieone[i] + dietwo[i];
         $("#"+players[i]+"dice").css("z-index","1");
 
@@ -373,19 +374,24 @@ function rollthedice(i){
         $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]]} dice"></i>`);
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]]} dice"></i>`);
         d++;
-        if(d == 50){
+        if(d == 5){
             clearInterval(rolled);
+            dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
+            dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
+            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
+            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
             return;
         };
     };
   
     setTimeout(function() {
-        dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
-        dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
-        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
-        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
         //$(".mainlayer").html(`${dieone[i]} </br> ${dietwo[i]} </br> ${rollone[i]} </br> ${rolltwo[i]}`);
-
+        if(dieone[i] == dietwo[i]){
+            doubledice += 1;
+            $("#"+players[i]+"dice").children().children().css("color","gold");
+        }else{
+            doubledice = 0;
+        }
         //If there is three consecutive doubledice, the last token moved is sent back to its HQ
         if(doubledice == 3){
             unblockspace(i,thistoken);
@@ -407,12 +413,6 @@ If there is number five and there is a token in the HQ, this token will go to th
 color space in the board.*/
 function checkFive(i){
     /*If both dice are the same value, the players have another turn and the dice become gold*/
-    if(dieone[i] == dietwo[i]){
-        doubledice += 1;
-        $("#"+players[i]+"dice").children().children().css("color","gold");
-    }else{
-        doubledice = 0;
-    }
     z = 0;
 
     if(dieone[i] == 5){
