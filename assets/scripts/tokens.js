@@ -239,6 +239,7 @@ function whostarts(i){
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]-1]} dice"></i>`);
         if(d == 10){
             clearInterval(roll);
+            return;
         };
         d++;
     };
@@ -373,16 +374,16 @@ function rollthedice(i){
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]]} dice"></i>`);
         d++;
         if(d == 50){
-            dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
-            dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
-            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
-            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
             clearInterval(rolled);
+            return;
         };
     };
   
     setTimeout(function() {
-    
+        dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
+        dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
+        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
+        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
         //$(".mainlayer").html(`${dieone[i]} </br> ${dietwo[i]} </br> ${rollone[i]} </br> ${rolltwo[i]}`);
 
         //If there is three consecutive doubledice, the last token moved is sent back to its HQ
@@ -398,7 +399,7 @@ function rollthedice(i){
             return;
         },250);
 
-    },150);
+    },750);
 }
 
 /*Function to verify if there is a number five in one or both dice,
