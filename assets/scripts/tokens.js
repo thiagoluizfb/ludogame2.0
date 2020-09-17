@@ -335,7 +335,7 @@ function game(i){
                     rollthedice(i);
                     return;
                 };
-            }, 750);
+            }, 1000);
 
         }else{
             nextplayer(i);
@@ -371,7 +371,7 @@ function rollthedice(i){
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]]} dice"></i>`);
         d++;
         if(d == 10){
-            dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
+            dieone[i] = Number(Math.floor(Math.random()*6+1));
             dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
             $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
             $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
