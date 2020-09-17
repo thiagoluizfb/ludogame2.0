@@ -294,7 +294,8 @@ function game(i){
             remainToMove = 2;
             $("#dicemoveone").show();
             $("#dicemovetwo").show();
-            $("#"+players[i]+"dice").addClass("pulseshadow");
+            $("#"+players[i]+"diceone").addClass("pulseshadow");
+            $("#"+players[i]+"dicetwo").addClass("pulseshadow");
             $("#layer").off("click");
             $("#"+players[i]+"dice").css("z-index","3");
             
@@ -321,12 +322,14 @@ function game(i){
             setTimeout(() => {
                 if(robot[i] == 0){
                     $("#"+players[i]+"dice").one("click",function() {
-                        $("#"+players[i]+"dice").removeClass("pulseshadow");
+                        $("#"+players[i]+"diceone").removeClass("pulseshadow");
+                        $("#"+players[i]+"dicetwo").removeClass("pulseshadow");
                         rollthedice(i);
                         return;
                     });
                 }else{
-                    $("#"+players[i]+"dice").removeClass("pulseshadow");
+                    $("#"+players[i]+"diceone").removeClass("pulseshadow");
+                    $("#"+players[i]+"dicetwo").removeClass("pulseshadow");
                     rollthedice(i);
                     return;
                 };
@@ -393,7 +396,9 @@ function rollthedice(i){
             nextplayer(i);
             return;
         };
-        checkFive(i);
+        setTimeout(() => {
+            checkFive(i);
+        }, 250);
         return;
     }, 500);
 }
