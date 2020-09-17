@@ -251,7 +251,6 @@ function whostarts(i){
             
             /*Function to decide if there are two value as the highest or start the game*/
             setTimeout(function(){
-                alert(results);
                 winner = Array.from(results);
                 winner.sort(function(a, b){return b-a});
 
@@ -497,7 +496,7 @@ function whoishere(i){
     
     senthome = 0;
 
-    for(m=0;m<players.length-1;m++){
+    for(m=0;m<players.length;m++){
         for(n=0;n<4;n++){
             if(z+1 == reposition[m][n]){
                 if(i != m){
@@ -971,7 +970,7 @@ function givemesomespace(i){
     
     /*If the token hit another color but inside a safe space, it will block the space
     Otherwise, it will send the other color token back to its HQ*/
-    for(h=0;h<players.length-1;h++){
+    for(h=0;h<players.length;h++){
 
         if(h != i){
             for(a=0;a<4;a++){
