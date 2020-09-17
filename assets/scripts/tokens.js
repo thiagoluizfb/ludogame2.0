@@ -234,7 +234,6 @@ function whostarts(i){
         rolltwo[i] = Number(Math.floor(Math.random()*6+1));
         $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]-1]} dice"></i>`);
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]-1]} dice"></i>`);
-        d++;
         if(d == 25){
             dieone[i] = Number(Math.floor(Math.random()*6+1));
             dietwo[i] = Number(Math.floor(Math.random()*6+1));
@@ -242,7 +241,9 @@ function whostarts(i){
             $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
             results[i] = dieone[i] + dietwo[i];
             clearInterval(roll);
+            return;
         };
+        d++;
     };
     
     /*Function to define who starts*/
