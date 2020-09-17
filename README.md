@@ -87,6 +87,14 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 -   The Website was tested on Google Chrome, Internet Explorer and Microsoft Edge browsers;
 -   The website was viewed on a variety of devices such as Desktop in multiple screen sizes, iPad, iPad Pro, Moto G4, Galaxy S5, Xiaomi M3, Nokia 6, Pixel 2, Pixel 2XL, iPhone 5/SE, iPhone 6/7/8+Plus models and iPhoneX.
 
+## Issues acknowledgement
+
+- Game is not fully finished;
+- It is missing styled alerts;
+- The game does not end until all pieces of the board are at the end, no special rule was coded for the end of the game;
+- There is a bug that does not block the pieces in the last lane;
+- Once started, the settings cannot be reconfigured.
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 # Credits
@@ -97,7 +105,7 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 
 -   To all comunity present in stackoverflow, where quick questions were easily found.
 
-
+-   The game rules were based on this [post](https://howdoyouplayit.com/parcheesi-rules-play-parcheesi/) (rules can slightly vary)
 ---------------------------------------------------------------------------------------------------------------------------------------- 
 
 # Acknowledgements
