@@ -377,7 +377,6 @@ function rollthedice(i){
             clearInterval(rolled);
             return;
         };
-        
     };
     
     /*If both dice are the same value, the players have another turn and the dice become gold*/
@@ -399,9 +398,9 @@ function rollthedice(i){
             return;
         };
         checkFive(i);
-        }, 250);
         return;
-    }, 500);
+        }, 750);
+    }, 250);
 }
 
 /*Function to verify if there is a number five in one or both dice,
