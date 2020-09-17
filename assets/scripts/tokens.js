@@ -385,7 +385,7 @@ function rollthedice(i){
     dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
     $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
-    $(".mainlayer").html(`${dieone[i]} </br> ${dietwo[i]} </br> ${rollone[i]} </br> ${rolltwo[i]}`);
+    //$(".mainlayer").html(`${dieone[i]} </br> ${dietwo[i]} </br> ${rollone[i]} </br> ${rolltwo[i]}`);
 
     //If there is three consecutive doubledice, the last token moved is sent back to its HQ
     if(doubledice == 3){
