@@ -352,8 +352,8 @@ function rollthedice(i){
     
     dice.play();
     dicenum = ["five","one","two","three","four","five","six"];
-    dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
-    dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
+    dieone[i] = Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = Number(Math.floor(Math.random()*6+1));
 
     $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
     $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
@@ -917,7 +917,8 @@ function move(i){
                     final.play();
                     tokensatend[i] +=1;
                 };
-                if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
+                if(tokensatend[i] == 4){
+                    alert(`Game Over! Player ${players[i]} won!`);};
                 clearInterval(myMove);
                 return;
 
