@@ -226,7 +226,7 @@ function whostarts(i){
    
     d = 0;
     dicenum = ["one","two","three","four","five","six"];
-    roll = setInterval(rolling,7);
+    roll = setInterval(rolling,1);
 
     /*Function to show animation in the dice shuffling set rollone and rolltwo to difer from the actual result and fix bug*/
     function rolling(){ 
@@ -234,7 +234,7 @@ function whostarts(i){
         rolltwo[i] = Number(Math.floor(Math.random()*6+1));
         $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]-1]} dice"></i>`);
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]-1]} dice"></i>`);
-        if(d >= 100){
+        if(d == 10){
             dieone[i] = Number(Math.floor(Math.random()*6+1));
             dietwo[i] = Number(Math.floor(Math.random()*6+1));
             $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
@@ -362,7 +362,7 @@ function rollthedice(i){
     d = 0;
     dice.play();
     dicenum = ["five","one","two","three","four","five","six"];
-    rolled = setInterval(rollingdice,7);
+    rolled = setInterval(rollingdice,1);
 
     function rollingdice(){ 
         rollone[i] = Number(Math.floor(Math.random()*6+1));
@@ -370,7 +370,7 @@ function rollthedice(i){
         $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]]} dice"></i>`);
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]]} dice"></i>`);
         d++;
-        if(d == 100){
+        if(d == 10){
             dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
             dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
             $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
@@ -400,8 +400,8 @@ function rollthedice(i){
         };
         checkFive(i);
         return;
-        }, 750);
-    }, 1000);
+        }, 250);
+    }, 250);
 }
 
 /*Function to verify if there is a number five in one or both dice,
