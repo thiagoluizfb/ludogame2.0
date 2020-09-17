@@ -234,6 +234,7 @@ function whostarts(i){
         rolltwo[i] = Number(Math.floor(Math.random()*6+1));
         $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]-1]} dice"></i>`);
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]-1]} dice"></i>`);
+        d++;
         if(d == 25){
             dieone[i] = Number(Math.floor(Math.random()*6+1));
             dietwo[i] = Number(Math.floor(Math.random()*6+1));
@@ -242,7 +243,6 @@ function whostarts(i){
             results[i] = dieone[i] + dietwo[i];
             clearInterval(roll);
         };
-        d++;
     };
     
     /*Function to define who starts*/
@@ -368,7 +368,7 @@ function rollthedice(i){
         rolltwo[i] = Number(Math.floor(Math.random()*6+1));
         $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]]} dice"></i>`);
         $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]]} dice"></i>`);
-
+        d++;
         if(d == 25){
             dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
             dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
@@ -377,7 +377,7 @@ function rollthedice(i){
             clearInterval(rolled);
             return;
         };
-        d++;
+        
     };
     
     /*If both dice are the same value, the players have another turn and the dice become gold*/
@@ -389,6 +389,7 @@ function rollthedice(i){
             doubledice = 0;
         }
 
+        setTimeout(() => {
         //If there is three consecutive doubledice, the last token moved is sent back to its HQ
         if(doubledice == 3){
             unblockspace(i,thistoken);
@@ -397,8 +398,7 @@ function rollthedice(i){
             nextplayer(i);
             return;
         };
-        setTimeout(() => {
-            checkFive(i);
+        checkFive(i);
         }, 250);
         return;
     }, 500);
