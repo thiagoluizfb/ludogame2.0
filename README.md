@@ -30,10 +30,10 @@ The page is interactive from the beginning. The player will have the chance to c
 # Features
 
 - ## General
-  * Sounds are played to grab the attention of the player
-    ** When it is the player turn;
-    ** When the dice are selected;
-    ** When a token is moving;
+  - ## Sounds are played to grab the attention of the player
+    - When it is the player turn;
+    - When the dice are selected;
+    - When a token is moving;
     
 - ## Dice
   * When it is a player turn, the dice has a pulsing animation;
