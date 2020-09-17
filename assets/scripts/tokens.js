@@ -227,26 +227,13 @@ again until there is only one higher result. This would be the color that will s
 function whostarts(i){
     dice.play();
    
-    d = 0;
     dicenum = ["one","two","three","four","five","six"];
-    roll = setInterval(rolling,1);
+    
+    dieone[i] = Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = Number(Math.floor(Math.random()*6+1));
+    $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
+    $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
 
-    /*Function to show animation in the dice shuffling set rollone and rolltwo to difer from the actual result and fix bug*/
-    function rolling(){ 
-        rollone[i] = Number(Math.floor(Math.random()*6+1));
-        rolltwo[i] = Number(Math.floor(Math.random()*6+1));
-        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]-1]} dice"></i>`);
-        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]-1]} dice"></i>`);
-        if(d == 5){
-            clearInterval(roll);
-            dieone[i] = Number(Math.floor(Math.random()*6+1));
-            dietwo[i] = Number(Math.floor(Math.random()*6+1));
-            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
-            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
-            return;
-        };
-        d++;
-    };
     
     /*Function to define who starts*/
     setTimeout(function(){
@@ -363,35 +350,24 @@ function nextplayer(i){
 /*Function to determine how many spaces the token will have to move with each die*/
 function rollthedice(i){
     
-    d = 0;
     dice.play();
     dicenum = ["five","one","two","three","four","five","six"];
-    rolled = setInterval(rollingdice,1);
+    dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
+    dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
 
-    function rollingdice(){ 
-        rollone[i] = Number(Math.floor(Math.random()*6+1));
-        rolltwo[i] = Number(Math.floor(Math.random()*6+1));
-        $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[rollone[i]]} dice"></i>`);
-        $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[rolltwo[i]]} dice"></i>`);
-        d++;
-        if(d == 5){
-            clearInterval(rolled);
-            dieone[i] = 5;//Number(Math.floor(Math.random()*6+1));
-            dietwo[i] = 5;//Number(Math.floor(Math.random()*6+1));
-            $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
-            $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
-            return;
-        };
-    };
-  
+    $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
+    $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
+
+    if(dieone[i] == dietwo[i]){
+        doubledice += 1;
+        $("#"+players[i]+"dice").children().children().css("color","gold");
+    }else{
+        doubledice = 0;
+    }
+    
     setTimeout(function() {
         //$(".mainlayer").html(`${dieone[i]} </br> ${dietwo[i]} </br> ${rollone[i]} </br> ${rolltwo[i]}`);
-        if(dieone[i] == dietwo[i]){
-            doubledice += 1;
-            $("#"+players[i]+"dice").children().children().css("color","gold");
-        }else{
-            doubledice = 0;
-        }
+        
         //If there is three consecutive doubledice, the last token moved is sent back to its HQ
         if(doubledice == 3){
             unblockspace(i,thistoken);
