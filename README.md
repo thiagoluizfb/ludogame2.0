@@ -45,6 +45,7 @@ The page is interactive from the beginning. The player will have the chance to c
   * When a token moves, animation was added to give the sensation of movement from-to;
   * When a position is blocked by two tokens, they share the space by slightly moving left-top and right-bottom;
   * When a token is hit by another, it is sent home to its initial position.
+  * When playing as a robot, the token will always try to end its movement on a safe place to make the game more dynamic.
   
 ----------------------------------------------------------------------------------------------------------------------------------------
 
