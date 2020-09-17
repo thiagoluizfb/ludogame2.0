@@ -197,6 +197,7 @@ $("#play").on("click",function starts(){
     selected.play();
     $("#start").hide();
     $("#players").show();
+    return;
 });
 
 /*Function to hide the main menu and start the game*/
@@ -212,6 +213,7 @@ $("#startgame").on("click",function starts(){
 
     setTimeout(() => {
         whostarts(i);
+        return;
     }, 1000); 
     return;
 });
@@ -239,7 +241,6 @@ function whostarts(i){
             $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
             results[i] = dieone[i] + dietwo[i];
             clearInterval(roll);
-            return;
         };
         d++;
     };
