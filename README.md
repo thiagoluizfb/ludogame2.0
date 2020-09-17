@@ -97,7 +97,7 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 
 -   To all comunity present in stackoverflow, where quick questions were easily found.
 
-
+-   The game rules were based on this [post](https://howdoyouplayit.com/parcheesi-rules-play-parcheesi/) (rules can slightly vary)
 ---------------------------------------------------------------------------------------------------------------------------------------- 
 
 # Acknowledgements
