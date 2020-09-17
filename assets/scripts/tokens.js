@@ -33,7 +33,7 @@ setInterval(() => {
         z = 0.75;
     }
 
-    //$(".mainlayer").html(z);
+    ///$(".mainlayer").html(z);
     $( ".board" ).css("zoom", `${(z)}`);
     $( ".board" ).css("margin", `${($(window).height()-$("body").height()*z)/2}px auto`);
     $( "#start" ).css("zoom", `${(z)}`);
