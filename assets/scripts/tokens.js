@@ -229,7 +229,7 @@ function whostarts(i){
    
     d = 0;
     dicenum = ["one","two","three","four","five","six"];
-    roll = setInterval(rolling,1);
+    roll = setInterval(rolling,10);
 
     /*Function to show animation in the dice shuffling set rollone and rolltwo to difer from the actual result and fix bug*/
     function rolling(){ 
@@ -365,7 +365,7 @@ function rollthedice(i){
     d = 0;
     dice.play();
     dicenum = ["five","one","two","three","four","five","six"];
-    rolled = setInterval(rollingdice,1);
+    rolled = setInterval(rollingdice,10);
 
     function rollingdice(){ 
         rollone[i] = Number(Math.floor(Math.random()*6+1));
@@ -388,7 +388,7 @@ function rollthedice(i){
     setTimeout(function() {
          if(dieone[i] == dietwo[i]){
                 doubledice += 1;
-                $("#"+players[i]+"dice").children().children().css("color","green");
+                $("#"+players[i]+"dice").children().children().css("color","gold");
             }else{
                 doubledice = 0;
             }
