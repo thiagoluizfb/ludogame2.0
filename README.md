@@ -1,39 +1,108 @@
-<img src="https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png" style="margin: 0;">
+# [The ludo game (https://thiagoluizfb.github.io/ludogame/)
 
-Welcome thiagoluizfb,
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project.
+* The main purpose of this game is provide a funny moment to the player.
+* The player will have the chance to choose to play against a robot or another human player.
 
-## Gitpod Reminders
+----------------------------------------------------------------------------------------------------------------------------------------
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+# User Experience - UX 
 
-`python3 -m http.server`
+The page is interactive from the beginning. The player will have the chance to choose two or four players and each one will be a human or a robot.
 
-A blue button should appear to click: *Make Public*,
+- ## Design
 
-Another blue button should appear to click: *Open Browser*.
+  - ### Colours and Positioning
+    - The main background colour throughout the website is lightgreen, dark purple was used to contrast the background, used in menus and dice;
+    - The board was designed to be always in the center of the page, regardless the device used, it is shown only in portrait position of the device, or if the height of the screen is higher than the board + dice size;
+    - The board is zoomed in or out according to the screen size;
+    - The colours of the main menu is correspondent to the colour of the players in the game.
+    
+  - ### Typography
+     - The entire website used only two fonts. The game title uses the Luckiest Guy font, while the all the other letters and numbers are under the Acme family. These two fonts were selected due to their attractive appearance which matches with the purpose of the website.
+     
+     
+  - ### Wireframe
+     - The initial wireframe for this project can be found [here](https://xd.adobe.com/view/f42bf006-739d-4402-624e-0fbf4cdd84f0-821a/).
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+---------------------------------------------------------------------------------------------------------------------------------------
 
-A blue button should appear to click: *Make Public*,
+# Features
 
-Another blue button should appear to click: *Open Browser*.
+- ## General
+  * Sounds are played to grab the attention of the player
+    ** When it is the player turn;
+    ** When the dice are selected;
+    ** When a token is moving;
+    
+- ## Dice
+  * When it is a player turn, the dice has a pulsing animation;
+  * When the dice is clicked, it will show an animation simulating the dice rolling;
+  * When it shows double dice, they become golden;
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the backend lessons.
+- ## Tokens
+  * When showing the move options, the tokens are highlighted with the options available;
+  * When a token moves, animation was added to give the sensation of movement from-to;
+  * When a position is blocked by two tokens, they share the space by slightly moving left-top and right-bottom;
+  * When a token is hit by another, it is sent home to its initial position.
+  
+----------------------------------------------------------------------------------------------------------------------------------------
 
-## Updates Since The Instructional Video
+# Technologies Used
 
-We continually tweak and adjust this template to help give you the best experience. Here are the updates since the original video was made:
+## Languages Used
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
+-   [HTML5](https://en.wikipedia.org/wiki/HTML5);
+-   [CSS3](https://en.wikipedia.org/wiki/Cascading_Style_Sheets).
+-   [JAVASCRIPT](https://en.wikipedia.org/wiki/JavaScript).
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+## Frameworks, Libraries & Programs Used
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+1. [Bootstrap 4.5:](https://getbootstrap.com/docs/4.5/getting-started/introduction/)
+    - Bootstrap was used to assist with positioning.
+1. [Google Fonts:](https://fonts.google.com/)
+    - Google fonts were used to import the 'Luckiest Guy' and 'Acme' fonts into the style.css file which is used on all pages throughout the project.
+1. [Font Awesome 5.6.3:](https://fontawesome.com/)
+    - Font Awesome was used to style the dice, trophy and star on the board.
+1. [Git](https://git-scm.com/)
+    - Git was used for version control by utilizing the Gitpod terminal to commit to Git and Push to GitHub.
+1. [GitHub:](https://github.com/)
+    - GitHub is used to store the projects code after being pushed from Git.
+1. [Adobe Xd:](https://www.adobe.com/products/xd.html)
+    - Adobe Xd was used to create the initial [wireframe](https://xd.adobe.com/view/f42bf006-739d-4402-624e-0fbf4cdd84f0-821a/) for this project
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+---------------------------------------------------------------------------------------------------------------------------------------
 
---------
+# Testing
 
-Happy coding!
+The W3C Markup Validator and W3C CSS Validator Services were used to validate every page of the project to ensure there were no syntax errors in the project.
+
+-   [W3C Markup Validator](https://jigsaw.w3.org/css-validator/#validate_by_input)
+-   [W3C CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input)
+-   [JS Hint](https://jshint.com/)
+
+## Further Testing
+
+-   The Website was tested on Google Chrome, Internet Explorer and Microsoft Edge browsers;
+-   The website was viewed on a variety of devices such as Desktop in multiple screen sizes, iPad, iPad Pro, Moto G4, Galaxy S5, Xiaomi M3, Nokia 6, Pixel 2, Pixel 2XL, iPhone 5/SE, iPhone 6/7/8+Plus models and iPhoneX.
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+# Credits
+
+-   This ReadMe file was based on a sample available on [Code Institute Solutions repositories](https://github.com/Code-Institute-Solutions)
+
+-   Quick information of "how to" was promplty found on [W3Schools](https://www.w3schools.com/)
+
+-   To all comunity present in stackoverflow, where quick questions were easily found.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------- 
+
+# Acknowledgements
+
+-   My Mentor for continuous helpful feedback.
+
+-   Code Institute video classes with its helpful content.
+
+-   My wife, Cristina, who supported me pantiently in the long hours spent coding (again)
