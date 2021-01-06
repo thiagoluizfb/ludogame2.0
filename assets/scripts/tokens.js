@@ -4,16 +4,12 @@ $("#start").show();
 $(".back").hide();
 $("#startgame").hide();
 $(".selecttype").hide();
-
 let playing = 0; // 1 => Game started
 let playerSelected = 0; // If 0, number of players was not selected
-
 /* Interval set to guarantee the responsiveness of the layout, it takes the dimensions of the screen
 and calculate the best zoom and positioning to fit the board at the center of the screen, the same with
 the game main menu*/
-
 setInterval(() => {
-
     if($(window).height() < 425){
         $(".board").hide();
         $("#start").hide();
@@ -25,24 +21,18 @@ setInterval(() => {
             $(".board").hide();
         }
     }
-
     mx = Math.min(0.9*$(window).width()-425,0.9*$(window).height()-425);
     z = (375+mx/2)/375;
-    
     if ($(window).width() < 325){
         z = 0.75;
     }
-
-    ///$(".mainlayer").html(z);
     $( ".board" ).css("zoom", `${(z)}`);
     $( ".board" ).css("margin", `${($(window).height()-$("body").height()*z)/2}px auto`);
     $( "#start" ).css("zoom", `${(z)}`);
     $("#start").css("margin", `${($(window).height()-$("#start").height()*z)/2}px auto`);
     $( "#players" ).css("zoom", `${(z)}`);
     $("#players").css("margin",  `${($(window).height()-$("#players").height()*z)/2}px auto`);
-
 }, 1);
-
 
 /*Main tokens' characteristics which functions will determine which player and token it is reffering to*/
 let colors = ["blue","yellow","red","green"];
@@ -98,7 +88,6 @@ let start = new Audio('assets/audio/start.wav');
 let block = new Audio('assets/audio/block.wav');
 let hit = new Audio('assets/audio/senthome.wav');
 let final = new Audio('assets/audio/lastspace.wav');
-
 
 /*Function activated if the 2 players is selected in the main menu*/
 $("#twoplayers").on("click", function choose() {
@@ -161,9 +150,7 @@ $(".back").on("click",function choose() {
 /*Function activated when type of player is selected to highlight the chosen one and
 deselects the opposite choice for each color*/
 for(n=0;n<4;n++){
-    
     let r = ["bluehuman","yellowhuman","redhuman","greenhuman"];
-
     $(`#${colors[n]}human`).on("click", function human() {
        selected.play();
        $(this).addClass(`playersnumber`);
@@ -178,7 +165,6 @@ for(n=0;n<4;n++){
            robot[r.indexOf($(this).attr("id"))] = 0;
        }
     });
-
     $(`#${colors[n]}bot`).on("click",function bot() {
         selected.play();
         $(this).addClass(`playersnumber`);
@@ -210,10 +196,8 @@ $("#startgame").on("click",function starts(){
     $(this).hide();
     $("#players").hide();
     $("#layer").css("background-image","none");
-
     playing = 1;
     let i = 0;
-
     setTimeout(function() {
         whostarts(i);
         return;
@@ -226,29 +210,20 @@ If there is two or more dice with the same result, it will call the function
 again until there is only one higher result. This would be the color that will start the game*/
 function whostarts(i){
     dice.play();
-   
     dicenum = ["one","two","three","four","five","six"];
-    
     dieone[i] = Number(Math.floor(Math.random()*6+1));
     dietwo[i] = Number(Math.floor(Math.random()*6+1));
     $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
     $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
-
-    
     /*Function to define who starts*/
     setTimeout(function(){
-
-        
         results[i] = dieone[i] + dietwo[i];
         $("#"+players[i]+"dice").css("z-index","1");
-
         if(i < players.length-1){
             whostarts(i+1);
             return;
         };
-
         if (i == players.length-1){
-            
             /*Function to decide if there are two value as the highest or start the game*/
             setTimeout(function(){
                 winner = Array.from(results);
@@ -263,11 +238,9 @@ function whostarts(i){
                     $("#"+players[results.indexOf(winner[0])]+"dice").css("z-index","3");
                     setTimeout(function(){alert (players[i] + "  starts!")},100);
                 }
-
                 doubledice = 0;
                 game(i);
                 return;
-
             },1000);
         };
     },500);
@@ -277,11 +250,8 @@ function whostarts(i){
 /*Function called to start the turn of each player and attribute the x and y coordinates to
 the token color; The function rollthedice is called if there are tokens to play*/
 function game(i){
-
     setTimeout(function() {
-
         if(tokensatend[i]<4){
-
             turn.play();
             remainToMove = 2;
             $("#dicemoveone").show();
@@ -290,7 +260,6 @@ function game(i){
             $("#"+players[i]+"dicetwo").addClass("pulseshadow");
             $("#layer").off("click");
             $("#"+players[i]+"dice").css("z-index","3");
-            
             if(players[i] == "blue"){
                 x = blueleft;
                 y = bluetop;
@@ -310,7 +279,6 @@ function game(i){
                     };
                 };
             };
-
             setTimeout(function() {
                 if(robot[i] == 0){
                     $("#"+players[i]+"dice").one("click",function() {
@@ -326,14 +294,12 @@ function game(i){
                     return;
                 };
             }, 1000);
-
         }else{
             nextplayer(i);
             return;
         };
-
         return;
-    }, 500);
+    },500);
 }
 
 /*Function to call the next player, if it is green or red, it will call the player blue to play*/
@@ -348,25 +314,19 @@ function nextplayer(i){
 
 /*Function to determine how many spaces the token will have to move with each die*/
 function rollthedice(i){
-    
     dice.play();
     dicenum = ["five","one","two","three","four","five","six"];
     dieone[i] = Number(Math.floor(Math.random()*6+1));
     dietwo[i] = Number(Math.floor(Math.random()*6+1));
-
     $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]]} dice"></i>`);
     $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]]} dice"></i>`);
-
     if(dieone[i] == dietwo[i]){
         doubledice += 1;
         $("#"+players[i]+"dice").children().children().css("color","gold");
     }else{
         doubledice = 0;
     }
-    
     setTimeout(function() {
-        //$(".mainlayer").html(`${dieone[i]} </br> ${dietwo[i]} </br> ${rollone[i]} </br> ${rolltwo[i]}`);
-        
         //If there is three consecutive doubledice, the last token moved is sent back to its HQ
         if(doubledice == 3){
             unblockspace(i,thistoken);
@@ -389,23 +349,18 @@ color space in the board.*/
 function checkFive(i){
     /*If both dice are the same value, the players have another turn and the dice become gold*/
     z = 0;
-
     if(dieone[i] == 5){
         //In order to trigger the token, it has to have at least one toke at home out[i] should include at least one 0
         if(out[i].includes(0)){
-
             thistoken = out[i].indexOf(0);
-
             if(players.length == 2){
                 z = 24*i;
             }else{
                 z = 12*i;
             }
-
             if(blockedposition.includes(z+1)){
                 whoishere(i);
             };
-
             if(blockedposition.includes(z+1) == false){
                 reposition[i][out[i].indexOf(0)] = z;
                 leavehome(i);
@@ -423,25 +378,19 @@ function checkFive(i){
             }
         }
     };
-
     z = 0;
-
     if(dietwo[i] == 5){
         //In order to trigger the token, it has to have at least one toke at home out[i] should include at least one 0
         if(out[i].includes(0)){
-
             thistoken = out[i].indexOf(0);
-
             if(players.length == 2){
                 z = 24*i;
             }else{
                 z = 12*i;
             }
-
             if(blockedposition.includes(z+1)){
                 whoishere(i);
             };
-
             if(blockedposition.includes(z+1) == false){
                 reposition[i][out[i].indexOf(0)] = z;
                 leavehome(i);
@@ -459,13 +408,11 @@ function checkFive(i){
             }
         }
     };
-
     //If there is no tokens at home, then the player will proceed with the movement
     if(out[i].includes(1)){
         if(remainToMove > 0){
             setTimeout(function() { options(i) }, 500);
             return;
-
         }else{
             if(doubledice > 0){
                 setTimeout(function() { game(i); }, 500);
@@ -473,9 +420,7 @@ function checkFive(i){
                 setTimeout(function() { nextplayer(i); }, 500);
             }
             return;
-
         };
-
     }else{
         //If there is no tokens outised home and no fives in the dice, the next player will be called
         if(doubledice > 0){
@@ -484,7 +429,6 @@ function checkFive(i){
             setTimeout(function() { nextplayer(i); }, 500);
         }
         return;
-
     };
 }
 
@@ -492,59 +436,46 @@ function checkFive(i){
 If there is just one, it will block the position, if there are two it will verify if it has the same color, if
 it is a different color then this token will be sent home*/
 function whoishere(i){
-    
     senthome = 0;
-
     for(m=0;m<players.length;m++){
         for(n=0;n<4;n++){
             if(z+1 == reposition[m][n]){
                 if(i != m){
-
                     if(position[m][n] > 0 && position[i][thistoken]<47){
                         sendhome(m,n);
                     };
-
                     if(reposition[m][n] < 7){
                         blockedposition.splice(blockedposition.indexOf(reposition[m][n]+48),1); 
                     };
-
                     blockedposition.splice(blockedposition.indexOf(reposition[m][n]),1);
                     senthome = 1;
-
                 }else{
                     o = n;
-                }
+                };
             };
         };
     };
-
     if(senthome == 1){
         $("#"+players[i]+"Token"+token[o]).css({"left": x[position[i][o]-1]+"px","top": y[position[i][o]-1]+"px","position": "absolute"});
     };
-
     return;
 }
 
 /*Function to move the token from its HQ to the first position, the die which has 5 will be used for that*/
 function leavehome(i) {
-
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).animate({left: `${x[0]}px`,top: `${y[0]}px`,position: "absolute"},500);
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"left": x[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css({"top": y[0]+"px","position": "absolute"});
     $("#"+players[i]+"Token"+token[out[i].indexOf(0)]).css("z-index","3");
-
     xposition[i][out[i].indexOf(0)] = x[0];
     yposition[i][out[i].indexOf(0)] = y[0];
-
     position[i][out[i].indexOf(0)] += 1;
     reposition[i][out[i].indexOf(0)] += 1;
-    
     out[i][out[i].indexOf(0)] = 1;
     tokensathome[i] -= 1;
     remainToMove -= 1;
-
     givemesomespace(i);
     return;
 }
@@ -552,20 +483,16 @@ function leavehome(i) {
 /*Function to move show the options of each token before their movement;
 Each token will be activated with the movement options;*/
 function options(i){
-    
     if(remainToMove == 0){
         nextplayer(i);
     };
-
     $("#layer").off("click");
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
     $("#dicewrapper").hide();
     $("#"+players[i]+"dice").css("z-index","1"); 
     $(".tokenwrapper"+players[i]).off("click");
-
     canImove(i);
-
     if(robot[i] == 0){
         activatedice(i);
     }else{
@@ -632,7 +559,6 @@ function options(i){
             };             
         }, 500);
     };
-   
     return;
 }
 
@@ -640,16 +566,12 @@ function options(i){
 The token that has it final position with each die cannot have any blocked position in the way,
 if the token is blocked or in its HQ, no options will be shown*/
 function activatedice(i){
-
     $(".tokenwrapper"+players[i]).one("click",function(){
-
         dehighlight(i);
         $(this).parent().css("z-index","1");
-
         thistoken = token.indexOf($(this).parent().attr('id').slice($(this).parent().attr('id').indexOf("Token")+5));
         if(dieone[i] > 0 && tokenblocked[i][thistoken][0] == 0){$("#dicemoveone").show();};
         if(dietwo[i] > 0 && tokenblocked[i][thistoken][1] == 1){$("#dicemovetwo").show();};
-        
         $("#dicewrapper").show();
         $("#dicewrapper").css("z-index","3");
         $("#dicemoveone").css("z-index","3");
@@ -659,30 +581,25 @@ function activatedice(i){
         $("#dicewrapper").css("left", xposition[[i]][thistoken]-20);
         $("#dicewrapper").css("top", yposition[[i]][thistoken]-40);
         $("#layer").on("click",function(){options(i)});   
-
         return;
     });
-
     $("#dicemoveone").one("click", function(){
         moveleft  = dieone[i];
         dieone[i]=0;
         $(this).hide();
         move(i);
     });
-
     $("#dicemovetwo").one("click",function(){
         moveleft = dietwo[i];
         dietwo[i]=0;
         $(this).hide();
         move(i);
     });
-
     return;
 }
 
 /*Function to define which token can move*/
 function canImove(i){
-    
     if(remainToMove == 0){
         if(doubledice > 0){
             game(i);
@@ -690,26 +607,18 @@ function canImove(i){
             nextplayer(i);
         };
     };
-
     let newrepos1 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
     let newrepos2 = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
     blockedoption = 0;
-
-
     for(n=0;n<4;n++){
-        
         one = 0;
         two = 0;
-
         newrepos1[i][n] = reposition[i][n]+dieone[i];
         newrepos2[i][n] = reposition[i][n]+dietwo[i];
-        
         /*The token that has its final relative position with each die cannot have any blocked relative position in the way,
         if the token is blocked or in its HQ, no options will be shown.*/
-          
             tokenblocked[i][n][0] = 0;
             tokenblocked[i][n][1] = 0;
-            
             if(position[i][n]<47){
                 for(b=0;b<blockedposition.length;b++){
                     if(reposition[i][n]<blockedposition[b]){
@@ -763,12 +672,9 @@ function canImove(i){
                     two = 1;
                     tokenblocked[i][n][1] = 1;
                 };
-            };
-                
-                
+            }; 
             if(dieone[i] == 0){one = 1};
             if(dietwo[i] == 0){two = 1};
-    
         if(out[i][n]>0){  
             if(one+two == 0){
                 $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]},${dietwo[i]}<div class="chooseme"></div>`);
@@ -776,7 +682,6 @@ function canImove(i){
                 myposition = $("#"+players[i]+"Token"+token[n]).position();
                 xposition[i][n] = Math.trunc(myposition.left);
                 yposition[i][n] = Math.trunc(myposition.top);
-
             }else{
                 if(one == 0){
                     $("#"+players[i]+"Token"+token[n]).children().children().html(`${dieone[i]}<div class="chooseme"></div>`);
@@ -785,7 +690,6 @@ function canImove(i){
                     myposition = $("#"+players[i]+"Token"+token[n]).position();
                     xposition[i][n] = Math.trunc(myposition.left);
                     yposition[i][n] = Math.trunc(myposition.top);
-
                 }else{
                     if(two == 0){
                         $("#"+players[i]+"Token"+token[n]).children().children().html(`${dietwo[i]}<div class="chooseme"></div>`);
@@ -814,7 +718,6 @@ function canImove(i){
                     nextplayer(i);
                     return;
                 };
-
             };
         };
         if(remainToMove == 1){
@@ -869,7 +772,6 @@ function unblockspace(i,thistoken){
 
 /*Function to move the tokens according to the die chosen*/
 function move(i){
-
     if(remainToMove == 0){
         if(doubledice > 0){
             game(i);
@@ -877,36 +779,27 @@ function move(i){
             nextplayer(i);
         };
     };
-    
     $("#layer").off("click");
     $("#dicemoveone").off("click");
     $("#dicemovetwo").off("click");
     $("#dicewrapper").hide();
     $(".tokenwrapper"+players[i]).off("click");
-
     let l = 0;
     let k = Number(window.moveleft);
     let j = thistoken;
     newpos = Number(position[i][j]+k);
     newrepos = Number(reposition[i][j]+k);
-    
     unblockspace(i,thistoken);
-
     var myMove = setInterval(moving, 250);
-    
     //Function called for every space moved until there is not movement left
     function moving(){
-
         tokenMoving.play();
         $("#"+players[i]+"Token"+token[thistoken]).animate({left: `${x[newpos-k+l]}px`,top: `${y[newpos-k+l]}px`,position: "absolute"},200);
         $("#"+players[i]+"Token"+token[thistoken]).css({"left": x[newpos-k+l]+"px","top": y[newpos-k+l]+"px","position": "absolute"});
         l++;
-
         if (l==k){
-            
             remainToMove -=1;
             position[i][j] = Number(newpos);
-
             //If a token enters the last lane, its relative becomes zero, this token will not be able to block again
             if(position[i][thistoken] > 46){
                 reposition[i][thistoken] = 0;
@@ -917,11 +810,8 @@ function move(i){
                     reposition[i][j] = Number(newrepos);
                 };
             };       
-
             givemesomespace(i);
-          
             if(remainToMove>0){
-
                 checkFive(i);
                 if(position[i][thistoken] == 51){
                     final.play();
@@ -931,15 +821,12 @@ function move(i){
                     alert(`Game Over! Player ${players[i]} won!`);};
                 clearInterval(myMove);
                 return;
-
             }else{
-
                 if(position[i][thistoken] == 51){
                     final.play();
                     tokensatend[i] +=1;
                 };
                 if(tokensatend[i] == 4){alert(`Game Over! Player ${players[i]} won!`);};
-
                 if(doubledice >0){
                     game(i);
                 }else{
@@ -949,7 +836,6 @@ function move(i){
                 return;
             };
         };
-
     return;
     };
     return;   
@@ -957,13 +843,11 @@ function move(i){
 
 /*Function called to animate the result of the final move*/
 function givemesomespace(i){
-
     var shield = 0;
     var hit = 0;
     var b = 0;
     var m = 0;
     var o = 0;
-
     //If the token hit a token of the same color it will block the space
     for(r=0;r<4;r++){
         if(r!=thistoken){
@@ -977,12 +861,9 @@ function givemesomespace(i){
         blockspace(i,i,b,thistoken);
         return;
     };
-
-    
     /*If the token hit another color but inside a safe space, it will block the space
     Otherwise, it will send the other color token back to its HQ*/
     for(h=0;h<players.length;h++){
-
         if(h != i){
             for(a=0;a<4;a++){
                 if(position[i][thistoken]<47){
@@ -997,13 +878,11 @@ function givemesomespace(i){
     };
     if(hit>0){
         if(safespace.includes(reposition[i][thistoken])){
-
             blockspace(i,m,o,thistoken);
         }else{
             if(position[i][thistoken] > 0 && position[i][thistoken]<47){
                 sendhome(m,o);
             };
-
         };
         return;
     };
@@ -1024,32 +903,25 @@ function blockspace(i,m,b,thistoken){
     block.play();
     if(position[i][thistoken] > 0){
         if(position[i][thistoken]<47){
-            
             if(blockedposition.includes(reposition[i][thistoken]) == false){  
                 if(position[i][thistoken]<47){
-
                     $("#"+players[m]+"Token"+token[b]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
                     $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
                     blockedposition.push(reposition[i][thistoken]);
                     if(reposition[i][thistoken]<7){
                         blockedposition.push(reposition[i][thistoken]+48);
                     };
-
                 };
-                //$(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition}`);
             };
-
         }else{
             if(position[i][thistoken] == position[m][b]){
-
                 if(lastblockedposition.includes(position[i][thistoken]) == false){  
                         $("#"+players[m]+"Token"+token[b]).animate({left: `-=5px`,top: `-=5px`,position: "absolute"},100);
                         $("#"+players[i]+"Token"+token[thistoken]).animate({left: `+=5px`,top: `+=5px`,position: "absolute"},100);
                         lastblockedposition[i].push(position[i][thistoken]);
-                    //$(".mainlayer").html(`${position} </br> ${reposition} </br> ${blockedposition});
                 };
             };
-        }
+        };
     };
     return;
 }
