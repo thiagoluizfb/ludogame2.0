@@ -1,14 +1,23 @@
-# [The ludo game](https://thiagoluizfb.github.io/ludogame/)
+# The ludo game
 
+This is my first project using JavaScript to display my understanding and ability to use the language and build interactive websites.
 
 * The main purpose of this game is provide a funny moment to the player.
 * The player will have the chance to choose to play against a robot or another human player.
+
+The live version of this game can be viewed [here](https://thiagoluizfb.github.io/ludogame/)
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 # User Experience - UX 
 
-The page is interactive from the beginning. The player will have the chance to choose two or four players and each one will be a human or a robot.
+
+- ## User stories
+  - I am a Ludo fan and I would like play the game in my computer or in a mobile.
+  - I would like to play Ludo with my friends or against the machine;
+  - When playing against the machine, I would like to challenging opponent to have a sense of competitiveness;
+  - I would like to have an interactive and imersive moments that reminds me the live board game.
+
 
 - ## Design
 
@@ -81,6 +90,38 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 -   [W3C Markup Validator](https://jigsaw.w3.org/css-validator/#validate_by_input)
 -   [W3C CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input)
 -   [JS Hint](https://jshint.com/)
+
+## Testing User Stories from User Experience (UX) Section
+
+  ### I am a Ludo fan and I would like play the game in my computer or in a mobile
+  
+  - The game was developed to be responsive, it keeps a nice resolution across different devices.
+  
+  ![Responsive Ludo](https://user-images.githubusercontent.com/62474197/103904280-fb1a9e00-50f4-11eb-9941-c79afc4b6617.png) 
+
+  
+  
+  ### I would like to play Ludo with my friends or against the machine
+  
+  - Ludo is a board game made for 2 or 4 players, this options is also available in this developed game. The user has the option to play against another players (in the same device) or against the machine.
+  - The options are available before the game starts.
+  
+  ![Ludo Multiplayer](https://user-images.githubusercontent.com/62474197/103907672-7c742f80-50f9-11eb-90ab-e26b09f909bb.png)
+  
+  
+  
+  ### When playing against the machine, I would like to challenging opponent to have a sense of competitiveness;
+  
+  - The game has a special feature that allows the player to play against the machine. It can be challenging, specially if it is programated to optimize its moves to the best option possible.
+  - An AI was created to promote some challenge. It plays defensively, instead of trying to hit the oppenent, it will always play with the token that will end the movement in a safe places present in the board.
+  
+  ![Ludo AI safe spaces](https://user-images.githubusercontent.com/62474197/103924476-fa423600-510d-11eb-88f9-c06299558427.png)
+  
+  
+  
+  ### I would like to have an interactive and imersive moments that reminds me the live board game.
+  
+  - The game has sounds and highlights to grab the player's attention and make it intuitive
 
 ## Further Testing
 
