@@ -138,6 +138,65 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+# Deployment
+
+## GitHub Pages
+
+This project was deployed to GitHub Pages as per following:
+
+1. Log in to [GitHub](https://github.com/) and locate the GitHub Repository
+
+![repository_search](https://user-images.githubusercontent.com/62474197/103962537-15816580-514f-11eb-91ff-b7253f87b1cb.png)
+
+
+2. Locate and click in the option "Settings" on the menu
+
+![settings_tab](https://user-images.githubusercontent.com/62474197/103962677-6f822b00-514f-11eb-9c3b-28930dcdff14.png)
+
+
+3. In Settings locate the "GitHub Pages" Section and in "Source" set the branch to "Master Branch"
+
+![source_githubpages](https://user-images.githubusercontent.com/62474197/103963075-53cb5480-5150-11eb-9061-bbf3f4a70674.png)
+
+
+4. Set the directory option to root and click the save button.
+
+![directory_githubpages](https://user-images.githubusercontent.com/62474197/103963182-8d03c480-5150-11eb-8ef3-74713358192e.png)
+
+
+5. The page will refresh. Scroll down again to "GitHub Pages" section to find the link for the page published
+
+![site_published_githubpages](https://user-images.githubusercontent.com/62474197/103963220-9f7dfe00-5150-11eb-93a7-978c78f92536.png)
+
+## Making a Local Clone
+
+1. Log in to GitHub and locate the GitHub Repository
+
+![repository_search](https://user-images.githubusercontent.com/62474197/103962537-15816580-514f-11eb-91ff-b7253f87b1cb.png)
+
+
+2. Under the repository name, click "Clone or download".
+
+![clone_repository](https://user-images.githubusercontent.com/62474197/103964430-5e3b1d80-5153-11eb-86ea-bb7f9e84b89b.png)
+
+
+3. To clone the repository using HTTPS, under "Clone with HTTPS", copy the link.
+
+![link_to_clone](https://user-images.githubusercontent.com/62474197/103964499-8296fa00-5153-11eb-970b-e5cb2ca604b7.png)
+
+
+4. Open Git Bash and select the directory where the repository will be cloned
+
+5. Type "git clone" followed by the URL you copied in Step 3.
+
+![command_to_clone](https://user-images.githubusercontent.com/62474197/103964538-993d5100-5153-11eb-81cc-e6d9483d4ce2.png)
+
+
+6. Press Enter. Your local clone will be created.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
 # Credits
 
 -   This ReadMe file was based on a sample available on [Code Institute Solutions repositories](https://github.com/Code-Institute-Solutions)
@@ -147,6 +206,7 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
 -   To all comunity present in stackoverflow, where quick questions were easily found.
 
 -   The game rules were based on this [post](https://howdoyouplayit.com/parcheesi-rules-play-parcheesi/) (rules can slightly vary)
+
 ---------------------------------------------------------------------------------------------------------------------------------------- 
 
 # Acknowledgements
