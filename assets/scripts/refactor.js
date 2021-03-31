@@ -24,3 +24,45 @@ const board = [ {x:55,y:180},{x:80,y:180},{x:105,y:180},{x:130,y:180},{x:130,y:2
                 {x:180,y:5},{x:155,y:5},{x:130,y:5},{x:130,y:30},{x:130,y:55},{x:130,y:80},{x:130,y:105},{x:130,y:130},
                 {x:105,y:130},{x:80,y:130},{x:55,y:130},{x:30,y:130},{x:5,y:130},{x:5,y:155},{x:5,y:180},{x:30,y:180}
             ];
+
+let rsafespace = [1,7,10,13,19,22,25,31,34,37,43,46];
+var rblockedposition = []
+
+var dieone;
+var dietwo;
+var turn_color = 1;
+var player = tokens.filter(player => player.color == turn_color);
+
+rollthedice();
+checkFive();
+
+function rollthedice() { 
+    dieone =  Number(Math.floor(Math.random()*6+1));
+    dietwo =  Number(Math.floor(Math.random()*6+1));
+    console.log(dieone);
+    console.log(dietwo);
+    return;
+}
+
+function checkFive() { 
+    if(dieone+dietwo == 5 || dieone == 5 || dietwo == 5){
+        var initialSlot = player[0].initialSlot;
+        var noBlock = tokens.filter(token => token.boardSlot == initialSlot).length < 2;
+        var playerBlock = player.filter(token => token.colorSlot == initialSlot).length == 2;
+        if (noBlock){
+            console.log(`Leave home`);
+        }else{
+            if(playerBlock){
+                console.log(`It's blocked by myself, showing other options`);
+            }else{
+                console.log(`Sending another player home`);
+            }
+        }
+    }else{
+        console.log("No fives, going to options");
+    }
+}
+
+
+
+
