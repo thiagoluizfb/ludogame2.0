@@ -1,5 +1,5 @@
 var tokens = [
-    {token:0, color:1, playerType:1, homePosition:{x:25,y:226}, initialSlot:1, colorSlot:0, boardSlot:0, finalLane:0, dieOne:0, dieTwo:0, move:0},
+    {token:0, color:1, playerType:1, homePosition:{x:25,y:226}, initialSlot:1, colorSlot:0, boardSlot:1, finalLane:0, dieOne:0, dieTwo:0, move:10},
     {token:1, color:1, playerType:1, homePosition:{x:86.8,y:226}, initialSlot:1, colorSlot:0, boardSlot:0, finalLane:0, dieOne:0, dieTwo:0, move:0},
     {token:2, color:1, playerType:1, homePosition:{x:25,y:290}, initialSlot:1, colorSlot:0, boardSlot:0, finalLane:0, dieOne:0, dieTwo:0, move:0},
     {token:3, color:1, playerType:1, homePosition:{x:86.8,y:290}, initialSlot:1, colorSlot:0, boardSlot:0, finalLane:0, dieOne:0, dieTwo:0, move:0},
@@ -25,20 +25,22 @@ const board = [ {x:55,y:180},{x:80,y:180},{x:105,y:180},{x:130,y:180},{x:130,y:2
                 {x:105,y:130},{x:80,y:130},{x:55,y:130},{x:30,y:130},{x:5,y:130},{x:5,y:155},{x:5,y:180},{x:30,y:180}
             ];
 
+let initialPositions = [1,13,35,37];
+
 let rsafespace = [1,7,10,13,19,22,25,31,34,37,43,46];
-var rblockedposition = []
+var rblockedposition = [5,3]
 
 var dieone;
 var dietwo;
 var turn_color = 1;
 var player = tokens.filter(player => player.color == turn_color);
 
-rollthedice();
-checkFive();
+//rollthedice();
+//checkFive();
 
 function rollthedice() { 
-    dieone =  Number(Math.floor(Math.random()*6+1));
-    dietwo =  Number(Math.floor(Math.random()*6+1));
+    dieone =  5;//Number(Math.floor(Math.random()*6+1));
+    dietwo =  1;//Number(Math.floor(Math.random()*6+1));
     console.log(dieone);
     console.log(dietwo);
     return;
@@ -48,14 +50,15 @@ function checkFive() {
     if(dieone+dietwo == 5 || dieone == 5 || dietwo == 5){
         var initialSlot = player[0].initialSlot;
         var noBlock = tokens.filter(token => token.boardSlot == initialSlot).length < 2;
-        var playerBlock = player.filter(token => token.colorSlot == initialSlot).length == 2;
+        var otherBlock = tokens.filter(token => token.boardSlot == initialSlot && token.color != turn_color);
+        var myBlock = player.filter(mytoken => mytoken.boardSlot == initialSlot) == 2;
         if (noBlock){
             console.log(`Leave home`);
         }else{
-            if(playerBlock){
+            if(myBlock){
                 console.log(`It's blocked by myself, showing other options`);
             }else{
-                console.log(`Sending another player home`);
+                otherBlock.forEach(player => console.log(`Sending another player home, (${player.color})`));
             }
         }
     }else{
@@ -64,5 +67,32 @@ function checkFive() {
 }
 
 
+function options() {
+    for (token of player){
+        var x =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dieone);
+        var y =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dietwo);
+        if(x){
+            console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dieone} because the position ${x} is blocked`);
+        }else{
+            console.log(`Token ${token.token} at position ${token.boardSlot} can move with ${dieone} because the will stop before a blocked position`);
+        }
+        if(y){
+            console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dietwo} because the position ${y} is blocked`);
+        }else{
+            console.log(`Token ${token.token} at position ${token.boardSlot} can move with ${dietwo} because the will stop before a blocked position`);
+        }
+    }
+}
 
+function move(){
+    var token =  player.find(token => token.move > 0);
+    while (token.move > 0){
+        var position = token.boardSlot;
+        console.log(`Player ${token.color}, token ${token.token}: Actual position is ${position} and there is ${token.move} moves left`);
+        console.log(`Coordinates are ${board[position].x} and ${board[position].y}`)
+        token.boardSlot += 1;
+        token.move -= 1;
+    }
+}
 
+move();
