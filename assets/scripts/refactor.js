@@ -1,5 +1,5 @@
 var tokens = [
-    {token:0, color:0, playerType:1, homePosition:{x:25,y:226}, initialSlot:1, colorSlot:32, boardSlot:32, finished:0, dieOne:0, dieTwo:0, move:10},
+    {token:0, color:0, playerType:1, homePosition:{x:25,y:226}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:1, color:0, playerType:1, homePosition:{x:86.8,y:226}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:2, color:0, playerType:1, homePosition:{x:25,y:290}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:3, color:0, playerType:1, homePosition:{x:86.8,y:290}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
@@ -17,22 +17,23 @@ var tokens = [
     {token:3, color:3, playerType:1, homePosition:{x:86.8,y:90}, initialSlot:37, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
 ]
 
-let board = [ {x:0,y:0}, {x:55,y:180},{x:80,y:180},{x:105,y:180},{x:130,y:180},{x:130,y:205},{x:130,y:230},{x:130,y:255},{x:130,y:280},{x:130,y:305},{x:155,y:305},
+const board = [ {x:0,y:0}, {x:55,y:180},{x:80,y:180},{x:105,y:180},{x:130,y:180},{x:130,y:205},{x:130,y:230},{x:130,y:255},{x:130,y:280},{x:130,y:305},{x:155,y:305},
                 {x:180,y:305},{x:180,y:280},{x:180,y:255},{x:180,y:230},{x:180,y:205},{x:180,y:180},{x:205,y:180},{x:230,y:180},{x:255,y:180},{x:280,y:180},
                 {x:305,y:180},{x:305,y:155},{x:305,y:130},{x:280,y:130},{x:255,y:130},{x:230,y:130},{x:205,y:130},{x:180,y:130},{x:180,y:105},{x:180,y:80},
                 {x:180,y:55},{x:180,y:30},{x:180,y:5},{x:155,y:5},{x:130,y:5},{x:130,y:30},{x:130,y:55},{x:130,y:80},{x:130,y:105},{x:130,y:130},{x:105,y:130},
                 {x:80,y:130},{x:55,y:130},{x:30,y:130},{x:5,y:130},{x:5,y:155},{x:5,y:180},{x:30,y:180}
             ];
 
-let finalLanes = [
+const finalLanes = [
     [{x:30,y:155},{x:55,y:155},{x:80,y:155},{x:105,y:155},{x:130,y:155}],
     [{x:155,y:205},{x:155,y:230},{x:155,y:255},{x:155,y:280},{x:155,y:305}],
     [{x:280,y:155},{x:255,y:155},{x:230,y:155},{x:205,y:155},{x:180,y:155}],
     [{x:155,y:30},{x:155,y:55},{x:155,y:80},{x:155,y:105},{x:155,y:155}]
 ]
 
-let lastSlot = 51;
-let rsafespace = [1,7,10,13,19,22,25,31,34,37,43,46];
+const lastSlot = 51;
+const rsafespace = [1,7,10,13,19,22,25,31,34,37,43,46];
+const dicenum = ["one","two","three","four","five","six"];
 var rblockedposition = [6,7,8]
 
 var dieone;
@@ -40,20 +41,43 @@ var dietwo;
 var turn_color = 0;
 var player = tokens.filter(player => player.color == turn_color);
 
-rollthedice();
-checkFive();
+// rollthedice();
+// checkFive();
+whostarts();
 
+function whostarts(){
+    players = tokens.filter(token => token.token == 0);
+    var results = []
+    players.forEach(player =>(
+        rollthedice(),
+        console.log(player),
+        player.move = dieone + dietwo,
+        results.push(player.move))
+        // $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
+        // $("#"+players[i]+"dicetwo").html(`<i class="fas fa-dice-${dicenum[dietwo[i]-1]} dice"></i>`);
+    );
+    resultSorted = results.sort(function(a, b){return b-a});
+    var winner = players.filter(player => player.move == resultSorted[0])
+    console.log(winner);
+    if (winner.length > 1){
+        console.log(results);
+        console.log(`Restarting`);
+        whostarts();
+    }else{
+        console.log(results);
+        console.log(`The winner is ${winner[0].color}`)
+    }
+    return;
+}
 
 function rollthedice() { 
-    dieone =  5;//Number(Math.floor(Math.random()*6+1));
-    dietwo =  1;//Number(Math.floor(Math.random()*6+1));
-    console.log(dieone);
-    console.log(dietwo); 
-    player.map(token => (token.dieOne = dieone, token.dieTwo = dietwo));
+    dieone =  Number(Math.floor(Math.random()*6+1));
+    dietwo =  Number(Math.floor(Math.random()*6+1));
     return;
 }
 
 function checkFive() {
+    player.map(token => (token.dieOne = dieone, token.dieTwo = dietwo));
     if(dieone+dietwo == 5 || dieone == 5 || dietwo == 5){
         var initialSlot = player[0].initialSlot;
         var noBlock = tokens.filter(token => token.boardSlot == initialSlot).length < 2;
