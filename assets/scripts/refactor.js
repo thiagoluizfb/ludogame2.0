@@ -3,7 +3,7 @@ var tokens = [
     {token:"two", color:0, playerType:1, homePosition:{x:86.8,y:226}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"three", color:0, playerType:1, homePosition:{x:25,y:290}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"four", color:0, playerType:1, homePosition:{x:86.8,y:290}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
-    {token:"one", color:1, playerType:1, homePosition:{x:225,y:226}, initialSlot:13, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
+    {token:"one", color:1, playerType:1, homePosition:{x:225,y:226}, initialSlot:13, colorSlot:0, boardSlot:6, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"two", color:1, playerType:1, homePosition:{x:286.8,y:226}, initialSlot:13, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"three", color:1, playerType:1, homePosition:{x:225,y:290}, initialSlot:13, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"four", color:1, playerType:1, homePosition:{x:286.8,y:290}, initialSlot:13, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
@@ -46,13 +46,12 @@ game(0);
 
 function game(turn_color){
     player = tokens.filter(player => player.color == turn_color);
-    // console.log(`It's player ${player[0].color} turn`);
+    console.log(`It's player ${player[0].color} turn`);
     rollthedice();
     checkFive();
     options();
-    console.log(player);
     thisToken = tokens.find(token => token.dieOne > 0 || token.dieTwo > 0 && thisToken.boardSlot != 0);
-    thisToken.move = 3;
+    thisToken.move = 5;
     move();
 }
 
@@ -61,7 +60,6 @@ function whostarts(){
     var results = []
     players.forEach(player =>(
         rollthedice(),
-        console.log(player),
         player.move = dieone + dietwo,
         results.push(player.move))
         // $("#"+players[i]+"diceone").html(`<i class="fas fa-dice-${dicenum[dieone[i]-1]} dice"></i>`);
@@ -94,16 +92,12 @@ function rollthedice() {
 function checkFive() {
     if(dieone+dietwo == 5 || dieone == 5 || dietwo == 5){
         var sum = 0;
-        player.forEach(token => sum += token.dieOne + token.dieTwo)
-        console.log(sum);
+        player.forEach(token => sum += token.dieOne + token.dieTwo);
         if (sum>0){
             var initialSlot = player[0].initialSlot;
-            console.log(player);
             var noBlock = tokens.filter(token => token.boardSlot == initialSlot).length < 2;
-            console.log(noBlock);
             var otherBlock = tokens.filter(token => token.boardSlot == initialSlot && token.color != turn_color);
             var myBlock = player.filter(mytoken => mytoken.boardSlot == initialSlot).length == 2;
-            console.log(myBlock);
             if (noBlock){
                 thisToken =  player.find(token => token.dieOne > 0 && token.boardSlot == 0);
                 if(thisToken){
@@ -134,7 +128,7 @@ function checkFive() {
 }
 
 function options() {
-    for (token of player){
+    for (token of tokens){
         var x =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dieone);
         var y =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dietwo);
         if(x || token.colorSlot + token.dieOne > lastSlot || token.colorSlot == 0 ||  token.dieOne == 0){
@@ -158,11 +152,7 @@ function move(){
         var otherToken = tokens.find(otherToken => otherToken.boardSlot == thisToken.boardSlot && otherToken.token != thisToken.token);
         unblockspace(thisToken, otherToken, thisToken.boardSlot);
     }
-    while (thisToken.move >= 0 ){
-        if(thisToken.move == 0){
-            whoishere(thisToken.color, thisToken.token);
-            checkFive();
-        }
+    while (thisToken.move > 0 ){
         if (thisToken.colorSlot == lastSlot){
             thisToken.finished = 1
             console.log(`This token has finished`);
@@ -180,24 +170,30 @@ function move(){
         thisToken.boardSlot += 1;
         thisToken.colorSlot += 1;
         thisToken.move -= 1;
+        if(thisToken.move == 0){
+            position = thisToken.boardSlot;
+            console.log(`Player ${thisToken.color}, token ${thisToken.token}: Actual position is ${thisToken.boardSlot} and there is ${thisToken.move} moves left`);
+            console.log(`Coordinates are ${board[position].x} and ${board[position].y}`)
+            whoishere(thisToken.color, thisToken.token);
+            checkFive();
+        }
     }
     return;
 }
 
 function whoishere(color, token){
+    console.log('Who is here');
     var thisToken = tokens.find(thistoken => thistoken.color == color && thistoken.token == token);
     var boardSlot = thisToken.boardSlot;
-    var otherToken = tokens.find(otherToken => otherToken.boardSlot == boardSlot && otherToken.token != token);
+    var otherToken = tokens.find(otherToken => otherToken.boardSlot == boardSlot && otherToken != thisToken);
     var safeSlot = rsafespace.includes(boardSlot);
-    // console.log(boardSlot);
-    // console.log(safespace);
-    // console.log(safeSlot);
     if (otherToken){
         if(safeSlot) {
             console.log(`Blocking space, safeplace`);
             blockspace(thisToken, otherToken, boardSlot);
         }else{
             if(otherToken.color == color){
+            console.log(`Blocking space, same color`);
                 blockspace(thisToken, otherToken, boardSlot);
             }else{
                 if(boardSlot > 46){
@@ -209,6 +205,7 @@ function whoishere(color, token){
             }  
         }
     }
+    console.table(tokens);
     return;
 }
 
@@ -218,7 +215,7 @@ function sendhome(thisToken){
     thisToken.boardSlot = 0;
     var xPosition = thisToken.homePosition.x;
     var yPosition = thisToken.homePosition.y;
-    console.log(thisToken, xPosition, yPosition);
+    console.log(thisToken,xPosition,yPosition);
     return;
 }
 
@@ -226,17 +223,14 @@ function blockspace(thisToken, otherToken, boardSlot){
     console.log(thisToken);
     console.log(otherToken);
     rblockedposition.push(boardSlot);
-    console.log(rblockedposition);
     return;
 }
 
 function unblockspace(thisToken, otherToken, boardSlot){
     console.log(`Unblocking space`);
-    console.log(rblockedposition);
     console.log(thisToken);
     console.log(otherToken);
     rblockedposition.splice(rblockedposition.indexOf(boardSlot),1)
-    console.log(rblockedposition);
     return;
 }
 
