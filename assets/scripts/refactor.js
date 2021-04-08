@@ -1,9 +1,9 @@
 var tokens = [
-    {token:"one", color:0, playerType:1, homePosition:{x:25,y:226}, initialSlot:1, colorSlot:1, boardSlot:1, finished:0, dieOne:0, dieTwo:0, move:0},
+    {token:"one", color:0, playerType:1, homePosition:{x:25,y:226}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"two", color:0, playerType:1, homePosition:{x:86.8,y:226}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"three", color:0, playerType:1, homePosition:{x:25,y:290}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"four", color:0, playerType:1, homePosition:{x:86.8,y:290}, initialSlot:1, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
-    {token:"one", color:1, playerType:1, homePosition:{x:225,y:226}, initialSlot:13, colorSlot:0, boardSlot:6, finished:0, dieOne:0, dieTwo:0, move:0},
+    {token:"one", color:1, playerType:1, homePosition:{x:225,y:226}, initialSlot:13, colorSlot:0, boardSlot:1, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"two", color:1, playerType:1, homePosition:{x:286.8,y:226}, initialSlot:13, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"three", color:1, playerType:1, homePosition:{x:225,y:290}, initialSlot:13, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"four", color:1, playerType:1, homePosition:{x:286.8,y:290}, initialSlot:13, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
@@ -40,19 +40,43 @@ var turn_color = 0
 var dieone;
 var dietwo;
 var player;
+var sum = 0;
 var rblockedposition = [];
+var count = 3;
+game(count);
 
-game(0);
-
-function game(turn_color){
-    player = tokens.filter(player => player.color == turn_color);
+function game(count){
+    player = tokens.filter(player => player.color == count);
     console.log(`It's player ${player[0].color} turn`);
     rollthedice();
+    console.log(dieone)
+    console.log(dietwo)
     checkFive();
     options();
-    thisToken = tokens.find(token => token.dieOne > 0 || token.dieTwo > 0 && thisToken.boardSlot != 0);
-    thisToken.move = 5;
-    move();
+    var thisToken = tokens.find(token => token.dieOne > 0 && token.boardSlot != 0 || token.dieTwo > 0 && token.boardSlot != 0);
+    // sum = 0;
+    // player.forEach(token => sum += token.dieOne + token.dieTwo);
+    if (thisToken) {
+        if(thisToken.dieOne > 0){
+            thisToken.move = thisToken.dieOne;
+            thisToken.dieOne = 0;
+            move();
+        }else{
+            thisToken.move = thisToken.dieTwo;
+            thisToken.dieTwo = 0;
+            move();
+
+        }
+        console.table(tokens);
+    }else{
+        console.table(tokens);
+        console.log(`No more moves, nextplayer`)
+        // console.log(count);
+        // if(count>0){
+        //     count -= 1;
+        //     game(count);
+        // }
+    }
 }
 
 function whostarts(){
@@ -83,65 +107,77 @@ function whostarts(){
 }
 
 function rollthedice() { 
-    dieone =  5;//Number(Math.floor(Math.random()*6+1));
-    dietwo =  5;//Number(Math.floor(Math.random()*6+1));
+    dieone =  Number(Math.floor(Math.random()*6+1));
+    dietwo =  Number(Math.floor(Math.random()*6+1));
     player.map(token => (token.dieOne = dieone, token.dieTwo = dietwo));
     return;
 }
 
 function checkFive() {
-    if(dieone+dietwo == 5 || dieone == 5 || dietwo == 5){
+    var leavingTokens = player.filter(token => token.dieOne+token.dieTwo == 5 || token.dieOne == 5 || token.dieTwo == 5).length
+    console.log(leavingTokens)
+    if(leavingTokens > 0){
         var sum = 0;
         player.forEach(token => sum += token.dieOne + token.dieTwo);
         if (sum>0){
             var initialSlot = player[0].initialSlot;
             var noBlock = tokens.filter(token => token.boardSlot == initialSlot).length < 2;
-            var otherBlock = tokens.filter(token => token.boardSlot == initialSlot && token.color != turn_color);
+            var otherBlock = tokens.find(token => token.boardSlot == initialSlot && token.color != turn_color);
             var myBlock = player.filter(mytoken => mytoken.boardSlot == initialSlot).length == 2;
+            thisToken =  player.find(token => token.dieOne > 0 || token.dieTwo > 0&& token.boardSlot == 0);
             if (noBlock){
-                thisToken =  player.find(token => token.dieOne > 0 && token.boardSlot == 0);
-                if(thisToken){
+                // if(thisToken){
                     console.log(`Leave home`);
                     leavehome(thisToken);
                     whoishere(thisToken.color, thisToken.token);
                     checkFive();
-                }else{
-                    thisToken =  player.find(token => token.dieTwo > 0 && token.boardSlot == 0);
-                    if(thisToken){
-                        console.log(`Leave home`);
-                        leavehome(thisToken);
-                        whoishere(thisToken.color, thisToken.token);
-                        checkFive();
-                    }
-                }
             }else{
                 if(myBlock){
                     console.log(`It's blocked by myself, showing other options`);
                 }else{
-                    otherBlock.forEach(player => console.log(`Sending another player home, (${player.color})`));
+                    if(otherBlock){
+                        console.log(`Leave home`);
+                        leavehome(thisToken);
+                        console.log(`Sending another player home`);
+                        sendhome(otherBlock);
+                        checkFive();
+                    }
                 }
             }
         }else{
             console.log("No fives, going to options");
         }
+    }else{
+        console.log("No fives, going to options");
+        homeTokens = player.filter(token =>token.boardSlot == 0)
+        homeTokens.map(token =>(
+            token.dieOne = 0,
+            token.dieTwo = 0
+            )
+        );
     }
 }
 
 function options() {
-    for (token of tokens){
-        var x =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dieone);
-        var y =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dietwo);
-        if(x || token.colorSlot + token.dieOne > lastSlot || token.colorSlot == 0 ||  token.dieOne == 0){
-            // console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dieone} because the position ${x} is blocked`);
-        }else{
-            // console.log(`Token ${token.token} at position ${token.boardSlot} can move with ${dieone} because the will stop before a blocked position`);
+    player.forEach(token => sum += token.dieOne + token.dieTwo);
+    if (sum>0){
+        for (token of player){
+            var x =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dieone);
+            var y =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dietwo);
+            if(x || token.colorSlot + token.dieOne > lastSlot || token.colorSlot == 0 ||  token.dieOne == 0){
+                // console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dieone} because the position ${x} is blocked`);
+            }else{
+                // console.log(`Token ${token.token} at position ${token.boardSlot} can move with ${dieone} because the will stop before a blocked position`);
+            }
+            if(y || token.colorSlot + token.dieTwo > lastSlot ||  token.colorSlot == 0 ||  token.dieTwo == 0){
+                // console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dietwo} because the position ${y} is blocked`);
+            }else{
+                // console.log(`Token ${token.token} at position ${token.boardSlot} can move with ${dietwo} because the will stop before a blocked position`);
+            }
         }
-        if(y || token.colorSlot + token.dieTwo > lastSlot ||  token.colorSlot == 0 ||  token.dieTwo == 0){
-            // console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dietwo} because the position ${y} is blocked`);
-        }else{
-            // console.log(`Token ${token.token} at position ${token.boardSlot} can move with ${dietwo} because the will stop before a blocked position`);
-        }
+        return;
     }
+    return;
 }
 
 function move(){
@@ -149,7 +185,7 @@ function move(){
     console.log(`Token ${thisToken.token} will move`)
     var blockedSpace = rsafespace.includes(thisToken.boardSlot);
     if(blockedSpace){
-        var otherToken = tokens.find(otherToken => otherToken.boardSlot == thisToken.boardSlot && otherToken.token != thisToken.token);
+        var otherToken = tokens.find(otherToken => otherToken.boardSlot == thisToken.boardSlot && otherToken != thisToken);
         unblockspace(thisToken, otherToken, thisToken.boardSlot);
     }
     while (thisToken.move > 0 ){
@@ -209,13 +245,13 @@ function whoishere(color, token){
     return;
 }
 
-function sendhome(thisToken){
+function sendhome(otherToken){
     console.log(`sendding home`)
-    thisToken.colorSlot = 0;
-    thisToken.boardSlot = 0;
-    var xPosition = thisToken.homePosition.x;
-    var yPosition = thisToken.homePosition.y;
-    console.log(thisToken,xPosition,yPosition);
+    otherToken.colorSlot = 0;
+    otherToken.boardSlot = 0;
+    var xPosition = otherToken.homePosition.x;
+    var yPosition = otherToken.homePosition.y;
+    console.log(otherToken,xPosition,yPosition);
     return;
 }
 
@@ -249,7 +285,7 @@ function leavehome(thisToken) {
     }
     if (thisToken.dieOne  + thisToken.dieTwo == 5){
         player.map(token => (token.dieOne = 0, token.dieTwo = 0))
-        return;;
+        return;
     }
     return;
 }
