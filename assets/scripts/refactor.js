@@ -42,11 +42,11 @@ var dieone;
 var dietwo;
 var player;
 var sum;
+var doubledice = 0;
 var rblockedposition = [];
-var count = 0;
-game(count);
+game(0);
 
-function game(count){
+function game(color){
     finished = 0
     tokens.forEach(token => finished += token.finished);
     console.log(`Finished players ${finishedPlayers.length}`)
@@ -55,20 +55,43 @@ function game(count){
         console.log(finishedPlayers);
         return;
     }
+    
     finished = 0
-    player = tokens.filter(player => player.color == count);
+    console.log(`Count is ${color}`);
+    player = tokens.filter(player => player.color == color);
     player.forEach(token => finished += token.finished);
     thisToken = player[0]
     if (finished == 4){
-        nextplayer(thisToken);
+        nextplayer(color);
         return;
     }
-    sum = 0;
-    console.log(`It's player ${player[0].color} turn`);
-    rollthedice();
-    console.log(dieone);
-    console.log(dietwo);
-    checkFive();
+    
+    console.log(`It's player ${color} turn`);
+    $("#layer").off("click");
+    $(`#dice${color}`).css("z-index","3");
+    $(`#diceone${color}`).addClass("pulseshadow");
+    $(`#dicetwo${color}`).addClass("pulseshadow");
+    $(`#dice${color}`).one("click",function() {
+        rollthedice(color);
+        $(`#diceone${color}`).removeClass("pulseshadow");
+        $(`#dicetwo${color}`).removeClass("pulseshadow");
+        if (doubledice > 0) {
+            if (doubledice == 3){
+                thisToken = player[0];
+                console.log(`Sending token ${thisToken.token} home, triple-doubledice`);
+                doubledice = 0;
+                sendhome(thisToken, color);
+            }else{
+                game(color);
+            }
+            return;
+        }else{
+            doubledice = 0;
+        }
+        console.log(dieone);
+        console.log(dietwo);
+        checkFive(color);
+    });
     return;
 }
 
@@ -100,14 +123,25 @@ function whostarts(){
     }
 }
 
-function rollthedice() { 
-    dieone =  Number(Math.floor(Math.random()*6+1));
-    dietwo =  Number(Math.floor(Math.random()*6+1));
+function rollthedice(color) {
+    dice.play();
+    dieone = Number(Math.floor(Math.random()*6+1));
+    dietwo = Number(Math.floor(Math.random()*6+1));
+    $(`#diceone${color}`).html(`<i class="fas fa-dice-${dicenum[dieone-1]} dice"></i>`);
+    $(`#dicetwo${color}`).html(`<i class="fas fa-dice-${dicenum[dietwo-1]} dice"></i>`);
+    if(dieone == dietwo){
+        console.log(doubledice);
+        doubledice += 1;
+        $(`#dice${color}`).find(`i`).css("color","gold");
+    }else{
+        $(`#dice${color}`).find(`i`).css("color","none");
+        doubledice = 0;
+    }
     player.map(token => (token.dieOne = dieone, token.dieTwo = dietwo));
     return;
 }
 
-function checkFive() {
+function checkFive(color) {
     var leavingTokens = player.filter(token => (token.dieOne+token.dieTwo == 5 || token.dieOne == 5 || token.dieTwo == 5) && (token.boardSlot == 0) && (token.finished == 0)).length
     console.log(`Tokens leaving ${leavingTokens}`)
     if(leavingTokens > 0){
@@ -128,21 +162,21 @@ function checkFive() {
             }else{
                 if(myBlock){
                     console.log(`It's blocked by myself, showing other options`);
-                    options();
+                    options(color);
                     return;
                 }else{
                     if(otherBlock){
                         console.log(`Leave home`);
                         leavehome(thisToken);
                         console.log(`Sending another player home`);
-                        sendhome(otherBlock);
+                        sendhome(otherBlock, color);
                         return;
                     }
                 }
             }
         }else{
             console.log("No fives, going to options");
-            options();
+            options(color);
             return;
         }
     }else{
@@ -153,12 +187,12 @@ function checkFive() {
             token.dieTwo = 0
             )
         );
-        options();
+        options(color);
         return;
     }
 }
 
-function options() {
+function options(color) {
     sum = 0;
     player.forEach(token => sum += token.dieOne + token.dieTwo);
     console.log(`Sum is ${sum}`);
@@ -193,7 +227,7 @@ function options() {
                 return;
             }
         }else{
-            checkFive();
+            checkFive(color);
             return;
         }
     }else{
@@ -201,32 +235,30 @@ function options() {
         console.table(tokens);
         finished = 0
         player.forEach(token => finished += token.finished);
-        thisToken = player[0]
         if (finished == 4){
-            console.log(`This player ${thisToken.color} finished`)
-            if(finishedPlayers.includes(thisToken.color) == false){
-                finishedPlayers.push(thisToken.color);
-                nextplayer(thisToken);
+            console.log(`This player ${color} finished`)
+            if(finishedPlayers.includes(color) == false){
+                finishedPlayers.push(color);
+                nextplayer(color);
                 return;
             }else{
-                nextplayer(thisToken);
+                nextplayer(color);
                 return;
             }
         }else{
-            nextplayer(thisToken);
+            nextplayer(color);
             return;
         }
     }
 }
 
-function nextplayer(thisToken){
-    color = thisToken.color
-    if (color == 0){
-        color = 3;
+function nextplayer(color){
+    if (color == 3){
+        color = 0;
         game(color);
         return;
     }else{
-        color -= 1;
+        color += 1;
         game(color);
         return;
     }
@@ -263,7 +295,7 @@ function move(thisToken){
             thisToken.colorSlot = 0;
             thisToken.boardSlot = 0;
             console.log(`This token has finished`);
-            checkFive();
+            checkFive(thiToken.color);
             return;
         }
         if(thisToken.colorSlot < 46){
@@ -273,7 +305,7 @@ function move(thisToken){
         }else{
             position = thisToken.colorSlot-46;
             console.log(`Player ${thisToken.color}, token ${thisToken.token}: Actual position is ${position} and there is ${thisToken.move} moves left`);
-            console.log(`Coordinates are ${finalLanes[count][position].x} and ${finalLanes[count][position].y}`)
+            console.log(`Coordinates are ${finalLanes[thisToken.color][position].x} and ${finalLanes[thisToken.color][position].y}`)
         }
         whoishere(thisToken.color, thisToken.token);
         return;
@@ -300,29 +332,29 @@ function whoishere(color, token){
                 return;
             }else{
                 if(thisToken.colorSlot > 46){
-                    checkFive();
+                    checkFive(color);
                     return;
                 }else{
                     console.log(`Sending player ${otherToken.color} token ${otherToken.token} home`)
-                    sendhome(otherToken);
+                    sendhome(otherToken, color);
                     return;
                 }
             }  
         }
     }else{
-        options();
+        options(color);
         return;
     }
 }
 
-function sendhome(otherToken){
+function sendhome(otherToken, color){
     console.log(`Sending home`)
     otherToken.colorSlot = 0;
     otherToken.boardSlot = 0;
     var xPosition = otherToken.homePosition.x;
     var yPosition = otherToken.homePosition.y;
     console.log(otherToken,xPosition,yPosition);
-    checkFive();
+    checkFive(color);
     return;
 }
 
@@ -331,7 +363,7 @@ function blockspace(thisToken, otherToken, boardSlot){
     console.log(thisToken);
     console.log(otherToken);
     rblockedposition.push(boardSlot);
-    checkFive();
+    checkFive(thisToken.color);
     return;
 }
 
