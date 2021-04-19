@@ -221,7 +221,7 @@ body{
 
 /* /////////////////////////////////////////////////////////////////////////////////////////////////////Tokens */
 
-#blueTokenOne{
+#one0{
     height: 12px;
     width: 12px;
     top: 226px;
@@ -232,7 +232,7 @@ body{
     text-align: center;
 }
 
-#blueTokenTwo{
+#two0{
     height: 12px;
     width: 12px;
     top: 226px;
@@ -243,7 +243,7 @@ body{
     text-align: center;
 }
 
-#blueTokenThree{
+#three0{
     height: 12px;
     width: 12px;
     top: 290px;
@@ -254,7 +254,7 @@ body{
     text-align: center;
 }
 
-#blueTokenFour{
+#four0{
     height: 12px;
     width: 12px;
     top: 290px;
@@ -288,7 +288,7 @@ body{
     color: #fff;
 }
 
-#yellowTokenOne{
+#one1{
     height: 12px;
     width: 12px;
     top: 226px;
@@ -299,7 +299,7 @@ body{
     text-align: center;
 }
 
-#yellowTokenTwo{
+#two1{
     height: 12px;
     width: 12px;
     top: 226px;
@@ -310,7 +310,7 @@ body{
     text-align: center;
 }
 
-#yellowTokenThree{
+#three1{
     height: 12px;
     width: 12px;
     top: 290px;
@@ -321,7 +321,7 @@ body{
     text-align: center;
 }
 
-#yellowTokenFour{
+#four1{
     height: 12px;
     width: 12px;
     top: 290px;
@@ -355,7 +355,7 @@ body{
     color: #fff;
 }
 
-#redTokenOne{
+#one2{
     height: 12px;
     width: 12px;
     top: 26px;
@@ -366,7 +366,7 @@ body{
     text-align: center;
 }
 
-#redTokenTwo{
+#two2{
     height: 12px;
     width: 12px;
     top: 26px;
@@ -377,7 +377,7 @@ body{
     text-align: center;
 }
 
-#redTokenThree{
+#three2{
     height: 12px;
     width: 12px;
     top: 90px;
@@ -388,7 +388,7 @@ body{
     text-align: center;
 }
 
-#redTokenFour{
+#four2{
     height: 12px;
     width: 12px;
     top: 90px;
@@ -422,7 +422,7 @@ body{
     color: #fff;
 }
 
-#greenTokenOne{
+#one3{
     height: 12px;
     width: 12px;
     top: 26px;
@@ -434,7 +434,7 @@ body{
 
 }
 
-#greenTokenTwo{
+#two3{
     height: 12px;
     width: 12px;
     top: 26px;
@@ -445,7 +445,7 @@ body{
     text-align: center;
 }
 
-#greenTokenThree{
+#three3{
     height: 12px;
     width: 12px;
     top: 90px;
@@ -456,7 +456,7 @@ body{
     text-align: center;
 }
 
-#greenTokenFour{
+#four3{
     height: 12px;
     width: 12px;
     top: 90px;

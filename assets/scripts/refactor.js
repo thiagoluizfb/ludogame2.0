@@ -25,10 +25,10 @@ const board = [ {x:0,y:0}, {x:55,y:180},{x:80,y:180},{x:105,y:180},{x:130,y:180}
             ];
 
 const finalLanes = [
-    [{x:30,y:155},{x:55,y:155},{x:80,y:155},{x:105,y:155},{x:130,y:155}],
-    [{x:155,y:205},{x:155,y:230},{x:155,y:255},{x:155,y:280},{x:155,y:305}],
-    [{x:280,y:155},{x:255,y:155},{x:230,y:155},{x:205,y:155},{x:180,y:155}],
-    [{x:155,y:30},{x:155,y:55},{x:155,y:80},{x:155,y:105},{x:155,y:155}]
+    [{x:5,y:155},{x:30,y:155},{x:55,y:155},{x:80,y:155},{x:105,y:155},{x:130,y:155}],
+    [{x:155,y:180},{x:155,y:205},{x:155,y:230},{x:155,y:255},{x:155,y:280},{x:155,y:305}],
+    [{x:305,y:155},{x:280,y:155},{x:255,y:155},{x:230,y:155},{x:205,y:155},{x:180,y:155}],
+    [{x:155,y:5},{x:155,y:30},{x:155,y:55},{x:155,y:80},{x:155,y:105},{x:155,y:155}]
 ]
 
 const lastSlot = 51;
@@ -75,19 +75,6 @@ function game(color){
         rollthedice(color);
         $(`#diceone${color}`).removeClass("pulseshadow");
         $(`#dicetwo${color}`).removeClass("pulseshadow");
-        if (doubledice > 0) {
-            if (doubledice == 3){
-                thisToken = player[0];
-                console.log(`Sending token ${thisToken.token} home, triple-doubledice`);
-                doubledice = 0;
-                sendhome(thisToken, color);
-            }else{
-                game(color);
-            }
-            return;
-        }else{
-            doubledice = 0;
-        }
         console.log(dieone);
         console.log(dietwo);
         checkFive(color);
@@ -137,6 +124,12 @@ function rollthedice(color) {
         $(`#dice${color}`).find(`i`).css("color","none");
         doubledice = 0;
     }
+    if (doubledice == 3){
+        thisToken = player[0];
+        console.log(`Sending token ${thisToken.token} home, triple-doubledice`);
+        doubledice = 0;
+        sendhome(thisToken, color);
+    }
     player.map(token => (token.dieOne = dieone, token.dieTwo = dietwo));
     return;
 }
@@ -150,7 +143,7 @@ function checkFive(color) {
         if (sum>0){
             var initialSlot = player[0].initialSlot;
             var noBlock = tokens.filter(token => token.boardSlot == initialSlot).length < 2;
-            var otherBlock = tokens.find(token => token.boardSlot == initialSlot && token.color != turn_color);
+            var otherBlock = tokens.find(token => token.boardSlot == initialSlot && token.color != color);
             var myBlock = player.filter(mytoken => mytoken.boardSlot == initialSlot).length == 2;
             thisToken =  player.find(token => (token.dieOne > 0 || token.dieTwo > 0) && token.boardSlot == 0);
             if (noBlock){
@@ -196,20 +189,31 @@ function options(color) {
     sum = 0;
     player.forEach(token => sum += token.dieOne + token.dieTwo);
     console.log(`Sum is ${sum}`);
+    console.log(rblockedposition);
     if (sum>0){
         for (token of player){
             var x =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dieone);
             var y =  rblockedposition.find(pos => pos > token.boardSlot && pos <= token.boardSlot + dietwo);
-            if(x || token.colorSlot + token.dieOne > lastSlot || token.colorSlot == 0 ||  token.dieOne == 0){
+            if(x || (token.colorSlot + token.dieOne > lastSlot) || token.colorSlot == 0 ||  token.dieOne == 0){
                 // console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dieone} because the position ${x} is blocked`);
                 token.dieOne = 0;
             }else{
+                $(`#${token.token}${token.color}`).find(".innerToken").html(`${token.dieOne}<div class="chooseme"></div>`);
+                $(`#${token.token}${token.color}`).css("z-index","3");
+                myposition = $(`#${token.token}${token.color}`).position();
                 // console.log(`Token ${token.token} at position ${token.boardSlot} can move with ${dieone} because the will stop before a blocked position`);
             }
-            if(y || token.colorSlot + token.dieTwo > lastSlot ||  token.colorSlot == 0 ||  token.dieTwo == 0){
+            if(y || (token.colorSlot + token.dieTwo > lastSlot) ||  token.colorSlot == 0 ||  token.dieTwo == 0){
                 // console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dietwo} because the position ${y} is blocked`);
                 token.dieTwo = 0;
             }else{
+                if (token.dieOne == 0) {
+                    $(`#${token.token}${token.color}`).find(".innerToken").html(`,${token.dieTwo}<div class="chooseme"></div>`);
+                }else{
+                    $(`#${token.token}${token.color}`).find(".innerToken").append(`${token.dieTwo}<div class="chooseme"></div>`);
+                }
+                $(`#${token.token}${token.color}`).css("z-index","3");
+                myposition = $(`#${token.token}${token.color}`).position();
                 // console.log(`Token ${token.token} at position ${token.boardSlot} can move with ${dietwo} because the will stop before a blocked position`);
             }
         }
@@ -218,12 +222,12 @@ function options(color) {
             if(thisToken.dieOne > 0){
                 thisToken.move = thisToken.dieOne;
                 player.map(token => token.dieOne = 0);
-                move(thisToken);
+                setTimeout(()=>{move(thisToken);},200);
                 return;
             }else{
                 thisToken.move = thisToken.dieTwo;
                 player.map(token => token.dieTwo = 0);
-                move(thisToken);
+                setTimeout(()=>{move(thisToken);},200);
                 return;
             }
         }else{
@@ -253,41 +257,57 @@ function options(color) {
 }
 
 function nextplayer(color){
-    if (color == 3){
-        color = 0;
+    if (doubledice>0){
         game(color);
         return;
     }else{
-        color += 1;
-        game(color);
-        return;
+        if (color == 3){
+            color = 0;
+            game(color);
+            return;
+        }else{
+            color += 1;
+            game(color);
+            return;
+        }
     }
 }
 
 function move(thisToken){
     // vthisToken = tokens.find(token => token.dieOne > 0 || token.dieTwo > 0)
     console.log(`Token ${thisToken.token} will move`)
-    var blockedSpace = rsafespace.includes(thisToken.boardSlot);
+    player.forEach(token => 
+        $(`#${token.token}${token.color}`).find(".innerToken").empty()
+    );
+    var blockedSpace = rblockedposition.includes(thisToken.boardSlot);
     if(blockedSpace){
+        console.log(`Blocked space is ${blockedSpace}`);
         var otherToken = tokens.find(otherToken => otherToken.boardSlot == thisToken.boardSlot && otherToken != thisToken);
         unblockspace(thisToken, otherToken, thisToken.boardSlot);
     }
+    var time = (thisToken.move+2)*200;
     while (thisToken.move > 0 ){
         if(thisToken.colorSlot > 46){
             var position = thisToken.colorSlot-47;
+            $(`#${thisToken.token}${thisToken.color}`).animate({left: `${finalLanes[thisToken.color][position].x}px`,top: `${finalLanes[thisToken.color][position].y}px`,position: "absolute"},200);
+            $(`#${thisToken.token}${thisToken.color}`).css({left: `${finalLanes[thisToken.color][position].x}px`,top: `${finalLanes[thisToken.color][position].y}px`,position: "absolute"});
             // console.log(`Player ${thisToken.color}, token ${thisToken.token}: Actual position is ${thisToken.boardSlot} and there is ${thisToken.move} moves left`);
             // console.log(`Coordinates are ${finalLanes[thisToken.color][position].x} and ${finalLanes[thisToken.color][position].y}`)
         }else{
             var position = thisToken.boardSlot;
+            $(`#${thisToken.token}${thisToken.color}`).animate({left: `${board[position].x}px`,top: `${board[position].y}px`,position: "absolute"},200);
+            $(`#${thisToken.token}${thisToken.color}`).css({left: `${board[position].x}px`,top: `${board[position].y}px`,position: "absolute"});
             // console.log(`Player ${thisToken.color}, token ${thisToken.token}: Actual position is ${thisToken.boardSlot} and there is ${thisToken.move} moves left`);
             // console.log(`Coordinates are ${board[position].x} and ${board[position].y}`)
         }
         thisToken.boardSlot += 1;
         thisToken.colorSlot += 1;
         thisToken.move -= 1;
-        if (thisToken.boardSlot == 49 && thisToken.color != 0){thisToken.boardSlot=1}
+        if (thisToken.boardSlot == 49 && thisToken.color != 0 && thisToken.colorSlot < 46){
+            thisToken.boardSlot=1;
+        }
     }
-    if(thisToken.move == 0){
+    if(thisToken.move == 0){        
         if (thisToken.colorSlot == lastSlot){
             thisToken.finished = 1
             thisToken.dieOne = 0;
@@ -295,19 +315,24 @@ function move(thisToken){
             thisToken.colorSlot = 0;
             thisToken.boardSlot = 0;
             console.log(`This token has finished`);
-            checkFive(thiToken.color);
+            checkFive(thisToken.color);
             return;
         }
         if(thisToken.colorSlot < 46){
             position = thisToken.boardSlot;
-            console.log(`Player ${thisToken.color}, token ${thisToken.token}: Actual position is ${position} and there is ${thisToken.move} moves left`);
-            console.log(`Coordinates are ${board[position].x} and ${board[position].y}`)
+            $(`#${thisToken.token}${thisToken.color}`).animate({left: `${board[position].x}px`,top: `${board[position].y}px`,position: "absolute"},200);
+            $(`#${thisToken.token}${thisToken.color}`).css({left: `${board[position].x}px`,top: `${board[position].y}px`,position: "absolute"});
+            setTimeout( () => { whoishere(thisToken.color, thisToken.token);},time);
+            //console.log(`Player ${thisToken.color}, token ${thisToken.token}: Actual position is ${position} and there is ${thisToken.move} moves left`);
+            //console.log(`Coordinates are ${board[position].x} and ${board[position].y}`)
         }else{
             position = thisToken.colorSlot-46;
-            console.log(`Player ${thisToken.color}, token ${thisToken.token}: Actual position is ${position} and there is ${thisToken.move} moves left`);
-            console.log(`Coordinates are ${finalLanes[thisToken.color][position].x} and ${finalLanes[thisToken.color][position].y}`)
+            $(`#${thisToken.token}${thisToken.color}`).animate({left: `${finalLanes[thisToken.color][position].x}px`,top: `${finalLanes[thisToken.color][position].y}px`,position: "absolute"},200);
+            $(`#${thisToken.token}${thisToken.color}`).css({left: `${finalLanes[thisToken.color][position].x}px`,top: `${finalLanes[thisToken.color][position].y}px`,position: "absolute"});
+            setTimeout( () => { whoishere(thisToken.color, thisToken.token);},time);
+            //console.log(`Player ${thisToken.color}, token ${thisToken.token}: Actual position is ${position} and there is ${thisToken.move} moves left`);
+            //console.log(`Coordinates are ${finalLanes[thisToken.color][position].x} and ${finalLanes[thisToken.color][position].y}`)
         }
-        whoishere(thisToken.color, thisToken.token);
         return;
     }
     console.log(`Unexpected`);
@@ -318,7 +343,7 @@ function whoishere(color, token){
     console.log('Who is here');
     var thisToken = tokens.find(thistoken => thistoken.color == color && thistoken.token == token);
     var boardSlot = thisToken.boardSlot;
-    var otherToken = tokens.find(otherToken => otherToken.boardSlot == boardSlot && otherToken != thisToken && otherToken.boardSlot < 46 && otherToken.finished == 0);
+    var otherToken = tokens.find(otherToken => otherToken.boardSlot == boardSlot && otherToken != thisToken && otherToken.colorSlot < 46 && otherToken.finished == 0);
     var safeSlot = rsafespace.includes(boardSlot);
     if (otherToken){
         if(safeSlot) {
@@ -353,6 +378,8 @@ function sendhome(otherToken, color){
     otherToken.boardSlot = 0;
     var xPosition = otherToken.homePosition.x;
     var yPosition = otherToken.homePosition.y;
+    $(`#${otherToken.token}${otherToken.color}`).animate({left: `${xPosition}px`,top: `${yPosition}px`,position: "absolute"},200);
+    $(`#${otherToken.token}${otherToken.color}`).css({left: `${xPosition}px`,top: `${yPosition}px`,position: "absolute"});
     console.log(otherToken,xPosition,yPosition);
     checkFive(color);
     return;
@@ -363,6 +390,9 @@ function blockspace(thisToken, otherToken, boardSlot){
     console.log(thisToken);
     console.log(otherToken);
     rblockedposition.push(boardSlot);
+    if (boardSlot == 1) {
+        rblockedposition.push(49);
+    }
     checkFive(thisToken.color);
     return;
 }
@@ -376,10 +406,12 @@ function unblockspace(thisToken, otherToken, boardSlot){
 }
 
 function leavehome(thisToken) {
-    thisToken.boardSlot = thisToken.initialSlot
-    thisToken.colorSlot = 1
-    xPosition = board[thisToken.initialSlot].x
-    yPosition = board[thisToken.initialSlot].y
+    thisToken.boardSlot = thisToken.initialSlot;
+    thisToken.colorSlot = 1;
+    xPosition = board[thisToken.initialSlot].x;
+    yPosition = board[thisToken.initialSlot].y;
+    $(`#${thisToken.token}${thisToken.color}`).animate({left: `${xPosition}px`,top: `${yPosition}px`,position: "absolute"},200);
+    $(`#${thisToken.token}${thisToken.color}`).css({left: `${xPosition}px`,top: `${yPosition}px`,position: "absolute"});
     if (thisToken.dieOne == 5){
         player.map(token => token.dieOne = 0);
         return;
