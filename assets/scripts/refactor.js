@@ -127,7 +127,6 @@ function rollthedice(color) {
             return;
         }else{
             player.map(token => (token.dieOne = dieone, token.dieTwo = dietwo));
-            dieone = -1;
             setTimeout(()=>{checkFive(color);},200);
             return;
         }
