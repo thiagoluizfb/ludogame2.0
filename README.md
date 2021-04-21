@@ -1,4 +1,4 @@
-# The ludo game
+# The ludo game 2.0
 
 ## This repository was created to:
 
