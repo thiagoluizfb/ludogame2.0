@@ -160,9 +160,8 @@ function checkFive(color) {
                     return;
                 }else{
                     if(otherBlock){
-                        console.log(`Leave home`);
-                        leavehome(thisToken);
                         console.log(`Sending another player home`);
+                        sendhome(otherBlock, otherBlock.color);
                         return;
                     }
                 }
@@ -420,21 +419,19 @@ function whoishere(color, token){
             console.log(`Blocking space, safeplace`);
             blockspace(thisToken, otherToken, boardSlot);
             return;
-        }else{
-            if(otherToken.color == color){
+        }
+        if(otherToken.color == color){
             console.log(`Blocking space, same color`);
-                blockspace(thisToken, otherToken, boardSlot);
-                return;
-            }else{
-                if(thisToken.colorSlot > 46){
-                    checkFive(color);
-                    return;
-                }else{
-                    console.log(`Sending player ${otherToken.color} token ${otherToken.token} home`)
-                    sendhome(otherToken, color);
-                    return;
-                }
-            }  
+            blockspace(thisToken, otherToken, boardSlot);
+            return;
+        }
+        if(thisToken.colorSlot > 46){
+            checkFive(color);
+            return;
+        }else{
+            console.log(`Sending player ${otherToken.color} token ${otherToken.token} home`)
+            sendhome(otherToken, color);
+            return;
         }
     }else{
         checkFive(color);
