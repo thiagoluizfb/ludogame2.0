@@ -26,9 +26,9 @@ const board = [ {x:0,y:0}, {x:55,y:180},{x:80,y:180},{x:105,y:180},{x:130,y:180}
 
 const finalLanes = [
     [{x:5,y:155},{x:30,y:155},{x:55,y:155},{x:80,y:155},{x:105,y:155},{x:130,y:155}],
-    [{x:155,y:180},{x:155,y:205},{x:155,y:230},{x:155,y:255},{x:155,y:280},{x:155,y:305}],
+    [{x:155,y:305},{x:155,y:280},{x:155,y:255},{x:155,y:230},{x:155,y:205},{x:155,y:180}],
     [{x:305,y:155},{x:280,y:155},{x:255,y:155},{x:230,y:155},{x:205,y:155},{x:180,y:155}],
-    [{x:155,y:5},{x:155,y:30},{x:155,y:55},{x:155,y:80},{x:155,y:105},{x:155,y:155}]
+    [{x:155,y:5},{x:155,y:30},{x:155,y:55},{x:155,y:80},{x:155,y:105},{x:155,y:130}]
 ]
 
 const lastSlot = 51;
@@ -129,8 +129,8 @@ function whostarts(){
 
 function rollthedice(color) {
     dice.play();
-    dieone = Number(Math.floor(Math.random()*6+1));
-    dietwo = Number(Math.floor(Math.random()*6+1));
+    dieone = 6;//Number(Math.floor(Math.random()*6+1));
+    dietwo = 2;//Number(Math.floor(Math.random()*6+1));
     $(`#diceone${color}`).html(`<i class="fas fa-dice-${dicenum[dieone-1]} dice"></i>`);
     $(`#dicetwo${color}`).html(`<i class="fas fa-dice-${dicenum[dietwo-1]} dice"></i>`);
     return;
@@ -195,19 +195,38 @@ function options(color) {
         for (token of player){
             var x =  rblockedposition.find(pos => pos > token.boardSlot && (pos <= token.boardSlot + token.dieOne));
             var y =  rblockedposition.find(pos => pos > token.boardSlot && (pos <= token.boardSlot + token.dieTwo));
+            console.log(token.colorSlot + token.dieOne);
             if(x || (token.colorSlot + token.dieOne > lastSlot)){
             // console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dieone} because the position ${x} is blocked`);
-                sum -= token.dieOne;
-                if(token.boardSlot !=0){
-                    token.dieOne = 0;
+                if (color == 0){
+                    if (x < 46 || (token.colorSlot + token.dieOne > lastSlot)){
+                        sum -= token.dieOne;
+                        if(token.boardSlot !=0){
+                            token.dieOne = 0;
+                        }
+                    }
+                }else{
+                    sum -= token.dieOne;
+                    if(token.boardSlot !=0){
+                        token.dieOne = 0;
+                    }
                 }
             }
             // console.log(`Token ${token.token} at position ${token.boardSlot} can move with ${dieone} because the will stop before a blocked position`);
             if(y || (token.colorSlot + token.dieTwo > lastSlot)){
                     // console.log(`Token ${token.token} at position ${token.boardSlot} can NOT move with ${dietwo} because the position ${y} is blocked`);
-                sum -= token.dieTwo;
-                if(token.boardSlot !=0){
-                    token.dieTwo = 0;
+                if (color == 0){
+                    if (y < 46 || token.colorSlot + token.dieTwo > lastSlot){
+                        sum -= token.dieTwo;
+                        if(token.boardSlot !=0){
+                            token.dieTwo = 0;
+                        }
+                    }
+                }else{
+                    sum -= token.dieTwo;
+                    if(token.boardSlot !=0){
+                        token.dieTwo = 0;
+                    }
                 }
             }
         }
@@ -355,7 +374,7 @@ function move(thisToken){
     var time = (thisToken.move)*200;
     while (thisToken.move > 0 ){
         if(thisToken.colorSlot > 46){
-            var position = thisToken.colorSlot-47;
+            var position = thisToken.colorSlot-46;
             $(`#${thisToken.token}`).animate({left: `${finalLanes[thisToken.color][position].x}px`,top: `${finalLanes[thisToken.color][position].y}px`,position: "absolute"},200);
             $(`#${thisToken.token}`).css({left: `${finalLanes[thisToken.color][position].x}px`,top: `${finalLanes[thisToken.color][position].y}px`,position: "absolute"});
             // console.log(`Player ${thisToken.color}, token ${thisToken.token}: Actual position is ${thisToken.boardSlot} and there is ${thisToken.move} moves left`);
@@ -377,6 +396,9 @@ function move(thisToken){
     setTimeout(()=>{
         if(thisToken.move == 0){        
             if (thisToken.colorSlot == lastSlot){
+                position = thisToken.colorSlot-46;
+                $(`#${thisToken.token}`).animate({left: `${finalLanes[thisToken.color][position].x}px`,top: `${finalLanes[thisToken.color][position].y}px`,position: "absolute"},200);
+                $(`#${thisToken.token}`).css({left: `${finalLanes[thisToken.color][position].x}px`,top: `${finalLanes[thisToken.color][position].y}px`,position: "absolute"});
                 thisToken.finished = 1
                 thisToken.dieOne = 0;
                 thisToken.dieTwo = 0;
