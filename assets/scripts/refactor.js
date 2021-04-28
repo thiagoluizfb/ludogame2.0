@@ -9,8 +9,8 @@ var tokens = [
     {token:"four1", color:1, playerType:1, homePosition:{x:286.8,y:290}, initialSlot:13, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"one2", color:2, playerType:1, homePosition:{x:225,y:26}, initialSlot:25, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"two2", color:2, playerType:1, homePosition:{x:286.8,y:26}, initialSlot:25, colorSlot:0, boardSlot:0, finished:0,dieOne:0, dieTwo:0, move:0},
-    {token:"four2", color:2, playerType:1, homePosition:{x:225,y:90}, initialSlot:25, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
-    {token:"two2", color:2, playerType:1, homePosition:{x:86.8,y:90}, initialSlot:25, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
+    {token:"three2", color:2, playerType:1, homePosition:{x:225,y:90}, initialSlot:25, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
+    {token:"four2", color:2, playerType:1, homePosition:{x:86.8,y:90}, initialSlot:25, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"one3", color:3, playerType:1, homePosition:{x:25,y:26}, initialSlot:37, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"two3", color:3, playerType:1, homePosition:{x:86.8,y:26}, initialSlot:37, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
     {token:"three3", color:3, playerType:1, homePosition:{x:25,y:90}, initialSlot:37, colorSlot:0, boardSlot:0, finished:0, dieOne:0, dieTwo:0, move:0},
@@ -44,6 +44,32 @@ var player;
 var sum;
 var doubledice = 0;
 var rblockedposition = [];
+
+/*Function activated if the 2 players is selected in the main menu*/
+$("#twoplayers").on("click", function choose() {
+    tokens = tokens.filter(tokens => (tokens.color == 0 || tokens.color == 2));
+    $(`.fourplayers`).hide();
+    $(`#dice1`).hide();
+    $(`#dice3`).hide();
+    $("#fourplayers").removeClass("playersnumber");
+    $("#twoplayers").addClass("playersnumber");
+    selected.play();
+    playerSelected = 1;
+    return; 
+});
+
+/*Function activated if the 4 players is selected in the main menu*/
+$("#fourplayers").on("click", function choose() {
+    $(`.fourplayers`).show();
+    $(`#dice1`).show();
+    $(`#dice3`).show();
+    $("#twoplayers").removeClass("playersnumber");
+    $("#fourplayers").addClass("playersnumber");
+    selected.play();
+    playerSelected = 1;
+    return;
+});
+
 game(0);
 
 function game(color){
@@ -129,8 +155,8 @@ function whostarts(){
 
 function rollthedice(color) {
     dice.play();
-    dieone = 6;//Number(Math.floor(Math.random()*6+1));
-    dietwo = 2;//Number(Math.floor(Math.random()*6+1));
+    dieone = Number(Math.floor(Math.random()*6+1));
+    dietwo = Number(Math.floor(Math.random()*6+1));
     $(`#diceone${color}`).html(`<i class="fas fa-dice-${dicenum[dieone-1]} dice"></i>`);
     $(`#dicetwo${color}`).html(`<i class="fas fa-dice-${dicenum[dietwo-1]} dice"></i>`);
     return;
@@ -138,8 +164,8 @@ function rollthedice(color) {
 
 function checkFive(color) {
     var leavingTokens = player.filter(token => (token.dieOne+token.dieTwo == 5 || token.dieOne == 5 || token.dieTwo == 5) && (token.boardSlot == 0) && (token.finished == 0)).length
-    console.table(player)
-    console.log(`Tokens leaving ${leavingTokens}`)
+    console.table(player);
+    console.log(`Tokens leaving ${leavingTokens}`);
     if(leavingTokens > 0){
         sum = 0;
         player.forEach(token => sum += token.dieOne + token.dieTwo);
@@ -148,7 +174,7 @@ function checkFive(color) {
             var noBlock = tokens.filter(token => token.boardSlot == initialSlot).length < 2;
             var otherBlock = tokens.find(token => token.boardSlot == initialSlot && token.color != color);
             var myBlock = player.filter(mytoken => mytoken.boardSlot == initialSlot).length == 2;
-            thisToken =  player.find(token => (token.dieOne > 0 || token.dieTwo > 0) && token.boardSlot == 0);
+            thisToken =  player.find(token => (token.dieOne > 0 || token.dieTwo > 0) && token.boardSlot == 0 && (token.finished == 0));
             if (noBlock){
                     console.log(`Leave home`);
                     leavehome(thisToken);
@@ -344,17 +370,23 @@ function activatedice(color){
 }
 
 function nextplayer(color){
+    console.log(tokens.length/4);
     if (doubledice>0){
         game(color);
         return;
     }else{
-        if (color == 3){
+        if (color == tokens.length/4){
             color = 0;
             game(color);
             return;
         }else{
-            color += 1;
-            game(color);
+            var nextplayer = tokens.find(player => player.color == color+1);
+            console.table(nextplayer);
+            if (nextplayer){
+                game(nextplayer.color);
+            }else{
+                game(color+2);
+            }
             return;
         }
     }

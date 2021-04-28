@@ -89,37 +89,37 @@ let block = new Audio('assets/audio/block.wav');
 let hit = new Audio('assets/audio/senthome.wav');
 let final = new Audio('assets/audio/lastspace.wav');
 
-/*Function activated if the 2 players is selected in the main menu*/
-$("#twoplayers").on("click", function choose() {
-    players = [];
-    players.push("blue");
-    players.push("red");
-    $(`.fourplayers`).hide();
-    $(`#greendice`).hide();
-    $(`#yellowdice`).hide();
-    $("#fourplayers").removeClass("playersnumber");
-    $("#twoplayers").addClass("playersnumber");
-    selected.play();
-    playerSelected = 1;
-    return; 
-});
+// /*Function activated if the 2 players is selected in the main menu*/
+// $("#twoplayers").on("click", function choose() {
+//     players = [];
+//     players.push("blue");
+//     players.push("red");
+//     $(`.fourplayers`).hide();
+//     $(`#greendice`).hide();
+//     $(`#yellowdice`).hide();
+//     $("#fourplayers").removeClass("playersnumber");
+//     $("#twoplayers").addClass("playersnumber");
+//     selected.play();
+//     playerSelected = 1;
+//     return; 
+// });
 
-/*Function activated if the 4 players is selected in the main menu*/
-$("#fourplayers").on("click", function choose() {
-    players=[];
-    players.push("blue");
-    players.push("yellow");
-    players.push("red");
-    players.push("green");
-    $(`.fourplayers`).show();
-    $(`#greendice`).show();
-    $(`#yellowdice`).show();
-    $("#twoplayers").removeClass("playersnumber");
-    $("#fourplayers").addClass("playersnumber");
-    selected.play();
-    playerSelected = 1;
-    return;
-});
+// /*Function activated if the 4 players is selected in the main menu*/
+// $("#fourplayers").on("click", function choose() {
+//     players=[];
+//     players.push("blue");
+//     players.push("yellow");
+//     players.push("red");
+//     players.push("green");
+//     $(`.fourplayers`).show();
+//     $(`#greendice`).show();
+//     $(`#yellowdice`).show();
+//     $("#twoplayers").removeClass("playersnumber");
+//     $("#fourplayers").addClass("playersnumber");
+//     selected.play();
+//     playerSelected = 1;
+//     return;
+// });
 
 /*Function activated when the number of players is selected and call the type of players menu*/
 $("#next").on("click", function choose() {
